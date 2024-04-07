@@ -1,0 +1,36 @@
+{
+    "body": [
+        {
+            "type": "text",
+            "text": "Suskan"
+        },
+        {
+            "type": "text",
+            "text": "BOYO Honey Singh"
+        }
+    ],
+    "mpm": [
+        {
+            "type": "action",
+            "action": {
+                "thumbnail_product_retailer_id": "CRAN1",
+                "sections": [
+                    {
+                        "title": "BOYO",
+                        "product_items": [
+                            {
+                                "product_retailer_id": "CRAN1"
+                            },
+                            {
+                                "product_retailer_id": "BLUE1"
+                            },
+                            {
+                                "product_retailer_id": "HAZEL1"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
