@@ -1,0 +1,11 @@
+package fb
+
+const (
+	ADDTOCARTEVENT = "AddToCart"
+	PURCHASE = "Purchase"
+	VIEWCONTENT = "ViewContent"
+)
+
+// var CONVERSIONSAPIVERSION = os.Getenv("CONVERSIONS_API_VERSION")
+// var METAPIXEL = os.Getenv("META_PIXEL_ID")
+// var CONVERSIONSAPIACCESSTOKEN = os.Getenv("CONVERSIONS_API_ACCESSTOKEN")
