@@ -1,0 +1,32 @@
+{{define "admin-login"}}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{.title}}
+    </title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../admin/static/styles/admin-globals.css" />
+    <link rel="stylesheet" href="../../../admin/static/styles/login.css" />
+</head>
+
+<body>
+    <div>{{template "header" .}}</div>
+    <div class="container">
+        <form class="login-contianer" action="/login" method="post">
+            <!-- <a class="google-sign-up">
+                    <img src="../../admin/static/assets/imgs/google.png" alt="google" />
+                </a> -->
+            <h1>Login</h1>
+            <input type="email" placeholder="Email" name="email" id="email" required class="login-input" />
+            <input type="password" placeholder="Password" name="password" id="password" required class="login-input" />
+            <button type="submit" class="btn primary-btn login-button">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
+{{end}}

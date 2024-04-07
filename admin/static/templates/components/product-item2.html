@@ -1,0 +1,18 @@
+{{define "productItem2"}}
+<a class="list-item" href="/product/{{.id}}">
+  <div class="product-thumbnail">
+    <img src="{{.thumbnail}}?width=128" />
+  </div>
+  <div class="info-medium">{{.name}}</div>
+  <div class="info-medium">
+    {{.quantity.val}} in stock 
+    {{if .showVariants}}
+      for {{.quantity.number}} variants
+    {{else}}
+    {{end}}
+  </div>
+  <div class="info-small">{{.category.Name}}</div>
+  <div class="info-small">{{.brand.Name}}</div>
+  <div class="info-small">{{.rating}}</div>
+</a>
+{{end}}

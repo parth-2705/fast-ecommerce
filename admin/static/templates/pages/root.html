@@ -1,0 +1,67 @@
+{{define "root"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{.title}}</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="../../../admin/static/styles/admin-globals.css"
+    />
+    <script src="../../../admin/static/js/index.js"></script>
+    <script
+      src="https://cdn.tiny.cloud/1/ttqk828dteoayq2sidzdpiexs353ekt7830ljbbtbqy59wrp/tinymce/6/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/stream-chat"></script>
+
+  </head>
+  <body id="body-parent">
+    {{template "header" .}}
+    <div class="content-container">
+      {{template "sidebar" .}} 
+      {{if eq .template "product"}} 
+        {{template "product" .}} 
+        {{else if eq .template "product2"}} 
+        {{template "product2" .}} 
+        {{else if eq .template "product-edit"}} 
+        {{template "product-edit" .}}
+        {{else if eq .template "product-edit2"}} 
+        {{template "product-edit2" .}}
+        {{else if eq .template "category"}} 
+        {{template "category" .}} 
+        {{else if eq .template "category-edit"}} 
+        {{template "category-edit" .}} 
+        {{else if eq .template "admin-order"}} 
+        {{template "admin-order" .}} 
+        {{else if eq .template "order"}} 
+        {{template "order" .}} 
+        {{else if eq .template "order-view"}} 
+        {{template "order-view" .}} 
+        {{else if eq .template "order-create"}} 
+        {{template "order-create" .}} 
+        {{else if eq .template "brand"}} 
+        {{template "brand" .}} 
+        {{else if eq .template "brand-edit"}}
+        {{template "brand-edit" .}}
+        {{else if eq .template "deal"}} 
+        {{template "deal" .}} 
+        {{else if eq .template "deal-edit"}}
+        {{template "deal-edit" .}}
+        {{else if eq .template "chats"}}
+        {{template "chats" .}}
+      {{end}}
+    </div>
+    <script>
+      tinymce.init({
+        selector: ".section-textarea",
+        toolbar:
+          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+        tinycomments_mode: "embedded",
+      });
+    </script>
+  </body>
+</html>
+{{end}}

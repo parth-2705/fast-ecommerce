@@ -1,0 +1,42 @@
+{{define "seller-root"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{.title}}
+        </title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../../admin/static/styles/admin-globals.css"/>  
+        <script src="https://cdn.tiny.cloud/1/ttqk828dteoayq2sidzdpiexs353ekt7830ljbbtbqy59wrp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    </head>
+    <body>
+        <div>{{template "header" .}}</div>
+        <div class="content-container">
+        {{template "seller-sidebar" .}}
+
+        {{if eq .template "seller-order"}}
+            {{template "seller-order" .}}
+        {{else if eq .template "seller-info"}}
+            {{template "seller-info" .}}
+        {{else if eq .template "brand"}}
+            {{template "brand" .}}
+        {{else if eq .template "brand-edit"}}
+            {{template "brand-edit" .}}
+        {{else if eq .template "product2"}}
+            {{template "product2" .}}
+        {{else if eq .template "product-edit2"}}
+            {{template "product-edit2" .}}
+        {{end}}
+        </div>
+        <script>
+            tinymce.init({
+            selector: '.section-textarea',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            });
+        </script>
+    </body>
+</html>
+{{end}}

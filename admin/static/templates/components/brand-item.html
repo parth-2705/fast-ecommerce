@@ -1,0 +1,9 @@
+{{define "brandItem"}}
+    <a class="list-item" href="/brand/{{.ID}}">
+        <div class="product-thumbnail">
+            <img src="{{.Logo}}"/>
+        </div>
+        <div class="info-medium">{{.Name}}</div>
+        <div class="info-large">{{.Description}}</div>
+    </a>
+{{end}}

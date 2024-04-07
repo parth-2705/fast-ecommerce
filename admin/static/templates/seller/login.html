@@ -1,0 +1,38 @@
+{{define "login"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{.title}}
+        </title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../../admin/static/styles/admin-globals.css"/>  
+        <link rel="stylesheet" href="../../../admin/static/styles/login.css"/>  
+    </head>
+    <body>
+        <div class="seller-container">
+            <div class="seller-login-container">
+                <a href="/">
+                    <img src="../../admin/static/assets/imgs/roovo.svg" alt="logo" class="header-container-image"/>
+                </a>
+                <div class="seller-login-elements-container">
+                    <div class="seller-heading"><strong>Log in</strong></div>
+                    <div class="seller-subheading">Continue to Roovo</div>
+
+                    <form class="seller-input-container" method="post" action="/login">
+                        <label for="phone" class="input-label" class="seller-input-label">Phone No</label>
+                        <div class="phone-number-container border">
+                            <div class="phone-number-extension">+91</div>
+                            <input type="number" required id="phone" name="phone" class="seller-input-phone no-border" value="{{.phone}}" />
+                        </div>
+
+                        <button type="submit" class="seller-button">Continue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{end}}

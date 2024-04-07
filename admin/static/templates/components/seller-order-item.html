@@ -1,0 +1,55 @@
+{{define "seller-orderItem"}}
+    <tr href="/order/{{.id}}">
+        <td >
+            <div class="main-detail">
+                {{.id}}
+            </div>
+            <div class="secondary-detail">{{.createdAt}}</div>
+        </td>
+        <td >
+            <div class="main-detail">{{.variant.sku}}</div>
+        </td>
+        <td >
+            <div class="main-detail"><span class="secondary-detail">Dead wt. :</span> {{.variant.weight}} kg</div>
+            <div class="secondary-detail">{{.variant.length}}  x {{.variant.breadth}}  x {{.variant.height}}  (cm)</div>
+            <div class="main-detail"><span class="secondary-detail">Volumetric wt.:</span>  {{VolumetricWeight .variant}} Kg</div>    
+        </td>
+        <td >
+            <div>
+                <span class="secondary-detail">₹</span><span class="main-detail">{{.variant.price.sellingPrice}}</span>
+            </div>
+            <div class="highlight-detail">{{.payment.method}}</div>
+        </td>
+        <td >
+            <div class="secondary-detail">{{.seller.houseArea}}</div>
+            <div class="secondary-detail">{{.seller.streetName}}</div>
+            <div class="secondary-detail">{{.seller.pinCode}}</div>
+            <div class="secondary-detail">{{.seller.city}}</div>
+        </td>
+        <td >
+            <span class="column-flex">
+                {{if gt (len .shipment) 0}}
+                    {{if eq .shipment.shipmentCreated false}}
+                        <button class="btn primary-btn" onclick="GeneratePickUP({{.shipment.shippingId}})">&nbsp; Generate Pickup &nbsp;</button>
+                        <button class="btn">
+                            <a class="modal-item" href="/invoice?orderID={{.id}}" target="_blank">Download Invoice</a>
+                        </button>
+                    {{else}}
+                        <button class="btn primary-btn">
+                            <a class="modal-item" style="color:#fff" href="/invoice?orderID={{.id}}" target="_blank">Download Invoice</a>
+                        </button>
+                        <button class="btn">
+                            <a class="modal-item" href="{{.shipment.labelUrl}}" target="_blank">&nbsp; Download Label &nbsp;</a>
+                        </button>
+                        <button class="btn">
+                            <a class="modal-item" href="{{.shipment.manifestUrl}}" target="_blank">&nbsp; Download Manifest &nbsp;</a>
+                        </button>
+                    {{end}}
+                {{else}}
+                    <button class="btn primary-btn" onclick="GenerateShipment({{.id}},{{.seller.id}})">Fulfill Order</button>
+                {{end}}
+            </span>
+        </td>
+    </tr>
+    
+{{end}}

@@ -1,0 +1,110 @@
+.row-flex-d-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2em;
+
+    margin: 0.5em 0;
+    width: 100%;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.order-item{
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0.25em 0.5em;
+    white-space: nowrap;
+    color: #a1a1a1;
+}
+
+.order-item:visited{
+    color: #a1a1a1;
+}
+
+.active{
+    color: rgba(0, 128, 96, 1);
+    font-weight: 700;
+    border-bottom: 2px solid rgba(0, 128, 96, 1);
+}
+
+.more-action{
+    cursor: pointer;
+}
+
+.main-detail{
+    width: fit-content;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 0.25em;
+}
+
+.secondary-detail{
+    width: fit-content;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 0.25em;
+}
+
+.highlight-detail{
+    border-radius: 4px;
+    width: fit-content;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 0.15em 0.4em;
+    background-color:rgba(221, 255, 247,0.5);
+    color: rgba(0, 128, 96, 1);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    padding: 0.5em 1em;
+    box-shadow: 6px 12px 60px rgb(0 0 0 / 20%);
+    width: 11%;
+
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 79%;
+
+    border-radius: 8px;
+  }
+  
+  /* The Close Button */
+  .close {
+      color: black;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: right;
+      height: 1em;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: #aaa;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modal-item{
+    padding: 0.6em 0.25em;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .modal-item:hover{
+    color: #a1a1a1;
+    cursor: pointer;
+  }

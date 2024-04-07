@@ -1,0 +1,76 @@
+{{define "order-create"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css"/>
+<script src="../../../admin/static/js/orders.js"></script>
+<div class="product-edit">
+    <div class="product-edit-container">
+        <div class="product-edit-header justify-elements">
+            <div class="product-edit-header">
+                <a class="back-button" title="Back" href="/orders">←</a>
+                <div class="product-heading-container">
+                    <div class="product-title">
+                        Create Order
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form onsubmit="
+            createOrder(event)
+        ">
+            <div class="product-container">
+                <div class="product-left-section-container">
+                    <section class="product-details-section">
+                        <label class="section-label">Product</label>
+                        <!-- <input type="text" class="section-input" name="name" id="name" value="{{.category.Name}}" placeholder="Enter name of the category" required /> -->
+                        <select class="section-input section-select" id="product" name="product">
+                            {{range $product := .products}}
+                                <option value="{{ $product.ID }}">{{$product.Name}}</option>
+                            {{end}}
+                        </select>
+                        <div class="subsection-spacer"></div>
+                        <div class="subsection-spacer"></div>
+                        <label class="section-label">Fulfillment Status</label>
+                        <select class="section-input section-select" id="fulfillmentStatus" name="fulfillmentStatus">
+                            {{range $status := .fulfillmentStatusList}}
+                                <option value="{{ $status }}">{{$status}}</option>
+                            {{end}}
+                        </select>
+                    </section>
+                    <section class="product-details-section">
+                        <label class="section-label">Payment Status</label>
+                        <select class="section-input section-select" id="paymentStatus" name="paymentStatus">
+                            {{range $status := .paymentStatusList}}
+                                <option value="{{ $status }}">{{$status}}</option>
+                            {{end}}
+                        </select>
+                    </section>
+                </div>
+                <div class="product-right-section-container">
+                    <section class="product-details-section">
+                        <label class="section-label">User</label>
+                        <!-- <input type="text" class="section-input" name="name" id="name" value="{{.category.Name}}" placeholder="Enter name of the category" required /> -->
+                        <select class="section-input section-select" id="userId" name="userId" onchange="updateAddress(event)">
+                            {{range $user := .users}}
+                                <option value="{{ $user.ID }}">{{$user.Name}}</option>
+                            {{end}}
+                        </select>
+                    </section>
+                    <section class="product-details-section">
+                        <label class="section-label">Shipping Address</label>
+                        <select class="section-input section-select" id="address" name="address">
+                            {{range $addressItem := .firstAddress}}
+                                <option value="{{ $addressItem.ID }}">{{$addressItem.HouseArea}},{{$addressItem.City}},{{$addressItem.State}}-{{$addressItem.PinCode}}</option>
+                            {{end}}
+                        </select>
+                    </section>
+                </div>
+            </div>
+            <div class="subsection-spacer line"></div>
+            <div class="product-edit-header justify-elements">
+                <span>
+                </span>
+                <button class="btn primary-btn" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+{{end}}

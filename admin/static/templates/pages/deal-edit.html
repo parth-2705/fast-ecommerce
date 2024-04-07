@@ -1,0 +1,128 @@
+{{define "deal-edit"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css" />
+<div class="product-edit">
+    <div class="product-edit-container">
+        <div class="product-edit-header justify-elements">
+            <div class="product-edit-header">
+                <a class="back-button" title="Back" href="/deals">←</a>
+                <div class="product-heading-container">
+                    <div class="product-title">
+                        {{if .new}}
+                        Create Deal
+                        {{else}}
+                        Edit Deal
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form onsubmit="
+        {{if .new}}
+            createdeal(event)
+        {{else}}
+            updatedeal(event,{{.deal.ID}})
+        {{end}}
+        ">
+            <div class="product-container">
+                <div class="product-left-section-container">
+                    <section class="product-details-section">
+                        {{if .new}}{{else}}<input type="hidden" class="section-input" name="id" id="id"
+                            value="{{.deal.ID}}" />{{end}}
+                        <label class="section-label" for="dealPrice">Deal Price</label>
+                        <input type="number" class="section-input" name="dealPrice" id="dealPrice"
+                            value="{{ .deal.DealPrice}}" placeholder="Enter deal price" required />
+
+                        <div class="subsection-spacer"></div>
+
+                        <label class="section-label" for="quantity">Product Quantity</label>
+                        <input type="number" class="section-input" name="quantity" id="quantity"
+                            value="{{ .deal.Quantity}}" placeholder="Enter quantity" required />
+
+                        <div class="subsection-spacer"></div>
+                        <div class="product-edit-header">
+                            <input type="checkbox" class="section-checkbox" name="isTeamDeal" id="isTeamDeal" {{if
+                                .deal.IsTeamDeal}}checked{{end}} />
+                            <label class="section-label" for="isTeamDeal">Is Team Deal</label>
+                        </div>
+
+                        <div id="teamDealContainer" style="display: {{if
+                            .deal.IsTeamDeal}}flex{{else}}none{{end}};flex-direction:column;">
+
+                            <div class="subsection-spacer"></div>
+
+                            <label class="section-label" for="quantity">Team Capacity</label>
+                            <input type="number" class="section-input" name="teamCapacity" id="teamCapacity"
+                                value="{{ .deal.TeamCapacity}}" placeholder="Enter Team Capacity" />
+
+
+                            <div class="subsection-spacer"></div>
+
+                            <label class="section-label" for="adminPrice">Admin Price</label>
+                            <input type="number" class="section-input" name="adminPrice" id="adminPrice"
+                                value="{{ .deal.AdminPrice}}" placeholder="Enter admin price" />
+
+                            <div class="subsection-spacer"></div>
+
+                            <label class="section-label" for="memberPrice">Member Price</label>
+                            <input type="number" class="section-input" name="memberPrice" id="memberPrice"
+                                value="{{ .deal.MemberPrice}}" placeholder="Enter member price" />
+                        </div>
+
+                    </section>
+                </div>
+                <div class="product-right-section-container">
+                    <section class="product-details-section">
+                        <div class="section-title">Deal Details</div>
+                        <div class="section-label" for="startsAt">Deal Starts At</div>
+                        <input type="datetime-local" class="section-input" id="startsAt" name="startsAt"
+                            value="{{substring (toString .deal.StartsAt) 0 17}}" placeholder="Enter start time"
+                            required />
+
+                        <div class="subsection-spacer"></div>
+
+                        <div class="section-label" for="endsAt">Deal Ends At</div>
+                        <input type="datetime-local" class="section-input" id="endsAt" name="endsAt"
+                            value="{{substring (toString .deal.EndsAt) 0 17}}" placeholder="Enter end time" required />
+
+                        <div class="subsection-spacer"></div>
+
+                        <div class="section-label" for="productID">Deal On Product</div>
+                        <select class="section-input section-select" id="productID" name="productID">
+                            {{range $product := .products}}
+                            {{if eq .ID $.deal.ProductID}}
+                            <option selected value="{{.ID}}">{{.Name}}</option>
+                            {{else}}
+                            <option value="{{.ID}}">{{.Name}}</option>
+                            {{end}}
+                            {{end}}
+                        </select>
+                    </section>
+                </div>
+            </div>
+            <div class="subsection-spacer line"></div>
+            <div class="product-edit-header justify-elements">
+                <span>
+                    {{if eq .new false}}
+                    <!-- <button class="btn">Archive deal</button> -->
+                    <button class="btn danger-btn" onclick="deletedeal(event,{{.deal.ID}})">Deactivate deal</button>
+                    {{end}}
+                </span>
+                <button class="btn primary-btn" type="submit">{{if .new}}Create{{else}}Save{{end}}</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById("isTeamDeal").addEventListener("change", () => {
+        const isTeamDeal = document.getElementById("isTeamDeal")
+        const teamDealContainer = document.getElementById("teamDealContainer")
+        if (isTeamDeal.checked) {
+            teamDealContainer.style.display = "flex"
+        } else {
+            teamDealContainer.style.display = "none"
+        }
+    })
+
+</script>
+<script src="../../../admin/static/js/deals.js"></script>
+{{end}}

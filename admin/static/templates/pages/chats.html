@@ -1,0 +1,146 @@
+{{define "chats"}}
+    <link rel="stylesheet" href="../../../admin/static/styles/chats.css">
+    <div class="chat-container">
+        <div class="chat-list">
+            <h2>Chats</h2>
+            <ul>
+            {{ range .chatsData }}
+                <a href="/chats/{{.ChatID}}">
+                <li>
+                    <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                    <div class="chat-info">
+                        <h3>{{.MobileNumber}}</h3>
+                        <p>{{.LastMessage}}</p>
+                    </div>
+                    <p>{{.LastMessageTime}}</p>
+                </li>
+                </a>
+            {{ end }}
+            </ul>
+        </div>
+        <div class="chat-window">
+            <div class="chat-header">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <h3> {{.ChatWithName}} </h3>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Add more chat messages here -->
+            </div>
+            <div class="chat-input">
+                <label>
+                    <img src="attachment-icon.png" alt="Attachment Icon">
+                    <input type="file">
+                </label>
+                <input type="text" id="message" placeholder="Type your message...">
+                <button onclick="sendTracking('chat sent by user')">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function initChat() {
+            console.log("This is channel:",{{.channel}}['type'],{{.channel}}['id'])
+            const client = StreamChat.getInstance("{{.StreamKey}}");
+            await client.connectUser({
+                "id": "{{.UserID}}",
+                "name": "{{.UserName}}",
+
+            }, {{.UserToken}});
+            channel = client.channel({{.channel}}['type'], {{.channel}}['id']);
+            state=await channel.watch()
+            lastMessageId=makeMessages(state.messages,"{{.UserID}}");
+            scrollToLastUnread(lastMessageId);   
+            console.log("This is state:",state);
+            channel.on('message.new',event=>{
+                console.log("This is event:",event)
+                addUserMessage(event.message,event.user.id,{{.UserID}})
+            })
+        }
+
+        function makeMessages(messages,UserID){
+            var mainBody=document.getElementById("chat-messages");
+            var content=""
+            messages.forEach((message,index)=>{
+                var messageItem;
+                if(message.user.id==UserID){
+                    if(message.attachments.length>0){
+                    // imgElem='<img src='+message.attachments[0].assetUrl.file+'/>'
+                    imgElem=''
+                    }else{
+                        imgElem=''
+                    }
+                    messageItem = '<div class="chat-message chat-message-right" id="message_'+message.id+'"><div class="text-content">'+message.html+'</div><div class="img-content">'+imgElem+'</div></div>'
+                }else{
+                    if(message.attachments.length>0){
+                        // imgElem='<img src='+message.attachments[0].assetUrl.file+'/>'
+                        imgElem=''
+                    }else{
+                        imgElem=''
+                    }
+                    messageItem = '<div class="chat-message" id="message_'+message.id+'"><img src="https://via.placeholder.com/40" alt="Profile Picture"><div class="text-content">'+message.html+'</div><div class="img-content">'+imgElem+'</div></div>'
+                }
+                content=content+messageItem
+            })
+            mainBody.innerHTML=content
+            return messages[messages.length-1].id
+        }
+
+        function addUserMessage(message, messageSenderID, userID) {
+            var mainBody=document.getElementById("chat-messages");
+            var messageItem;
+            if(messageSenderID==userID){
+                if(message.attachments.length>0){
+                    // imgElem='<img src='+message.attachments[0].assetUrl.file+'/>'
+                    imgElem=''
+                }else{
+                    imgElem=''
+                }
+                messageItem = '<div class="chat-message chat-message-right" id="message_'+message.id+'"><div class="text-content">'+message.html+'</div><div class="img-content">'+imgElem+'</div></div>'
+            }else{
+                if(message.attachments.length>0){
+                    // imgElem='<img src='+message.attachments[0].assetUrl.file+'/>'
+                    imgElem=''
+                }else{
+                    imgElem=''
+                }
+                messageItem = '<div class="chat-message" id="message_'+message.id+'"><img src="https://via.placeholder.com/40" alt="Profile Picture"><div class="text-content">'+message.html+'</div><div class="img-content">'+imgElem+'</div></div>'
+            }
+            mainBody.innerHTML=mainBody.innerHTML+messageItem
+            document.getElementById('message_'+message.id).scrollIntoView({behavior:"smooth"});
+        }
+
+        async function scrollToLastUnread(lastMessageId){
+            const { unread_count: unreadCount } = await channel.countUnread();
+            document.getElementById('message_'+lastMessageId).scrollIntoView();
+            if (unreadCount > 0) {
+                const { messages } = await channel.query({ limit: 1, mark_read: true });
+                const lastUnreadMessage = messages[0];
+                document.getElementById('message_'+lastUnreadMessage.id).scrollIntoView({behavior:"smooth"});
+            }
+            // else{
+            // }
+            await channel.markRead();
+        }
+
+        document.getElementById('message').addEventListener('keypress',function (e){
+            if(e.key=='Enter'){
+                sendMessage();
+            }
+        })
+
+        async function sendMessage(){
+            console.log('sending message:',document.getElementById('message').value)
+            messageText=document.getElementById('message').value
+            document.getElementById('message').value=''
+            // document.getElementById('file-number').style.animation='none';
+            await channel.sendMessage({
+                    text: messageText,
+                });
+            
+        }
+
+
+        initChat();
+    </script>
+
+{{end}}

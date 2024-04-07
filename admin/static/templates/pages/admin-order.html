@@ -1,0 +1,151 @@
+{{define "admin-order"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css"/>
+<link rel="stylesheet" href="../../../admin/static/styles/list.css"/>
+<link rel="stylesheet" href="../../../admin/static/styles/seller-order.css"/>
+<div class="product-container" style="max-width:100% !important; justify-content:flex-start !important">
+    <div class="heading-container rowFlex justify-between" style="align-items: flex-end;">
+        <div class="heading" style="margin-bottom: 0;">
+            <div style="margin-bottom: 1em;">Orders</div>
+            <div>
+                <input class="section-input" type="date" id="orderDate" name="orderDate" min="2023-03-20" value="{{.orderDate}}">
+                <button class="btn secondary-btn" onclick="setDateFilter()">Filter</button>
+            </div>
+        </div>
+        <select class="section-input section-select" id="seller" name="seller" onchange="sellerChange()">
+            <option value="">Select Seller</option>
+            {{range $seller := .sellers}} 
+                {{if eq $.currentSeller .id}}
+                    <option selected value="{{.id}}">{{.name}}</option>
+                {{else}}
+                    <option value="{{.id}}">{{.name}}</option>
+                {{end}} 
+            {{end}}
+        </select>
+        <!-- <a href="/order/new"><button class="btn primary-btn">+ Add</button></a> -->
+    </div>
+    <div class="row-flex-d-2">
+        <!-- <a href="/orders/new" class="order-item">New</a>
+        <a href="/orders/ready-to-ship" class="order-item">Ready To Ship</a> -->
+        <!-- <a href="/orders/pickups" class="order-item">Pickups</a>
+        <a href="/orders/in-transit" class="order-item">In Transit</a>
+        <a href="/orders/delivered" class="order-item">Delivered</a>
+        <a href="/orders/rto" class="order-item">RTO</a> -->
+        <a href="/orders/all" class="order-item">All</a>
+    </div>
+    <div class="product-content" style="width:100%;">
+        <div class="product-header">
+            <table>
+                <tr>
+                    <th>Order Details</th>
+                    <th>SKUs</th>
+                    <th>Package Details</th>
+                    <th>Payment</th>
+                    <th>Brand Name</th>
+                    <th>Delivery Address</th>
+                    <th style="text-align: center;">Action</th>
+                </tr>
+                    {{if gt (len .orders) 0}}
+                        {{range $order := .orders}}
+                            {{template "admin-orderItem" $order}}
+                        {{end}}
+                    {{else}}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No Orders Found</td>
+                        </tr>
+                    {{end}}
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function ActiveURL(){
+        const hRefs = document.getElementsByClassName("order-item")
+        let found = false
+        for(let i=0; i<hRefs.length; i++){
+            const href = hRefs[i]
+
+            if (href.getAttribute("href").substring(8) === window.location.pathname.split("/").pop()){
+                href.className += " active"
+                fount = true
+                break
+            }
+        }
+
+        if(!found && hRefs.length>0){
+            hRefs[hRefs.length-1].className += " active"
+        }
+    }
+
+    ActiveURL()
+    async function GenerateShipment(id, sellerID){
+        if(!id || !sellerID){
+            return
+        }
+        const response = await fetch(`/ship-now?id=${id}&sellerID=${sellerID}`)
+        if (response.status === 200){
+            window.location.reload()
+        }
+    }
+
+    async function GeneratePickUP(id){
+        if(!id){
+            return
+        }
+        const response = await fetch(`/generate-pick-up?id=${id}`)
+        if (response.status === 200){
+            window.location.reload()
+        }
+    }
+
+    async function openCloseShippingModal(){
+        // Get the modal
+        var modal = document.getElementById("shipping-modal");
+        var modalContent = document.getElementById("shipping-modal-content");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("shipping-actions");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+            modalContent.style.top = (window.pageYOffset + btn.getBoundingClientRect().top+btn.offsetTop+24).toString()+"px"
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+
+    openCloseShippingModal()
+
+    function sellerChange(event){
+        const seller = document.getElementById("seller")
+        window.location.assign("/orders?sellerID="+seller.value);
+        return;
+    }
+
+    function maxDateSet(){
+        const orderDate = document.getElementById("orderDate")
+        var todayDate = new Date().toISOString().slice(0, 10);
+        orderDate.setAttribute("max",todayDate)
+    }
+    maxDateSet()
+
+    function setDateFilter(){
+        const orderDate = document.getElementById("orderDate").value
+        window.location.assign("/orders?date="+orderDate);
+        return;
+    }
+</script>
+{{end}}

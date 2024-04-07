@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        * {
+            margin: 0px;
+            font-family: Helvetica, "Helvetica Neue", Roboto, Noto, Arial, sans-serif;
+        }
+
+        #RootWrapperInvoice {
+            min-height: 100vh;
+            background-color: white;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        #Page1 {
+            color: white;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 526px;
+            top: 824px;
+        }
+
+        #Frame9 {
+            width: 562px;
+            height: 685px;
+            position: absolute;
+            left: 17px;
+            top: 27px;
+        }
+
+        #Rectangle4 {
+            width: 562px;
+            height: 25px;
+            background-color: white;
+            border: solid 1px black;
+            position: absolute;
+            left: 0px;
+            top: 288px;
+        }
+
+        #AmountChargeableInWords {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 10px;
+        }
+
+        #totalGroup{
+            padding: 1em 0;
+            border-top: 1px solid black;
+        }
+
+        #SlNo {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 16px;
+            top: 295px;
+        }
+
+        #ProductName {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 72px;
+            top: 295px;
+        }
+
+        #Quantity {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: absolute;
+            left: 185px;
+            top: 295px;
+        }
+
+        #SKU {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: absolute;
+            left: 260px;
+            top: 295px;
+        }
+
+        #TaxableValue {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: absolute;
+            left: 320px;
+            top: 295px;
+        }
+
+        #Gst {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: absolute;
+            left: 425px;
+            top: 295px;
+        }
+
+        #TotalAmount {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 470px;
+            top: 295px;
+            white-space: nowrap;
+        }
+
+        #Group1 {
+            width: 562px;
+            height: auto;
+            position: absolute;
+            left: 0px;
+            top: 311px;
+            border:1px solid #000;
+        }
+
+        .product-item{
+            position: relative;
+            padding: 0.5em 1em;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        #Rectangle23 {
+            width: 562px;
+            height: 155px;
+            background-color: white;
+            border: solid 1px black;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        #_1 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: relative;
+            padding-left: 2.5em;
+        }
+
+        #_SKU {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: relative;
+            padding-left: 3.5em;
+            display: block;
+            width: 50px;
+            word-break: break-all;
+        }
+
+        #_44554 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: relative;
+            padding-left: 4.5em;
+            width:40px;
+        }
+
+        #_5346 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: relative;
+            padding-left: 5em;
+            width:25px;
+        }
+
+        #_49900 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            padding-left: 5em;
+        }
+
+        #Group11 {
+            width: 562px;
+            height: 32px;
+            position: absolute;
+            left: 0px;
+            top: 465px;
+        }
+
+        #Rectangle23_0001 {
+            width: 562px;
+            height: 32px;
+            background-color: white;
+            border: solid 1px black;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        #Total {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 427px;
+            top: 7px;
+        }
+
+        #Group6 {
+            width: 562px;
+            height: 127px;
+            position: absolute;
+            left: 0px;
+            top: 21px;
+        }
+
+        #Rectangle42 {
+            width: 280px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        #Rectangle43 {
+            width: 283px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 279px;
+            top: 0px;
+        }
+
+        #Rectangle44 {
+            width: 96px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 279px;
+            top: 0px;
+        }
+
+        #Rectangle46 {
+            width: 96px;
+            height: 64px;
+            position: absolute;
+            left: 279px;
+            top: 0px;
+        }
+
+        #Rectangle47 {
+            width: 96px;
+            height: 64px;
+            border: solid 1px black;
+            position: absolute;
+            left: 374px;
+            top: 0px;
+        }
+
+        #Rectangle45 {
+            width: 96px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 374px;
+            top: 0px;
+        }
+
+        #Rectangle44_0001 {
+            width: 280px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 0px;
+            top: 147px;
+        }
+
+        #Rectangle49 {
+            width: 283px;
+            height: 127px;
+            border: solid 1px black;
+            position: absolute;
+            left: 279px;
+            top: 147px;
+        }
+
+        #address {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            width: 226px;
+            position: absolute;
+            left: 293px;
+            top: 195px;
+        }
+
+        #DeepakMahor {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 292px;
+            top: 175px;
+        }
+
+        #DeliverTo {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 292px;
+            top: 155px;
+        }
+
+        #BillTo {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            width: 39px;
+            min-height: 14px;
+            position: absolute;
+            left: 13px;
+            top: 155px;
+            height: 14px;
+        }
+
+        #Rectangle62 {
+            width: 562px;
+            height: auto;
+            padding: 1em 0;
+            border-top: solid 1px black;
+            position: relative;
+        }
+
+        #TaxInvoice {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: right;
+            position: absolute;
+            left: 248px;
+            top: 0px;
+        }
+
+        #Frame1 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 300px;
+            top: 40px;
+            width: 54px;
+            height: 52px;
+        }
+
+        #OrderNo {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+        }
+
+        .OrderMargin{
+            margin-top:5px;
+        }
+
+        #InvoiceNo {
+            color: black;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        #Frame3 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 300px;
+            top: 103px;
+            width: 54px;
+            height: 26px;
+        }
+
+        #Frame4 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 385px;
+            top: 103px;
+            width: 73px;
+            height: 26px;
+        }
+
+        #Frame2 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 390px;
+            top: 41px;
+            width: 64px;
+            height: 26px;
+        }
+
+        #_49900_00011 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            white-space:nowrap;
+            left: 226px;
+        }
+
+        #_49900_00022 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 233px;
+        }
+
+        #_49900_0001 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            white-space:nowrap;
+            left: 311px;
+        }
+
+
+        #_49900_0002 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 315px;
+        }
+
+        #Frame1000004910 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 7px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 13px;
+            top: 33px;
+            width: 238px;
+            height: 102px;
+        }
+
+        #Sender {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            width: 42px;
+            min-height: 15px;
+        }
+
+        #Frame1000004909 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: none;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        #RoovoIn {
+            color: rgb(40, 40, 40);
+            text-overflow: ellipsis;
+            font-size: 19px;
+            font-family: Montserrat, sans-serif;
+            font-weight: initial;
+            letter-spacing: -1px;
+            line-height: 26px;
+            text-align: left;
+            position: absolute;
+            left: 481px;
+            top: 71px;
+        }
+
+        #DeepakMahor_0001 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: absolute;
+            left: 13px;
+            top: 175px;
+        }
+
+        #address_0001 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            width: 226px;
+            position: absolute;
+            left: 13px;
+            top: 195px;
+        }
+
+        #_1_0001 {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+        }
+
+        #SuperCollagenForNaturallyGlowingRadiantSkin12EssentialVitaminsRaspberryFlavoredPowderForMenWomen30DaysPack {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            width: 105px;
+            position: relative;
+            display: block;
+            padding-left: 5em;
+        }
+
+        #InrFourHundredNinetyNineRupeesAndZeroPaiseOnlyTaxIsPayableOnReverseChargeBasisNo {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 10px;
+        }
+
+        #Frame5 {
+            width: 496px;
+            height: 34px;
+            position: absolute;
+            left: 10px;
+            top: 635px;
+        }
+
+        #Declaration {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 11px;
+        }
+
+        #Frame7 {
+            display: flex;
+            margin-bottom: 1em;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            box-sizing: border-box;
+            position: relative;
+            left: 11px;
+            width: 496px;
+            height: auto;
+        }
+
+        #Frame6 {
+            width: 496px;
+            height: auto;
+            position: relative;
+        }
+
+        #_1AllClaimsIfAnyForShortagesOrDamagesMustBeReportedToCustomerServiceOn {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+        }
+
+        #TheDayOfDeliveryThroughContactUsPageAtRoovoIn {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+            position: relative;
+            left: 12px;
+        }
+
+        #_2AllDisputesAreSubjectToMadyaPradeshJurisdictionOnly {
+            color: black;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-family: Inter, sans-serif;
+            font-weight: initial;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="RootWrapperInvoice">
+        <span id="Page1">
+            Page 1
+        </span>
+        <div id="Frame9">
+            <div id="Rectangle4">
+
+            </div>
+            <span id="SlNo">
+                SL No.
+            </span>
+            <span id="ProductName">
+                Product Name
+            </span>
+            <span id="Quantity">
+                Quantity
+            </span>
+            <span id="SKU">
+                SKU
+            </span>
+            <span id="TaxableValue">
+                Taxable Value.
+            </span>
+            <span id="Gst">
+                GST
+            </span>
+            <span id="TotalAmount">
+                Total Amount/Item
+            </span>
+            <div id="Group1">
+                {{range $idx, $order := .orders}}
+                <div class="product-item">
+                    <span id="_1_0001">
+                        {{ len (printf "a%*s" $idx "") }}
+                    </span>
+                    <span
+                        id="SuperCollagenForNaturallyGlowingRadiantSkin12EssentialVitaminsRaspberryFlavoredPowderForMenWomen30DaysPack">
+                        {{$order.Product.Name}}
+                    </span>
+                    <span id="_1">
+                        {{range $order.Cart.Items}}
+                            {{.Quantity}}
+                        {{end}}
+                    </span>
+                    <span id="_SKU">
+                        {{$order.Variant.SKU}}
+                    </span>
+                    <span id="_44554">
+                        ₹{{round (taxableValue $order.Variant.Price.SellingPrice $order.Product.GST) 2}}
+                    </span>
+                    <span id="_5346">
+                        ₹{{round (taxValue $order.Variant.Price.SellingPrice $order.Product.GST) 2}}
+                    </span>
+                    <span id="_49900">
+                        ₹{{round ($order.Variant.Price.SellingPrice) 2}}
+                    </span>
+                </div>
+                {{end}}
+                <div id="totalGroup">
+                    <span id="_49900_00011">
+                        Discount:
+                    </span>
+                    <span id="_49900_00022">
+                        ₹{{.totalCartDiscount}}
+                    </span>
+                    <span id="_49900_0001">
+                        Total Amount:
+                    </span>
+                    <span id="_49900_0002">
+                        ₹{{.netAmount}}
+                    </span>
+                </div>
+                <div id="Rectangle62">
+                    <span id="InrFourHundredNinetyNineRupeesAndZeroPaiseOnlyTaxIsPayableOnReverseChargeBasisNo">
+                        INR <strong>{{toTitleCase .amountToWords}}</strong> Only
+                    </span>
+                </div>
+                <div id="Frame7">
+                    <span id="Declaration">
+                        Declaration
+                    </span>
+                    <div id="Frame6">
+                        <span id="_1AllClaimsIfAnyForShortagesOrDamagesMustBeReportedToCustomerServiceOn">
+                            1. All claims, if any, for shortages or damages must be reported to customer service on
+                        </span>
+                        <span id="TheDayOfDeliveryThroughContactUsPageAtRoovoIn">
+                            the day of delivery through contact us page at roovo.in.
+                        </span>
+                    </div>
+                    <span id="_2AllDisputesAreSubjectToMadyaPradeshJurisdictionOnly">
+                        2. All Disputes are subject to State Court jurisdiction only.
+                    </span>
+                </div>
+            </div>
+            <div id="Group6">
+                <div id="Rectangle42">
+
+                </div>
+                <div id="Rectangle43">
+
+                </div>
+                <div id="Rectangle44">
+
+                </div>
+                <div id="Rectangle46">
+
+                </div>
+                <div id="Rectangle47">
+
+                </div>
+                <div id="Rectangle45">
+
+                </div>
+            </div>
+            <div id="Rectangle44_0001">
+            </div>
+            <div id="Rectangle49">
+
+            </div>
+            <span
+                id="address">
+                {{.order.Address.HouseArea}}, 
+                {{.order.Address.City}},
+                {{.order.Address.State}},
+                {{.order.Address.PinCode}}
+                <br>
+                Mobile No: {{.order.Address.Phone}}
+            </span>
+            <span id="DeepakMahor">
+                {{.order.Address.Name}}
+            </span>
+            <span id="DeliverTo">
+                Deliver To
+            </span>
+            <span id="BillTo">
+                Bill To
+            </span>
+            <span id="TaxInvoice">
+                Tax Invoice
+            </span>
+            <div id="Frame1">
+                <span id="OrderNo">
+                    Order No.
+                </span>
+                <span id="OrderNo" class="OrderMargin">
+                    {{.shipping.OrderId}}
+                </span>
+            </div>
+            <div id="Frame4">
+                <span id="InvoiceNo">
+                    Payment Mode
+                </span>
+                <span id="InvoiceNo">
+                    {{.order.Payment.Method}}
+                </span>
+            </div>
+            <div id="Frame2">
+                <span id="InvoiceNo">
+                    Invoice Date
+                </span>
+                <span id="InvoiceNo" style="text-align: center;">
+                    {{formatTimestamp .order.CreatedAt}}
+                </span>
+            </div>
+            <div id="Frame1000004910">
+                <span id="Sender">
+                    Sender
+                </span>
+                <div id="Frame1000004909">
+                    <span id="InvoiceNo">
+                        {{.order.Brand.Name}}
+                    </span>
+                    <span id="InvoiceNo">
+                        {{.seller.HouseArea}}, 
+                        {{.seller.StreetName}},
+                        {{.seller.City}},
+                        {{.seller.State}},
+                        {{.seller.PinCode}}
+                        <br>
+                        Mobile No: {{.seller.Phone}}
+                        <br>
+                        Email: {{.seller.Email}}
+                        <br>
+                        GSTIN: {{.seller.GSTIN}}
+                    </span>
+                </div>
+            </div>
+            <span id="RoovoIn">
+                roovo.in
+            </span>
+            <span id="DeepakMahor_0001">
+                {{.order.Address.Name}}
+            </span>
+            <span
+                id="address_0001">
+                {{.order.Address.HouseArea}}, 
+                {{.order.Address.City}},
+                {{.order.Address.State}},
+                {{.order.Address.PinCode}}
+                <br>
+                Mobile No: {{.order.Address.Phone}}
+            </span>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+        var fileName = {{.order.ID}}+".pdf";
+        console.log("fileName:",fileName)
+        var element = document.getElementById('RootWrapperInvoice');
+        var opt = {
+            margin:       0,
+            filename:     fileName,
+            image:        { type: 'png', quality: 1 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // New Promise-based usage:
+      html2pdf().set(opt).from(element).save().then((e)=>{
+          console.log("e",e)
+          window.close()
+      }).catch(e=>{
+          console.error(e)
+      });
+    })
+</script>
+</html>

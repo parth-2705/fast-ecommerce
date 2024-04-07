@@ -1,0 +1,36 @@
+{{define "otp"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{.title}}
+        </title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../../admin/static/styles/admin-globals.css"/>  
+        <link rel="stylesheet" href="../../../admin/static/styles/login.css"/>  
+    </head>
+    <body>
+        <div class="seller-container">
+            <div class="seller-login-container">
+                <a href="/">
+                    <img src="../../admin/static/assets/imgs/roovo.svg" alt="logo" class="header-container-image"/>
+                </a>
+                <div class="seller-login-elements-container">
+                    <div class="seller-heading"><strong>Enter OTP</strong></div>
+                    <a class="seller-subheading" href="/login?phone={{.phone}}"><strong>Change Phone Number:</strong> <span style="color:rgb(117, 117, 255)">{{.phone}}</span></a>
+
+                    <form class="seller-input-container" method="post" action="/otp">
+                        <label for="otp" class="input-label" class="seller-input-label">OTP</label>
+                        <input type="number" required id="otp" name="otp" class="seller-input-phone" />
+                        <input type="hidden" required id="phone" name="phone" value="+91{{.phone}}" />
+
+                        <button type="submit" class="seller-button">Verify</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{end}}

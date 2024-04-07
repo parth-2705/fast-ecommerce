@@ -1,0 +1,82 @@
+{{define "seller-info"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{.title}}
+        </title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../../admin/static/styles/admin-globals.css"/>  
+        <link rel="stylesheet" href="../../../admin/static/styles/seller-info.css"/>  
+    </head>
+    <body>
+        <div class="container">
+            <div class="secondary-container">
+                <a href="/">
+                    <img src="../../admin/static/assets/imgs/roovo.svg" alt="logo" class="header-container-image"/>
+                </a>
+                <div class="seller-login-elements-container">
+                    <div class="seller-heading"><strong>Seller Details</strong></div>
+                    <div class="seller-subheading">Your details (not <strong><em>brand details</em></strong>)</div>
+
+                    <form class="seller-input-container" method="post" action="/info">
+                        <label for="name" class="input-label" class="seller-input-label">Your Full Name</label>
+                        <input type="text" required id="name" name="name" class="seller-input-phone" value="{{.Name}}" />
+
+                        <label for="email" class="input-label" class="seller-input-label">Your Primary Email</label>
+                        <input type="email" required id="email" name="email" class="seller-input-phone" value="{{.Email}}" />
+                        
+                        <div class="seller-heading"><strong>Warehouse Details</strong></div>
+                        <div class="seller-subheading">Address from which product will be provided for shipment</div>
+
+                        <label for="houseArea" class="input-label" class="seller-input-label">Address</label>
+                        <input type="text" required id="houseArea" name="houseArea" class="seller-input-phone" value="{{.HouseArea}}" minlength="10" />
+                        
+                        <label for="pinCode" class="input-label" class="seller-input-label">Pincode</label>
+                        <input type="number" required id="pinCode" name="pinCode" class="seller-input-phone" value="{{.PinCode}}" minlength="6" />
+                        
+                        <label for="city" class="input-label" class="seller-input-label">City</label>
+                        <input type="text" required id="city" name="city" class="seller-input-phone" value="{{.City}}" />
+                        
+                        <label for="state" class="input-label" class="seller-input-label">State</label>
+                        <input type="text" required id="state" name="state" class="seller-input-phone" value="{{.State}}" />
+
+                        <button type="submit" class="seller-button">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        async function fillCityAndStateUsingPinCode(pincode){
+            const response = await fetch(`/pincodes/${pincode}`)
+            const responseData = await response.json()
+
+            if (response.status !== 200){
+                return
+            }
+
+            const cityElement = document.getElementById("city")
+            const stateElement = document.getElementById("state")
+
+            cityElement.value = responseData.city;
+            stateElement.value = responseData.state;
+        }
+
+        document.getElementById("pinCode").addEventListener("keyup", () => {
+            const pincodeElement = document.getElementById("pinCode")
+            const pincode = pincodeElement.value
+
+            if (pincode.length === 6){
+                try{
+                    fillCityAndStateUsingPinCode(pincode)
+                }catch(e){
+                    console.error(e)
+                }
+            }
+        })
+    </script>
+</html>
+{{end}}

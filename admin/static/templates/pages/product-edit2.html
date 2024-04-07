@@ -1,0 +1,443 @@
+{{define "product-edit2"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css" />
+<script src="../../../admin/static/js/product.js"></script>
+<div class="product-edit">
+  
+  <form
+    class="product-edit-container"
+    onsubmit="
+            {{if .new}}
+                createProduct2(event,{{.product}})
+            {{else}}
+                editProduct2(event,{{.product}})
+            {{end}}"
+  >
+    {{if eq .new false}}
+    <div class="product-edit-header justify-elements">
+      <div class="product-edit-header">
+        <a href="/" class="back-button" title="Back">←</a>
+        <div class="product-heading-container">
+          <div class="product-title">{{.product.Name}}</div>
+          {{if gt (len .product.Status) 0}}
+          <div class="product-status">{{.product.Status}}</div>
+          {{end}}
+        </div>
+      </div>
+      <div class="product-edit-header">
+        <button
+          class="heading-action-button btn"
+          onclick="duplicateProduct(event,{{.product.ID}})"
+        >
+          Duplicate
+        </button>
+        <a
+          href="https://roovo.in/product/{{.product.ID}}"
+          class="heading-action-button btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Preview</a
+        >
+      </div>
+    </div>
+    {{end}}
+    <div class="product-container">
+      <div class="product-left-section-container">
+        <section class="product-details-section">
+          <label for="name" class="section-label">Title</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="section-input"
+            value="{{.product.Name}}"
+            placeholder="Product Name"
+            required
+          />
+          <div class="subsection-spacer"></div>
+          <label for="description" class="section-label">Description</label>
+          <textarea
+            multiple
+            id="description"
+            name="description"
+            class="section-input section-textarea"
+            placeholder="Product Description"
+          >
+{{.product.Description}}</textarea
+          >
+        </section>
+
+        <!-- <section class="product-details-section">
+          <div id="gallery" class="gallery">
+            {{range $i, $image := .product.Images}}
+            <div
+              class="media_image_container"
+              draggable="true"
+              ondragstart="drag(event)"
+              ondrop="drop(event)"
+              ondragover="allowDrop(event)"
+            >
+              <img class="media_image" id="{{$i}}" src="{{$image}}" />
+            </div>
+            {{end}}
+          </div>
+          <label class="section-title media-upload" for="images">
+            <div class="media-upload-cta">Add +</div>
+            <div class="media-upload-text">Your product images</div>
+          </label>
+          <input
+            type="file"
+            id="images"
+            multiple
+            class="section-input"
+            accept="image/png, image/jpeg, image/webp"
+            style="display: none"
+          />
+        </section> -->
+
+        <!-- <section class="product-details-section">
+          <div class="section-title">Pricing</div>
+
+          <label class="section-label" for="price">Price</label>
+          <input
+            type="number"
+            class="section-input"
+            id="price_empty"
+            name="price_empty"
+            value="{{.product.Price.SellingPrice}}"
+            placeholder="Selling Price"
+            required
+          />
+
+          <div class="subsection-spacer"></div>
+
+          <label class="section-label" for="mrp">Compare-at price</label>
+          <input
+            type="number"
+            class="section-input"
+            id="mrp_empty"
+            name="mrp_empty"
+            placeholder="MRP"
+            value="{{.product.Price.MRP}}"
+            required
+          />
+
+          <!-- <div class="subsection-spacer"></div> -->
+
+            <!-- <div class="product-edit-header">
+                        <input type="checkbox" class="section-checkbox" id="tax_included" name="tax_included" />
+                        <label class="section-label" for="tax_included">Charge tax on this product</label>
+                    </div> -->
+
+          <!-- <div class="subsection-spacer line"></div>
+
+                    <label class="section-label">Cost per item</label>
+                    <input type="number" class="section-input" required/> -->
+        </section> 
+
+        <!-- <section class="product-details-section">
+          <div class="section-title">Inventory</div>
+
+          <label class="section-label" for="sku"
+            >SKU (Stock Keeping Unit)</label
+          >
+          <input
+            type="text"
+            class="section-input"
+            id="sku"
+            name="sku"
+            value="{{.product.SKU}}"
+            placeholder="SKU"
+            defaultValue
+            required
+          />
+
+          <div class="subsection-spacer"></div>
+
+          <label class="section-label" for="barcode"
+            >Barcode (ISBN, UPC, GTIN, etc.)</label
+          >
+          <input
+            type="text"
+            class="section-input"
+            id="barcode"
+            name="barcode"
+            value="{{.product.Barcode}}"
+            placeholder="ISBN"
+            required
+          />
+
+          <div class="subsection-spacer"></div>
+
+          <div class="product-edit-header">
+            <input
+              type="checkbox"
+              class="section-checkbox"
+              for="track_quantity"
+              checked="true"
+            />
+            <label
+              class="section-label"
+              id="track_quantity"
+              name="track_quantity"
+              >Track quantity</label
+            >
+          </div>
+
+         <div class="subsection-spacer"></div>
+
+                    <div class="product-edit-header">
+                        <input type="checkbox" class="section-checkbox" for="continue_selling" />
+                        <label class="section-label" id="continue_selling" name="continue_selling">Continue selling when out of stock</label>
+                    </div> -->
+<!-- 
+          <div class="subsection-spacer"></div>
+
+          <label class="section-label" for="quantity">Quantity</label>
+          <input
+            type="number"
+            class="section-input"
+            id="quantity"
+            name="quantity"
+            value="{{.product.Quantity}}"
+            placeholder="Product Quantity (14)"
+            required
+          />
+
+          <div class="subsection-spacer"></div>
+
+          <label class="section-label" for="location">Location</label>
+          <input
+            type="text"
+            class="section-input"
+            placeholder="Your location"
+            value="{{.product.Location}}"
+            id="location"
+            name="location"
+          />
+        </section>  -->
+        <section class="product-details-section">
+          <div class="section-title">Attributes</div>
+          <div class="attribute-cover">
+            <div id="attribute-list">
+            {{range $idx,$attribute := .product.Attributes}}
+              <div class="attribute-item">
+                <label class="section-label">Option Name</label>
+                <input type="text" class="section-input" value="{{$attribute.Name}}" oninput="optionNameChange(event,{{$idx}})"/>
+                <label class="section-label">Option Values</label>
+                <div id="attribute-options_{{$idx}}">
+                  {{range $index,$option := $attribute.Options}}
+                  <div class="attribute-option-item">
+                    <input class="section-input option-input" value="{{$option}}" oninput="optionValueChange(event,{{$idx}},{{$index}})"/>
+                  </div>  
+                  {{end}}
+                </div>
+                <button class ="add-option" onclick="addAttributeValue(event,{{$idx}})">
+                  + Add Option
+                </button>
+              </div>
+            {{end}}
+            </div>
+            <button class="add-attribute" onclick="addAttributeItem(event)">
+              + Add Attribute
+            </button>
+          </div>
+        </section>
+
+        <section class="product-details-section">
+          <div class="section-title">Variants</div>
+          <div class="variants-section">
+          <div class="variant-header-cover">
+            <div class="variant-header">
+              <p></p>
+              <div class="images">Images</div>
+              <div>Price</div>
+              <div>MRP</div>
+              <div>Stock</div>
+              <div>SKU</div>
+              <div>Barcode</div>
+              <div>Weight (in Kgs)</div>
+              <div>Length (in cms)</div>
+              <div>Breadth (in cms)</div>
+              <div>Height (in cms)</div>
+            </div>
+            </div>
+            <div id="variant-cover">
+            </div>
+          </div>
+        </section>
+
+        <!-- <section class="product-details-section">
+          <div class="section-title">Shipping</div>
+
+          <div class="product-edit-header">
+            <input
+              type="checkbox"
+              class="section-checkbox"
+              id="physical_product"
+              name="physical_product"
+            />
+            <label class="section-label" for="physical_product">Physical Product</label>
+          </div>
+
+          <div id="shipping_weight" style="display: none">
+            <div class="subsection-spacer line"></div>
+
+            <label class="section-label" for="weight_quantity"
+              >Shipping weight</label
+            ><br />
+            <span class="subsection-spacer">
+              <input
+                type="number"
+                class="section-input section-small"
+                id="weight_quantity"
+                name="weight_quantity"
+                min="0"
+                step="1"
+                placeholder="e.g., 1"
+              />
+              <select
+                class="section-input section-select"
+                id="weight_unit"
+                for="weight_unit"
+              >
+                <option val="lb">lb</option>
+                <option val="oz">oz</option>
+                <option val="kg" selected>kg</option>
+                <option val="g">g</option>
+              </select>
+            </span>
+          </div>
+        </section> -->
+
+        <!-- <section class="product-details-section">
+                    <span class="section-title">Variants</span>
+                    <div class="subsection-spacer line"></div>
+                    <div id="variants">
+                       <div class="variants_addition_container">
+                        <span>+</span>
+                        <span>Add another option</span>
+                       </div>
+                    </div>
+                </section> -->
+
+        <section class="product-details-section">
+          <span class="section-title-button">
+            <span class="section-title">Specifications</span>
+            <button class="btn" onclick="addSpecification(event)">Add +</button>
+          </span>
+          <div id="specifications">
+            {{range $specification := .product.Specifications}}
+            <span id="specifications_{{.Key}}" class="row-padder">
+              <input
+                type="text"
+                class="section-input"
+                placeholder="Height"
+                value="{{.Key}}"
+              />
+              <input
+                type="text"
+                class="section-input"
+                placeholder="1m"
+                value="{{.Value}}"
+              />
+            </span>
+            {{end}}
+          </div>
+        </section>
+      </div>
+      <div class="product-right-section-container">
+        <section class="product-details-section">
+          <label class="section-title" for="status">Product Status</label>
+          <select
+            class="section-input section-select"
+            id="status"
+            name="status"
+          >
+            {{range $productStatus := .productStatusList}} {{if eq
+            $.product.Status .}}
+            <option selected value="{{.}}">{{.}}</option>
+            {{else}}
+            <option value="{{.}}">{{.}}</option>
+            {{end}} {{end}}
+          </select>
+        </section>
+        <section class="product-details-section">
+          <div class="section-title">Product Organization</div>
+
+          <label class="section-label" for="category">Product Category</label>
+          <select
+            class="section-input section-select"
+            id="category"
+            name="category"
+          >
+            {{range $categoryItem := .categoryList}} {{if eq $.category.ID
+            $categoryItem.ID}}
+            <option selected value="{{.ID}}">{{.Name}}</option>
+            {{else}}
+            <option value="{{.ID}}">{{.Name}}</option>
+            {{end}} {{end}}
+          </select>
+
+          <div class="subsection-spacer"></div>
+          <input
+            type="hidden"
+            class="section-input"
+            id="sellerID"
+            name="sellerID"
+            value="{{.seller.ID}}"
+          />
+          <label class="section-label" for="category">Product Brand</label>
+          <select
+            class="section-input section-select"
+            id="brandID"
+            name="brandID"
+          >
+            {{range $brand := .brandList}} {{if eq $.brand.ID $brand.ID}}
+            <option selected value="{{.ID}}">{{.Name}}</option>
+            {{else}}
+            <option value="{{.ID}}">{{.Name}}</option>
+            {{end}} {{end}}
+          </select>
+          <div class="subsection-spacer line"></div>
+          <label class="section-label" for="product_type">Product type</label>
+          <input
+            type="text"
+            class="section-input"
+            placeholder="e.g., T-shirt"
+            id="productType"
+            name="productType"
+            value="{{.product.ProductType}}"
+            required
+          />
+        </section>
+      </div>
+    </div>
+    <div class="subsection-spacer line"></div>
+    <div class="product-edit-header justify-elements">
+      {{if eq .new false}}
+      <span>
+        <!-- <button class="btn">Archive Product</button> -->
+        <button
+          class="btn danger-btn"
+          onclick="deleteProduct(event,{{.product.ID}})"
+        >
+          Delete Product
+        </button>
+      </span>
+      {{end}}
+      <button type="submit" class="btn primary-btn">
+        {{if .new}} Create {{else}} Save {{end}}
+      </button>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    //ShippingCheckBoxHandling();
+    setAttributes({{.product.Attributes}},{{.variants}});
+  });
+  // document.getElementById("images").addEventListener("change", function (e) {
+  //   PreviewMultipleImages(e.target);
+  // });
+</script>
+{{end}}

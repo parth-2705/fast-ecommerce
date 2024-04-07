@@ -1,0 +1,129 @@
+@font-face {   
+    font-family: "Manrope";   
+    src: url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800");
+    display: block;
+    font-display: swap;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+body{
+    display:flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    width:100vw;
+    height:100vh;
+    overflow:scroll;
+    margin:0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    background-color: #F6F6F7;
+}
+
+button,a,p{
+    outline: none;
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color:inherit;
+}
+
+a:visited{
+    color: inherit;
+    text-decoration: none;
+}
+
+.content-container{
+    display:flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+.header-container{
+    padding: 1em;
+    box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.header-container-image{
+    height: 30px;
+}
+
+.sidebar-container{
+    width: 16%;
+    border-right: 1px solid #e1e1e1;
+    padding:1em 0em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.sidebar-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5em;
+    
+    padding:0.5em 1em;
+    cursor: pointer;
+    color: #000000;
+}
+
+.sidebar-item:hover{
+    background-color: #F1F2F3;
+}
+
+.sidebar-svg-icon{
+    fill: #008060;
+    width: 20px;
+    height: 20px;
+}
+
+.btn{
+    padding: 0.75em 1em;
+    width: fit-content;
+    border-radius: 4px;
+    color: black;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: white;
+    white-space: nowrap;
+}
+
+.primary-btn{
+    background-color:#008060;
+    color: white;
+}
+
+.white-bg{
+    background-color: #ffffff;
+}
+
+.danger-btn{
+    border:1px solid #d82c0d;
+    color: #d82c0d;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset;
+}
+
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 50px white inset;
+}

@@ -1,0 +1,56 @@
+{{define "category-edit"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css"/>
+<script src="../../../admin/static/js/categories.js"></script>
+<div class="product-edit">
+    <div class="product-edit-container">
+        <div class="product-edit-header justify-elements">
+            <div class="product-edit-header">
+                <div class="back-button" title="Back">←</div>
+                <div class="product-heading-container">
+                    <div class="product-title">
+                        {{if .new}}
+                            Create Category
+                        {{else}}
+                            {{.category.Name}}
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form onsubmit="
+        {{if .new}}
+            createCategory(event)
+        {{else}}
+            updateCategory(event,{{.category.ID}})
+        {{end}}
+        ">
+            <div class="product-container">   
+                <div class="product-left-section-container">
+                    <section class="product-details-section">
+                        <label class="section-label">Name</label>
+                        <input type="text" class="section-input" name="name" id="name" value="{{.category.Name}}" placeholder="Enter name of the category" required />
+                        {{if .new}}{{else}}<input type="hidden" class="section-input" name="id" id="id" value="{{.category.ID}}" />{{end}}
+                        <div class="subsection-spacer"></div>
+                        <label class="section-label">Description</label>
+                        <textarea multiple class="section-input section-textarea" id="description" name="description"  placeholder="Description of the Category">{{.category.Description}}</textarea>
+                    </section>
+                </div>
+                <div class="product-right-section-container">
+                    <section class="product-details-section">
+                        <div class="section-title">Category Image</div>
+                        <input type="url" class="section-input" name="image" id="image" value="{{.category.Image}}" placeholder="Enter Image URL"/>
+                    </section>
+                </div>
+            </div>
+            <div class="subsection-spacer line"></div>
+            <div class="product-edit-header justify-elements">
+                <span>
+                    {{if .new}}{{else}}<button class="btn">Archive Category</button>
+                    <button class="btn danger-btn" onclick="deleteCategory(event,{{.category.ID}})">Delete Category</button>{{end}}
+                </span>
+                <button class="btn primary-btn" type="submit">{{if .new}}Create{{else}}Save{{end}}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{{end}}

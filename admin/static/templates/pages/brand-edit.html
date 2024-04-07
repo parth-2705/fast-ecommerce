@@ -1,0 +1,64 @@
+{{define "brand-edit"}}
+<link rel="stylesheet" href="../../../admin/static/styles/product-edit.css"/>
+<script src="../../../admin/static/js/brands.js"></script>
+<div class="product-edit">
+    <div class="product-edit-container">
+        <div class="product-edit-header justify-elements">
+            <div class="product-edit-header">
+                <a class="back-button" title="Back" href="/brands">←</a>
+                <div class="product-heading-container">
+                    <div class="product-title">
+                        {{if .new}}
+                            Create Brand
+                        {{else}}
+                            {{.brand.Name}}
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form onsubmit="
+        {{if .new}}
+            createBrand(event)
+        {{else}}
+            updateBrand(event,{{.brand.ID}})
+        {{end}}
+        ">
+            <div class="product-container">   
+                <div class="product-left-section-container">
+                    <section class="product-details-section">
+                        <label class="section-label">Name</label>
+                        <input type="text" class="section-input" name="name" id="name" value="{{.brand.Name}}" placeholder="Enter name of the brand" required />
+                        {{if .new}}{{else}}<input type="hidden" class="section-input" name="id" id="id" value="{{.brand.ID}}" />{{end}}
+                        <div class="subsection-spacer"></div>
+                        <label class="section-label">Description</label>
+                        <textarea multiple class="section-input section-textarea" id="description" name="description"  placeholder="Description of the Brand">{{.brand.Description}}</textarea>
+                    </section>
+                </div>
+                <div class="product-right-section-container">
+                    <section class="product-details-section">
+                        <div class="section-title">Brand Logo</div>
+                        <input type="url" class="section-input" name="logo" id="logo" value="{{.brand.Logo}}" placeholder="Enter Logo URL"/>
+                    </section>
+                    <section class="product-details-section">
+                        <div class="section-title">Brand Features</div>
+                        <input type="text" class="section-input" id="feature_0" {{if eq .new false}}{{if gt (len .brand.Features) 0}} value="{{(index .brand.Features 0)}}" {{end}}{{end}} placeholder="Enter brand feature" style="margin-top:0.5em;"/>
+                        <input type="text" class="section-input" id="feature_1" {{if eq .new false}}{{if gt (len .brand.Features) 1}} value="{{(index .brand.Features 1)}}" {{end}}{{end}} placeholder="Enter brand feature" style="margin-top:0.5em;"/>
+                        <input type="text" class="section-input" id="feature_2" {{if eq .new false}}{{if gt (len .brand.Features) 2}} value="{{(index .brand.Features 2)}}" {{end}}{{end}} placeholder="Enter brand feature" style="margin-top:0.5em;"/>
+                    </section>
+                </div>
+            </div>
+            <div class="subsection-spacer line"></div>
+            <div class="product-edit-header justify-elements">
+                <span>
+                    {{if eq .new false}}
+                    <!-- <button class="btn">Archive Brand</button> -->
+                    <button class="btn danger-btn" onclick="deleteBrand(event,{{.brand.ID}})">Delete Brand</button>
+                    {{end}}
+                </span>
+                <button class="btn primary-btn" type="submit">{{if .new}}Create{{else}}Save{{end}}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{{end}}

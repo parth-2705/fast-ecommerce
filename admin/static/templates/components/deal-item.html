@@ -1,0 +1,12 @@
+{{define "dealItem"}}
+    <a class="list-item" href="/deal/{{.ID}}">
+        <div class="info-medium">{{.ID}}</div>
+        <div class="info-medium">{{.StartsAt}}</div>
+        <div class="info-medium">{{.EndsAt}}</div>
+        <div class="info-medium">{{.IsTeamDeal}}</div>
+        <div class="info-medium">{{.Active}}</div>
+        <div class="info-medium">{{.Quantity}}</div>
+        <div class="info-medium">{{.DealsAvailed}}</div>
+        <div class="info-medium">{{.TeamCapacity}}</div>
+    </a>
+{{end}}

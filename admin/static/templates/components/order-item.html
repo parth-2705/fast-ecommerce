@@ -1,0 +1,10 @@
+{{define "orderItem"}}
+    <a class="list-item" href="/order/{{.id}}">
+        <div class="info-medium">{{.id}}</div>
+        <div class="info-medium">{{.createdAt}}</div>
+        <div class="info-medium">{{.userId}}</div>
+        <div class="info-small">₹ {{.product.price.sellingPrice}}</div>
+        <div class="info-medium">{{.paymentStatus}}</div>
+        <div class="info-medium">{{.fulfillmentStatus}}</div>
+    </a>
+{{end}}

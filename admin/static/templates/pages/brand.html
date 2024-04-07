@@ -1,0 +1,22 @@
+{{define "brand"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css"/>
+<div class="product-container">
+    <div class="heading-container">
+        <div class="heading">Brands</div>
+        <a href="/brand/new"><button class="btn primary-btn">+ Add</button></a>
+    </div>
+    <div class="product-content">
+        <div class="product-header">
+            <div class="product-thumbnail-header">
+            </div>
+            <div class="info-medium">Name</div>
+            <div class="info-large">Description</div>
+        </div>
+        <div class="product-list">
+            {{range $brand := .brands}}
+                {{template "brandItem" $brand}}
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}

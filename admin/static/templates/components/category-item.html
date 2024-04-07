@@ -1,0 +1,9 @@
+{{define "categoryItem"}}
+    <a class="list-item" href="/category/{{.id}}">
+        <div class="category-thumbnail">
+            <img src="{{.image}}"/>
+        </div>
+        <div class="info-large">{{.name}}</div>
+        <div class="info-large">{{.count}}</div>
+    </a>
+{{end}}

@@ -1,0 +1,25 @@
+{{define "category"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css" />
+
+<div class="product-container">
+    <div class="heading-container">
+        <div class="heading">Categories</div>
+        <a href="/category/new"><button class="btn primary-btn">+ Add</button></a>
+    </div>
+    <div class="product-content">
+        <div class="product-header">
+            <div class="category-thumbnail-header">
+            </div>
+            <div class="info-large">Name</div>
+            <div class="info-large">Products</div>
+        </div>
+        <div class="product-list">
+            {{range $category := .categories}}
+            {{if ne $category.Image ""}}
+                {{template "categoryItem" $category}}
+            {{end}}
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}

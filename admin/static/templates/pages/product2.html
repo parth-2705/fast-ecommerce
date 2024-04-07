@@ -1,0 +1,94 @@
+{{define "product2"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css" />
+<div class="product-container" id="product-container">
+  <div class="heading-container">
+    <div class="heading">Products</div>
+    <a href="/product/new"><button class="btn primary-btn">+ Add</button></a>
+  </div>
+  <div class="product-content">
+    <div class="product-header">
+      <div class="product-thumbnail-header"></div>
+      <div class="info-medium">Name</div>
+      <div class="info-medium">Quantity</div>
+      <div class="info-small">Category</div>
+      <div class="info-small">Brand</div>
+      <div class="info-small">Rating</div>
+    </div>
+    <div class="product-list" id="product-list">
+      {{range $product := .products}} {{template "productItem2" $product}}
+      {{end}}
+    </div>
+    <div class="loader" id="loader">
+      <div class="spinner">
+      </div>
+    </div>
+  </div>
+  <script>
+    console.log("script executing");
+    var pagination = {};
+    var locked = false;
+    var currentPage = 1;
+
+    function makeProductCards(products) {
+      console.log("these are paginated products:", products);
+      var elems = []
+      products.forEach(item => {
+        var elem = document.createElement('a')
+        elem.className = 'list-item'
+        elem.href = '/product/' + item.id
+        elem.innerHTML = `<div class="product-thumbnail">
+                    <img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `' />
+                    </div>
+                    <div class="info-medium">`+ item.name + `</div>
+                    <div class="info-medium">
+                      `+ item.quantity.val + ` in stock 
+                        for `+ item.quantity.number + ` variants
+                    </div>
+                    <div class="info-small">`+ item.category.name + `</div>
+                    <div class="info-small">`+ item.brand.name + `</div>
+                    <div class="info-small">`+ item.rating + `</div>`
+        elems.push(elem);
+      })
+      document.getElementById('product-list').append(...elems)
+    }
+
+    function initPagination(paginater) {
+      console.log('paginater:', paginater)
+      pagination = paginater
+    }
+
+    document.getElementById('product-container').addEventListener('scroll', async (event) => {
+      scrollableBody = document.getElementById('product-container');
+      scrollCheck = (scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight < 100)
+      if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+        return;
+      }
+      if (currentPage < pagination['total_pages']) {
+        locked = true;
+        document.getElementById('loader').style.display = 'flex';
+        // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+        await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}`)
+          .then(async response => {
+            data = await response.json();
+            console.log("this is response:", data);
+            document.getElementById('loader').style.display = 'none';
+            makeProductCards(data["products"]);
+            currentPage = currentPage + 1;
+            locked = false;
+          }).catch(err => {
+            document.getElementById('loader').style.display = 'none';
+            locked = false;
+          })
+      }
+    })
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("loaded");
+      document.getElementById('loader').style.display = 'none';
+      initPagination({{.paginater }})
+    })
+
+  </script>
+</div>
+{{end}}

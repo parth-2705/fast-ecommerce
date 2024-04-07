@@ -1,0 +1,30 @@
+{{define "deal"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css"/>
+<div class="product-container">
+    <div class="heading-container">
+        <div class="heading">Deals</div>
+        <a href="/deal/new"><button class="btn primary-btn">+ Add</button></a>
+    </div>
+    <div class="product-content">
+        <div class="product-header">
+            <div class="product-thumbnail-header">
+            </div>
+            <div class="info-medium">ID</div>
+            <div class="info-medium">StartsAt</div>
+            <div class="info-medium">EndsAt</div>
+            <div class="info-medium">Team Deal</div>
+            <div class="info-medium">Active</div>
+            <div class="info-medium">Quantity</div>
+            <div class="info-medium">Deals Availed</div>
+            <div class="info-medium">TeamCapacity</div>
+        </div>
+        
+        <div class="product-list">
+            {{range $deal := .deals}}
+                {{template "dealItem" $deal}}
+            {{end}}
+        </div>
+        
+    </div>
+</div>
+{{end}}

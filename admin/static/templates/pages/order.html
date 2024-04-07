@@ -1,0 +1,24 @@
+{{define "order"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css"/>
+<div class="product-container">
+    <div class="heading-container">
+        <div class="heading">Orders</div>
+        <a href="/order/new"><button class="btn primary-btn">+ Add</button></a>
+    </div>
+    <div class="product-content">
+        <div class="product-header">
+            <div class="info-medium">Order ID</div>
+            <div class="info-medium">Created At</div>
+            <div class="info-medium">Customer ID</div>
+            <div class="info-small">Total</div>
+            <div class="info-medium">Payment Status</div>
+            <div class="info-medium">Fulfillment Status</div>
+        </div>
+        <div class="product-list">
+            {{range $order := .orders}}
+                {{template "orderItem" $order}}
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}

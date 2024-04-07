@@ -1,0 +1,31 @@
+{{define "product"}}
+<link rel="stylesheet" href="../../../admin/static/styles/list.css"/>
+<div class="product-container">
+    <div class="heading-container">
+        <div class="heading">Products</div>
+        {{if gt (len .brands) 0}}
+            <a href="/product/new"><button class="btn primary-btn">+ Add</button></a>
+        {{else}}    
+            <a href="/brand/new"><button class="btn primary-btn" title="Create your own brand to get started">Get Started</button></a>
+        {{end}}
+    </div>
+    <div class="product-content">
+        <div class="product-header">
+            <div class="product-thumbnail-header">
+                
+            </div>
+            <div class="info-medium">Name</div>
+            <div class="info-small">Status</div>
+            <div class="info-medium">Price</div>
+            <div class="info-small">Quantity</div>
+            <div class="info-small">Category</div>
+            <div class="info-small">Brand</div>
+        </div>
+        <div class="product-list">
+            {{range $product := .products}}
+                {{template "productItem" $product}}
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}
