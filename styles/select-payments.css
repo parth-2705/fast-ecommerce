@@ -1,0 +1,428 @@
+.scrollableBody {
+    padding: 10px 0px;
+    color: #282828;
+    font-weight: 500;
+}
+
+.savedCards {
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.payment-icon-container {
+    height: 40px;
+    width: 40px;
+    min-height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 1);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.payment-provider>img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 0px;
+}
+
+.card {
+    align-items: center;
+    padding: 10px 10px;
+    gap: 20px;
+
+    background: #FAFAFA;
+    border: 1px solid #F1F1F1;
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cardOpen {
+    align-items: flex-start;
+}
+
+.cardOpen>input {
+    margin-top: 10px !important;
+}
+
+.card>img,
+.card>input {
+    width: 45px;
+}
+
+.card>input {
+    width: 20px !important;
+    height: 20px !important;
+    accent-color: #ed2f51;
+}
+
+.endIcon {
+    width: 15px !important;
+}
+
+.cardDetails {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+
+.cardDetails>h6 {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;    
+    color: #282828;
+}
+
+.cardDetails>span {
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 15px;
+
+    padding: 2px 4px;
+
+    color: #83808B;
+
+    background: #F2F2F2;
+    border-radius: 4px;
+}
+
+.cardDetails p {
+    font-size: 12px;
+    color: #83808B;
+    font-weight: 300;
+    margin-top: 5px;
+}
+
+.cvvBox {
+    display: none;
+    padding-top: 15px;
+    gap: 20px
+}
+
+.cvvBox>input {
+    width: 80px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(242, 242, 253, 1)
+}
+
+.cvvBox>button {
+    width: 80px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.cvv-btn {
+    width: calc(100% - 100px);
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* #newCard>input {
+    display: none;
+} */
+
+.cvvVisible {
+    display: flex;
+}
+
+.CODBox {
+    display: none;
+    margin-top: 15px;
+}
+
+.CODBox h5 {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.openCODBox {
+    display: block;
+}
+
+.newCardOpen {
+    height: 400px
+}
+
+.COD-popup {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 300;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.unhide {
+    display: block;
+}
+
+.COD-popup-card {
+    /* height: 80%; */
+    width: 100%;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.COD-popup-card>h5 {
+
+    font-size: 16px;
+    border-bottom: solid 2px #f2f2fd;
+}
+
+.popup-body>h6 {
+    font-size: 14px;
+    margin: 5px 0 10px;
+    font-weight: 600;
+}
+
+.popup-body p {
+    font-size: 13px;
+}
+
+.product-details {
+    display: flex;
+    justify-content: stretch;
+    gap: 20px;
+}
+
+.product-details>img {
+    height: 80px;
+    aspect-ratio: 1/1;
+    border: 1px solid rgba(246, 246, 246, 1)
+}
+
+.product-details>.text {
+    width: calc(100% - 100px);
+}
+
+.timerBarWrapper {
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+    align-items: center;
+}
+
+#timerBarOuter {
+    width: 100%;
+    height: 8px;
+    background: rgba(245, 245, 245, 1);
+    border-radius: 3em;
+}
+
+#timerBarInner {
+    height: 100%;
+    width: 100%;
+    background: rgba(37, 211, 102, 1);
+    border-radius: 3em;
+}
+
+.brandname {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.productname {
+    color: #83808B;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dealprice,
+.discount,
+.mrp {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.dealprice {
+    font-size: 18px !important;
+}
+
+.mrp {
+    color: #B2B0BE;
+}
+
+.discount {
+    color: #198989
+}
+
+.cancelText {
+    color: #788188;
+    font-size: 12px !important;
+    font-weight: 200;
+}
+
+@media only screen and (max-width: 420px) {
+    .COD-popup {
+        position: fixed;
+    }
+
+    .COD-popup-card {
+        position: fixed;
+    }
+}
+
+.right-arrow-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.payment-providers {
+    display: flex;
+    gap: -4px;
+}
+
+.payment-provider {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    background-color: #FAFAFA;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-right: -7px;
+    padding:3px;
+
+    border: 1px solid #F1F1F1;
+}
+
+.saved-card-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.saved-card-info>span {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.section {
+    padding: 20px 0px;
+}
+
+.section-heading {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    color: #83808B;
+
+    padding: 5px 0px;
+}
+
+.white-background {
+    background-color: white;
+    position: relative
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-hide {
+    display: none;
+}
+
+.spinner {
+    margin: auto;
+    width: 56px;
+    height: 56px;
+    /* display: none; */
+    border: 4.5px solid #0000;
+    border-radius: 50%;
+    border-color: #dbdcef #0000;
+    animation: spinner-e04l1k 1s infinite linear;
+}
+
+.spinner::before,
+.spinner::after {
+    content: "";
+    grid-area: 1/1;
+    margin: 2.2px;
+    border: inherit;
+    border-radius: 50%;
+}
+
+.spinner::before {
+    border-color: #ED2F51 #0000;
+    animation: inherit;
+    animation-duration: 0.5s;
+    animation-direction: reverse;
+}
+
+.spinner::after {
+    margin: 8.9px;
+}
+
+@keyframes spinner-e04l1k {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+#CODcard {
+    display: none;
+}
+
+.disabled-card {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.payment-method-discount{
+    background: #DFFFDC;
+    color: #000 !important;
+    padding: 2px 5px;
+    font-weight: 500 !important;
+    justify-self: flex-start;
+}

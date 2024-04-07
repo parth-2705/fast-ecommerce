@@ -1,0 +1,133 @@
+@font-face {
+    font-family: 'Manrope';
+    src: url('/static/fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+    font-display: swap;
+}
+
+.products {
+    padding: 0px 15px;
+    width: 100%;
+}
+
+.topButtons {
+    margin: 20px 0px;
+    height: 40px;
+    padding: 0 15px;
+}
+
+.topButtons button {
+    border: 1px solid rgba(242, 242, 253, 1);
+    box-shadow: 0px 4px 4px 0px rgba(242, 242, 253, 1);
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size:14px;
+    font-weight:500;
+}
+
+.categoryOptions {
+    display: none;
+    max-width: 200px;
+    background-color: #fff;
+    position: relative;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    padding: 10px 0;
+    border: 1px solid #FFFFFF
+}
+
+.categoryOptions a {
+    display: block;
+    padding: 10px;
+    color: #83808b !important;;
+    font-weight: 400;
+    font-size:13px;
+}
+
+.open {
+    display: block
+}
+
+.categoryOptions a:hover,
+.categoryOptions a:active,
+.active {
+    background: #F2F2FD;
+}
+
+.active{
+    color:#282828 !important;
+}
+
+.cards {
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(242, 242, 253, 1)
+}
+
+.card {
+    /* width: 33.33%; */
+    min-width: 30%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    flex-direction: row;
+    padding: 5px;
+    border-right: 1px solid rgba(242, 242, 253, 1);
+}
+
+.card:last-of-type {
+    border: none
+}
+
+.card>img {
+    height: 20px;
+}
+
+.card>p {
+    text-align: center;
+    font-size: 12px;
+    color: #000;
+    font-weight: 500;
+    max-width: 100px;
+}
+
+.banner {
+    background-color: #D9D9D9;
+    width: 100%;
+    aspect-ratio: 2/1;
+    margin: 10px 0;
+}
+
+.topOffers {
+    margin: 15px 0;
+    display: flex;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topOffers > p{
+    font-weight: 600;
+    font-size: 18px;
+    color: #282828;
+}
+
+.ratings {
+    display: flex;
+    align-items: center;
+    margin: 5px 0
+}
+
+.ratings>img {
+    height: 15px;
+}
+
+.ratings>p {
+    font-size: 12px;
+    color: rgba(100, 96, 125, 0.5);
+}

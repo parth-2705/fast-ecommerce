@@ -1,0 +1,105 @@
+
+.outer-logo {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    width: 12vw;
+    cursor: pointer;
+}
+
+.scroll-section {
+    position: absolute;
+    left: calc(50% - 515px);
+    top: 150px;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.scroll-text {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    text-align: center;
+    width: 100%;
+    padding: 0 60px;
+}
+
+.outer-arrow {
+    height: 175px;
+}
+
+.outer-navbar,
+.outer-navbar p {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 15px;
+    color: #282828;
+    margin: 0;
+}
+
+.outer-navbar {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 20px;
+    padding-top: 10px;
+    margin-top: 15px;
+    border-top: 1px solid #E2E2E2;
+    gap: 10px;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 40px);
+}
+
+.upper-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.lower-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.coupled {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.outer-navbar a:hover {
+    text-decoration: underline !important;
+}
+
+
+@media only screen and (max-width:2140px){
+}
+
+@media only screen and (max-width: 1024px) {
+    .outer-navbar {
+        display: none;
+    }
+
+    .scroll-section {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .outer-logo {
+        display: none;
+    }
+}
+
+.position-relative {
+    position: relative
+}

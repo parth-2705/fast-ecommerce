@@ -1,0 +1,136 @@
+.referral-header{
+    display:flex;
+    flex-direction: row;
+    font-size: 14px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2em 0 1em 1em;
+    background: #83808B;
+    color: white;
+    gap: 0.5em;
+}
+
+.referral-heading-container{
+    margin: 2em;
+}
+
+.referral-heading-text{
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 32px;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: #282828;
+    padding-bottom: 0.25em;
+}
+
+.referral-heading-sub-text{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: #83808B;
+}
+
+.referral-body-container{
+    margin: 0em 2em;
+}
+
+.referral-body-sub-container{
+    display:flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap:0.5em;
+    margin-bottom:2em;
+}
+
+.referral-body-sub-text{
+    display:flex;
+    flex-direction: row;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap:0.5em;
+}
+
+.sub-text-highlight{
+    background: #FFFAF4;
+    border: 1px solid #EDE4D8;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 0.5em 0;
+}
+
+.sub-text-highlight-2{
+    background: #F4FFFA;
+    border: 1px solid #DBF0E7;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 0.5em 0;
+}
+
+.align-center{
+    align-items: center !important;
+}
+
+.referral-highlight-text{
+    color: #FF9100;
+    font-weight: 700;
+}
+
+.referral-highlight-text-2{
+    color: #32BA7C;
+    font-weight: 700;
+}
+
+.referral-normal-text{
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #817566;
+}
+
+.referral-footer{
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    background: #FFFFFF;
+    padding: 0.5em 0 0.6em 0;
+    border-top: 1px solid #F2F2FD;
+}
+
+.referral-btn{
+    gap: 8px;
+    width: 90%;
+    background: #ED2F51;
+    border-radius: 4px;
+    color:white;
+
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    padding: 0.75em 0;
+    margin: 1em auto 0.5em auto;
+
+    border-top: 1px solid #F2F2FD;
+}
+
+.referral-btn > img {
+    transform: rotateY(180deg);
+}

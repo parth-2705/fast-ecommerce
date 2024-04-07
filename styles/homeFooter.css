@@ -1,0 +1,36 @@
+.footer {
+    background-color: #fff;
+    box-shadow: 4px 0px 4px 0px rgba(242, 242, 253, 1);
+    display: flex;
+    justify-content: center;
+    padding:10px 0;
+}
+
+.footerButton {
+    background-color: #fff;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    border-right: solid 1px #E5E5E5;
+    padding: 10px 0px 5px;
+}
+
+.footerButton > p{
+    color:#282828 !important;
+}
+
+.footerButton:last-of-type {
+    border-right: none;
+}
+
+.footerButton>img {
+    height: 20px
+}
+
+.activeFooter {
+    color: #ED2F51 !important;
+    font-weight: 600;
+}

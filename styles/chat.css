@@ -1,0 +1,235 @@
+.left-header{
+    gap: 0.5em;
+    padding: 2em 2em 1.5em;
+    justify-content: flex-start;
+}
+
+.footer-cover{
+    width:90%;
+    margin:0 auto;
+    border-top: 1px solid #e5e5e5;
+    padding:1.5em 0 1em;
+}
+
+.footer-content{
+    border-radius:40px;
+    border: 1px solid #ED2F51;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:0.5em 0;
+    cursor:pointer;
+    width:100%;
+}
+
+.main-section{
+    display:flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+    gap:0.25em;
+    margin-bottom:0.125em;
+}
+
+.subtitle{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #83808B;
+}
+
+.empty-area{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:0.375em;
+    width:75%;
+    height:100%;
+    margin:0 auto;
+}
+
+.empty-area > h2{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    text-align: center;
+    color: #282828;
+}
+
+.empty-area > p{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    text-align: center;
+    color: #83808B;
+}
+
+.message-footer{
+    display:flex;
+    gap:1em;
+    padding:1em;
+}
+
+.message-input{
+    flex:8;
+    padding:1em;
+    border: 1px solid #E5E5EA;
+    border-radius: 4px;
+    outline:none;
+}
+
+.attach{
+    flex:1;
+    padding:1em 0.75em;
+    border: 1px solid #282828;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+}
+
+#file-number{
+    display:none;
+    position:absolute;
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 10px;
+    background-color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #282828;
+    padding: 4px;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+}
+
+.send-message{
+    flex:1;
+    padding:1em;
+    background: #ED2F51;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#message-body{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap:1em;
+    padding:1em 2em;
+}
+
+.user-message .blue-content{
+    max-width:100%;
+    padding:1em;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: left;
+    border: 1px solid #E5E5EA;
+    border-radius: 4px;
+}
+
+.user-message .time-content, .response-message .time-content{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: right;
+    color: #83808B;
+    margin: 0.5em 0 0 0;
+}
+
+.response-message .time-content {
+    text-align: left;
+}
+
+.response-message .blue-content{
+    max-width:100%;
+    padding:1em;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: left;
+    border: 1px solid #E5E5EA;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.response-message {
+    margin: 0 auto 0 0;
+    color:#282828;
+}
+
+
+.user-message .blue-content {
+    background-color: #1F93FF;
+    color: white;
+    margin: inherit;
+}
+
+.user-message {
+    margin: 0 0 0 auto;
+    color: white;
+}
+
+.img-content img {
+    width: 100%;
+}
+.loader-container {
+    /* center on page */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* style */
+}
+
+.spinner {
+    
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border: 4.5px solid #0000;
+  border-radius: 50%;
+  border-color: #dbdcef #0000;
+  animation: spinner-e04l1k 1s infinite linear;
+}
+
+.spinner::before,
+.spinner::after {
+  content: "";
+  grid-area: 1/1;
+  margin: 2.2px;
+  border: inherit;
+  border-radius: 50%;
+}
+
+.spinner::before {
+  border-color: #ED2F51 #0000;
+  animation: inherit;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+}
+
+.spinner::after {
+  margin: 8.9px;
+}
+
+@keyframes spinner-e04l1k {
+  100% {
+    transform: rotate(1turn);
+  }
+}

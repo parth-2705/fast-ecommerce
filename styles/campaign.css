@@ -1,0 +1,423 @@
+.internalHeader {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    padding: 1.5em 1.5em 1em;
+    border-bottom: solid 1px #f2f2fd;
+}
+
+.internalHeader img {
+    width: 100px;
+}
+
+.overlayButton {
+    z-index: 100;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.overlayButton>img {
+    width: 75%;
+    height: 75%;
+}
+
+.backButton {
+    top: 20px;
+    left: 20px;
+}
+
+.shareButton {
+    top: 20px;
+    right: 20px;
+}
+
+.campaignCard {
+    background-color: white;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cardShadow {
+    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.12));
+    padding: 0 0 1em 0;
+    cursor: default;
+}
+
+.loginOptions {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.25em;
+}
+
+.loginItem {
+    padding: 0.45em;
+    background: rgba(254, 247, 248, 0.4);
+    border-radius: 6px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.campaignBannerCover {
+    position: relative;
+    width: 100%;
+}
+
+.campaignBanner {
+    width: 100%;
+    margin-bottom: 0.25em;
+}
+
+.campaignContent {
+    padding: 0.5em 1em;
+}
+
+.bandBottom {
+    padding-bottom: 1.5em;
+    border-bottom: 12px solid #F4F3F6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.sectionHeading {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+    margin-top: 0.5em;
+}
+
+.description {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #83808B;
+    margin: 0.25em 0;
+}
+
+.connector {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    text-transform: capitalize;
+    cursor: pointer;
+    color: #ED2F51;
+}
+
+.connectedSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+}
+
+.connectedFirst {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #83808B;
+    gap: 1em;
+}
+
+.description>p {
+    margin: 0;
+}
+
+.spacing {
+    margin: 0.5em 0;
+}
+
+.deliverables {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+}
+
+.deliverableItem {
+    padding: 1em;
+    background: #F9F9F9;
+    border-radius: 4px;
+}
+
+.deliverableHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #83808B;
+}
+
+.deliverableContent {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+    padding-top: 0.5em;
+}
+
+.deliverableContent>ul {
+    padding-left: 0.5em;
+    margin: 0;
+    list-style-position: inside;
+}
+
+.accountHighlight {
+    color: #1877F2;
+}
+
+.brandName {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.04em;
+    color: #282828;
+    text-transform: uppercase;
+}
+
+.brandCaption {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #83808B;
+}
+
+.brandTags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-top: 0.5em;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #282828;
+}
+
+.topRow {
+    display: flex;
+    gap: 0.5em;
+}
+
+.minTag {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5em;
+    padding: 0.5em;
+    background: #FEF7F8;
+    border: 1px solid #FFEFF2;
+    border-radius: 4px;
+}
+
+.minTag>img {
+    width: 20px;
+}
+
+.minTag>p {
+    margin: 0;
+}
+
+.maxTag {
+    padding: 0.5em;
+    background: #FEF7F8;
+    border: 1px solid #FFEFF2;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.maxTag>img {
+    width: 17px;
+}
+
+.maxTag>p {
+    margin: 0;
+}
+
+.campaignCTA {
+    margin: 0.5em 1em;
+    padding-top: 0.25em;
+    border-top: 1px solid #F2F2FD;
+}
+
+.detailsCTA {
+    background: #ED2F51;
+    border-radius: 4px;
+    text-align: center;
+    padding: 0.5em 0;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    width: 100%;
+    margin-top: 0.5em
+}
+
+.campaignFooterContainer {
+    border-top: 1px solid #F2F2FD;
+}
+
+.campaignFooterCTA {
+    display: flex;
+    background: #ED2F51;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    width: 90%;
+    margin: 1em auto;
+    color: white;
+    padding: 0.5em;
+    justify-content: center;
+}
+
+.campaignFooterCTADisabled{
+    background: #cac8c9
+}
+
+.noAccountConnectedPopUpContainer {
+    margin: 0 0.9em;
+    position: absolute;
+    bottom: 4.7em;
+    width: calc(100% - 1.8em);
+}
+
+.noAccountPopUp {
+    height: 3em;
+    background: rgba(40, 40, 40, 0.8);
+    backdrop-filter: blur(2px);
+    border-radius: 4px;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFFFFF;
+}
+
+#noAccountPopUp {
+    display: none;
+    transition: opacity 1s;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.productSelectButton {
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 13.3004px;
+    line-height: 18px;
+    padding: 0.5em 0;
+    color: #ED2F51;
+    border: 1px solid #ED2F51;
+    cursor: pointer;
+}
+
+.productUnselectButton {
+    border: 1px solid #282828;
+    color: #282828;
+}
+
+.tAndCContainer {
+    margin: 1em;
+    padding: 0.5em;
+    height: 60vh;
+    overflow-y: scroll;
+
+    border: 1px solid #C4C4C4;
+    border-radius: 6px;
+
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    /* or 154% */
+
+    letter-spacing: 0.01em;
+
+    /* Dark */
+
+    color: #282828;
+
+}
+
+.addressName{
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 18px;
+    color: #282828;
+}
+
+.addressText{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #83808B;
+}
+
+.campaingApprovedText{
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #282828;
+}
+
+.nextStepsContainer{
+    background: #FEF7F8;
+    border-radius: 6px;
+    padding: 0 1em;
+    margin-top: 1em;
+}
+
+.nextStepsHeading{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #ED2F51;
+}
+
+.nextStepsText{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    color: #282828;
+    padding-bottom: 0.5em;
+}
+
+.productSelected{
+    background: rgba(58, 163, 47, 0.1);
+}
+
+.productSelected > div > div > img{
+    display: block !important;
+}

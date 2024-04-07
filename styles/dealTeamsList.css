@@ -1,0 +1,205 @@
+.team-card {
+    width: 100%;
+    padding: 16px;
+    min-height: 100px;
+    box-shadow: 0px 4px 4px 0px #F2F2FD;
+    background: #FFFFFF;
+    border: 1px solid #F2F2FD;
+    border-radius: 4px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.scrollableBody {
+    flex: 1;
+    overflow: scroll;
+    padding: 20px;
+    height: calc(100% - 60px);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-top h3 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.card-top p {
+    font-size: 14px;
+}
+
+.capacity {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+
+    color: #198989;
+}
+
+.PFPs {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.PFPs>img {
+    height: 40px;
+    width: 40px;
+    background-color: yellow;
+    border-radius: 100%;
+    position: relative;
+}
+
+.PFPs>img:nth-of-type(2) {
+    left: -10px
+}
+
+.PFPs>img:nth-of-type(3) {
+    left: -20px
+}
+
+.PFPs>span{
+    position: relative;
+    left: -15px;
+
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #282828;
+}
+
+.card-bottom {
+    display: flex
+}
+
+.dealHeader{
+    padding: 2.5em 1.2em 1.2em;
+    box-shadow: 0px 4px 4px #F2F2FD;
+}
+
+.back-arrow{
+    width: 24px;
+    height: 24px;
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.icons-spacing{
+    margin-right: 0.35em;
+}
+
+.team-name{
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    line-height: 22px;
+    color: #282828;
+}
+
+.time-left{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0.5em 0.25em;
+}
+
+.team-left-card{
+    min-width: 50%;
+    max-width: 70%;
+}
+
+.team-right-card{
+    max-width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.more-details{
+    cursor: pointer;
+    margin-top: 1em;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    text-decoration-line: underline;
+    color: #ED2F51;
+    margin-right: -0.75em
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 35%;
+}
+
+.no-teams-text{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    text-decoration-line: underline;
+    color: #ff4d6d;
+    cursor: pointer;
+}
+
+.create-your-team{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 19px;
+    color: #ED2F51;
+    padding: 0.5em 0;
+    cursor: pointer;
+}
+
+.buyButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: linear-gradient(91.54deg, #E64360 0%, #ED2F51 100%);
+    font-size: 18px;
+    padding: 15px 20px;
+    font-weight: 700;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cta-icon{
+    padding-right: 0.75em;
+}
+
+.team-buy-cta-container{
+    position: absolute;
+    width: 92%;
+    bottom: 1em;
+}
+
+.container{
+    padding: 1.2em;
+}
+
+.team-name-input{
+    height: 40px;
+    font-size: 18px;
+    margin: 0.5em 0 1em 0;
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #d1d1d1;
+    padding-left: 0.25em;
+}

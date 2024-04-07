@@ -1,0 +1,370 @@
+.header {
+    z-index: 2;
+    display: flex;
+    position: relative;
+    padding: 15px 20px;
+    width: 100%;
+    gap: 1em;
+    align-items: center;
+    justify-content: stretch;
+    background-color: #fff;
+    color: #282828;
+    border-bottom: 2px solid #f2f2fd;
+}
+
+.header>h1 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+}
+
+.header>img {
+    width: 20px;
+    height: 20px;
+}
+
+.summary-section {
+    padding: 1em;
+    background: #FFFFFF;
+    margin-bottom: 0.5em;
+}
+
+.apply-coupon {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    gap: 10px
+}
+
+.apply-coupon>div {
+    width: 100%;
+    margin-bottom: 0em;
+}
+
+.group-deal-text {
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    color: #ED2F51;
+    padding-bottom: 0.5em;
+    text-transform: capitalize;
+}
+
+.product-description-text {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.product-image {
+    width: 96px;
+    height: 96px;
+    border: 1px solid #F6F6F6;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+.product-name-text {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 20px;
+    color: #282828;
+}
+
+.product-description-heading {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+    margin-bottom: 1em;
+}
+
+.product-description-text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #83808B;
+}
+
+.product-deal-price {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    color: #ED2F51;
+}
+
+.product-mrp-price {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #B2B0BE;
+}
+
+.product-deal-off {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    color: #198989;
+}
+
+.price-details-text-13 {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #282828;
+    padding-bottom: 7px;
+}
+
+.price-details-text-14 {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.sticky-bottom-full {
+    position: absolute;
+    width: calc(100% - 2em);
+    bottom: 1em;
+}
+
+.place-order {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+section:last-child {
+    height: 100%;
+}
+
+.group-buy-time-left {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+    color: #282828;
+}
+
+.time-width {
+    width: 62px;
+    white-space: nowrap;
+}
+
+.confetti {
+    width: calc(100% + 2em);
+    background: #DFFFDC;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #282828;
+    padding: 0.5em 0;
+
+    margin-top: 1.5em;
+    margin-left: -1em;
+}
+
+.modal {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 1px;
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.active {
+    display: block;
+}
+
+.active>div {
+    /* display: block !important; */
+    height: fit-content;
+}
+
+.modal-content {
+    background: #FFFFFF;
+    position: absolute;
+    padding: 1em;
+    bottom: 0;
+    width: 100%;
+
+    transition: all 0.5s ease;
+}
+
+.modal-header {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    text-transform: capitalize;
+    color: #282828;
+    /* margin-bottom: 1em; */
+    border-bottom: 1px solid #F2F2FD;
+}
+
+.scrollable-addresses {
+    max-height: 20em;
+    height: fit-content;
+    overflow-y: scroll;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    margin-bottom: 1.5em;
+}
+
+.address-section {
+    border: 1px solid #F2F2FD;
+    border-radius: 4px;
+    padding: 1em 0.75em;
+    cursor: pointer;
+}
+
+.address-section>div>img {
+    /* display: none; */
+}
+
+.address-name {
+    font-weight: 600 !important;
+    font-size: 13px !important;
+}
+
+.address-details {
+    padding-top: 0.5em !important;
+    /* width: 90% !important; */
+    text-align: start;
+}
+
+.selected {
+    border: 1px solid #ED2F51 !important;
+}
+
+.selected>div>img {
+    display: block !important;
+}
+
+.modal-button {
+    width: 100%;
+    border-radius: 4px;
+    padding: 0.75em 0;
+    background: #ED2F51;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.top-border {
+    border-top: 1px solid #E5E5E5;
+}
+
+.place-order-form {
+    display: flex;
+}
+
+.amount-payable-section {
+    flex: 1;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.amount-payable {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.discount-color {
+    color: rgba(58, 163, 47, 1);
+}
+
+.coupon-backdrop {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-coupon {
+    background-color: #fff;
+    width: 80%;
+    z-index: 101;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.modal-coupon>img {
+    width: 60px;
+    height: 60px;
+    margin: 10px
+}
+
+.modal-coupon>p {
+    margin: 5px
+}
+
+.space-bar {
+    height: 20px;
+    width: 100%;
+    border-bottom: solid 1px #F2F2FD;
+}
+
+.modal-coupon>h4 {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+.payment-discount {
+    width: 100%;
+    color: #fff;
+    font-weight: 300;
+    padding: 5px 10px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: center;
+    background-color: #198989;
+}
+
+@media only screen and (max-width: 420px) {
+    .modal-content {
+        position: fixed;
+    }
+}

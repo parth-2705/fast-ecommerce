@@ -1,0 +1,178 @@
+@font-face {
+    font-family: "Manrope";
+    src: url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800");
+    display: block;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Manrope';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #788188;
+}
+
+.reviewHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5em;
+    padding: 2em 2em 1.5em;
+    top: 0;
+    z-index: 200;
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px 0px rgb(242 242 253);
+}
+
+.reviewHeader>img {
+    max-height: 100%;
+}
+
+.reviewHeader>h3 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* gap: 1em; */
+    width: 100%;
+    padding: 0 0 1em;
+    /* padding-top: 0em; */
+    border-bottom: 1px solid #e5e5ed;
+}
+
+.product-thumbnail {
+    width: 20%;
+    overflow: hidden;
+    max-height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-thumbnail>img {
+    width: 100%;
+}
+
+.product-text {
+    width: 75%
+}
+
+.product-text>h2 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.product-text>p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #788188;
+}
+
+.scrollableBody {
+    padding: 2em;
+}
+
+.form-parent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap:1em; */
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75em;
+    border-bottom: 1px solid #e5e5ed;
+    padding: 1em 0.5em;
+    width: 100%;
+}
+
+.input-section>label {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.input-section>input {
+    background: #FFFFFF;
+    border: 1px solid #e5e5ed;
+    border-radius: 2px;
+    color: #64607D;
+    padding: 0.5em 1em;
+    width: 100%;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    outline:none;
+}
+
+.input-section>textarea {
+    background: #FFFFFF;
+    border: 1px solid #e5e5ed;
+    border-radius: 2px;
+    color: #64607D;
+    padding: 10px 15px;
+    width: 100%;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    resize: vertical;
+    min-height: 10em;
+    outline:none;
+}
+
+.input-section>p {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #64607D;
+}
+
+.form-parent section:last-child {
+    border: 0px;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 1em 2em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: white;
+    box-shadow: 4px 0px 4px 2px rgb(242 242 253);
+    ;
+}
+
+.submitButton>button {
+    width: 100%;
+    background: linear-gradient(91.54deg, #E64360 0%, #ED2F51 100%);
+    box-shadow: 0px 4px 4px #F2F2FD;
+    border-radius: 4px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 0.75em 0;
+}
+
+.red-highlight{
+    color:#ED2F51!important;
+}

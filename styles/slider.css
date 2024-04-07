@@ -1,0 +1,247 @@
+/* .slider .slider-item {
+    width: 100%;
+    height: 100%;
+    animation: reveal .5s ease-in-out;
+} */
+
+.slider {
+    width: 100%;
+    position: relative;
+    display: flex;
+    overflow: scroll;
+    align-items: center;
+    gap: 8px;
+    aspect-ratio: 11/10;
+}
+
+.slider-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    aspect-ratio: 1/1;
+    position: relative;
+}
+
+.slider .slider-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #ffffff;
+    /* border-radius: 8px; */
+}
+
+.slider .dots {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dots {
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider .dots li {
+    cursor: pointer;
+    display: inline-block;
+    background: transparent;
+    border: solid rgba(40, 40, 40, 1) 2px;
+    color: #fff;
+    height: 10px;
+    width: 10px;
+    line-height: .5;
+    border-radius: 50%;
+    margin: 2px;
+    text-indent: -9999px;
+    opacity: .5;
+    -webkit-transition: opacity .2s;
+    -o-transition: opacity .2s;
+    transition: opacity .2s;
+}
+
+.dots li {
+    cursor: pointer;
+    display: inline-block;
+    background: transparent;
+    border: solid rgba(40, 40, 40, 1) 2px;
+    color: #fff;
+    height: 10px;
+    width: 10px;
+    line-height: .5;
+    border-radius: 50%;
+    margin: 2px;
+    text-indent: -9999px;
+    opacity: .5;
+    -webkit-transition: opacity .2s;
+    -o-transition: opacity .2s;
+    transition: opacity .2s;
+}
+
+.slider .dots li.active {
+    opacity: 1;
+    background: rgba(40, 40, 40, 1);
+}
+
+.dots li.active {
+    opacity: 1;
+    background: rgba(40, 40, 40, 1);
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+#nextButton {
+    position: absolute;
+    right: 10px;
+}
+
+#prevButton {
+    position: absolute;
+    left: 10px;
+}
+
+.carouselButton {
+    top: calc(50% - 30px);
+    font-size: 40px;
+    color: #fff
+}
+
+.fullscreen-slider {
+    overflow-y: auto;
+    background-color: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hidden-fullscreen {
+    display: none !important;
+}
+
+#small-image-slider {
+    width: calc(100% - 40px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    margin: 0 20px;
+}
+
+.small-image {
+    width: 75px;
+    height: 100px;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.small-image>img {
+    width: 100%;
+}
+
+#big-image {
+    width: 100%;
+    overflow-x: hidden;
+    aspect-ratio: 1/1;
+    margin: 0px auto 16px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+#big-image>.img {
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+#big-image> .img > img, #big-image>.img > video{
+    height: 100%;
+    margin: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.active-full-image {
+    background-color: #F8E9EC;
+    border: solid #ED2F51 1px
+}
+
+#fullscreen-image-number {
+    font-size: 14px;
+    position: absolute;
+    bottom: 148px;
+    right: 16px;
+    padding: 4px 8px;
+    width: 40px;
+    text-align: center;
+    color: #000;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 100;
+}
+
+.centred-wrapper {
+    width: 100%;
+    overflow-y: auto;
+}
+
+#cross {
+    border-radius: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 8px;
+    padding: 8px;
+    right: 16px;
+    z-index: 100;
+}
+
+#cross>img {
+    height: 100%;
+    width: 100%;
+}
+
+.block{
+    display: block !important;
+}
+
+@media only screen and (max-width: 420px) {
+    .fullscreen-slider {
+        padding-bottom: calc(60px) !important;
+    }
+
+    .centred-wrapper {
+        position: fixed;
+        top: 4vh;
+        left: 0;
+    }
+}

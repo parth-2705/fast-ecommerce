@@ -1,0 +1,86 @@
+.filterPage {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 250;
+    justify-content: stretch;
+    background-color: #fff;
+    flex-direction: column;
+}
+
+.filter-body {
+    height: 100%;
+    display: flex;
+    justify-content: stretch;
+}
+
+.filterCTA {
+    width: 100%;
+    padding: 10px !important;
+    font-size: 16px !important;
+}
+
+.footer-filter {
+    justify-content: stretch;
+    gap: 20px;
+    padding: 20px !important;
+}
+
+.filter-sidebar {
+    width: 50%;
+    max-width: 200px;
+    height: 100%;
+    background-color: #FAFAFA;
+    overflow-y: auto
+}
+
+.filter-list {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.filter-sidebar-tile {
+    width: 100%;
+    font-size: 13px;
+    padding: 15px 20px;
+}
+
+.active-category {
+    color: #ED2F51 !important;
+    background-color: #F8E9EC !important;
+}
+
+.filter-list-for-category {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    display: none;
+}
+
+.filter-list-for-category>input {
+    height: 24px;
+    width: 24px;
+    margin: 0 10px 10px 0
+}
+
+.filter-list-for-category>label {
+    font-size: 13px;
+    position: relative;
+    top: -6px;
+}
+
+.visible-options {
+    display: block;
+}
+
+.hidden-filter {
+    display: none;
+}

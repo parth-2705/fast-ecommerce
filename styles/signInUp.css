@@ -1,0 +1,356 @@
+.container {
+    padding: 0px 20px;
+}
+
+.back {
+    padding: 15px 0px 5px;
+}
+
+.page-heading>h2 {
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 30px;
+    color: #282828;
+    /* padding-bottom: 20px; */
+}
+
+.push-padding-bottom {
+    padding-bottom: 20px;
+}
+
+.page-heading-text small {
+    font-weight: 500;
+    color: rgba(131, 128, 139, 1);
+}
+
+.page-sub-heading>h3 {
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(40, 40, 40, 1);
+    /* padding: 10px 0px 0px; */
+}
+
+.mobile-number-input {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 8px 0px;
+}
+
+.mobile-number-box {
+    border: 1px solid #f8e7eb;
+    border-radius: 0.25rem;
+    padding: 10px;
+    background-color: #FFFFFF;
+
+}
+
+.mobile-number {
+    width: 100%;
+}
+
+.country-code {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 16px;
+    color: #8B8082;
+}
+
+.conditions {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(131, 128, 139, 1);
+    padding: 5px 0px;
+}
+
+.conditions p {
+    padding: 5px 0px 10px;
+}
+
+.conditions a {
+    font-weight: 700;
+    color: rgba(237, 47, 81, 1);
+}
+
+ul {
+    list-style-position: inside !important;
+    padding-left: 1.5em;
+}
+
+ul li {
+    padding: 5px 0px;
+}
+
+input[type="tel"]::-webkit-outer-spin-button,
+input[type="tel"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="tel"] {
+    -moz-appearance: textfield;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 1) !important;
+    background-color: #FFFFFF;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 1) !important;
+    background-color: #FFFFFF;
+}
+
+.next-button {
+    padding: 10px 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0px;
+}
+
+.sub-text {
+
+    padding: 5px 0px;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: rgba(131, 128, 139, 1);
+}
+
+.sub-text p {
+    padding: 4px 0px;
+}
+
+.change-number {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.otp-section {
+    padding: 0 0px 30px;
+}
+
+.under-input-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    height: 15px;
+    align-items: flex-start;
+}
+
+.under-input {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.under-input-left {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(131, 128, 139, 1);
+}
+
+.under-input-right {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 16px;
+    color: rgba(237, 47, 81, 1);
+    cursor: pointer;
+}
+
+#incorrect-otp {
+    display: none;
+    color: rgba(225, 42, 42, 1);
+    margin-top: 10px;
+    margin-bottom: -26px;
+}
+
+#unknown-error {
+    display: none;
+}
+
+#invalid-number {
+    display: none;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    cursor: default;
+}
+
+#resent-otp {
+    display: none;
+}
+
+.spinner {
+    margin: auto;
+    width: 56px;
+    height: 56px;
+    display: none;
+    border: 4.5px solid #0000;
+    border-radius: 50%;
+    border-color: #dbdcef #0000;
+    animation: spinner-e04l1k 1s infinite linear;
+}
+
+.spinner::before,
+.spinner::after {
+    content: "";
+    grid-area: 1/1;
+    margin: 2.2px;
+    border: inherit;
+    border-radius: 50%;
+}
+
+.spinner::before {
+    border-color: #ED2F51 #0000;
+    animation: inherit;
+    animation-duration: 0.5s;
+    animation-direction: reverse;
+}
+
+.spinner::after {
+    margin: 8.9px;
+}
+
+@keyframes spinner-e04l1k {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+#partitioned-otp {
+    padding-left: 18px;
+    letter-spacing: 42px;
+    border: 0;
+    background-image: url("/static/media/images/OTP-box.png");
+    /*   background-position: bottom; */
+    background-size: 49px;
+    height: 45px;
+    background-color: transparent;
+    background-repeat: repeat-x;
+    background-position-x: -2px;
+    width: 350px;
+    outline: none;
+    /* caret-color: transparent; */
+}
+
+*::selection {
+    /* background: transparent; */
+    background: #3390FF;
+    color: white;
+}
+
+#divInner {
+    left: 0;
+    position: sticky;
+}
+
+#divOuter {
+    width: 290px;
+    overflow: hidden;
+}
+
+.outer {
+    margin: auto;
+    padding-bottom: 50px;
+    overflow: hidden;
+    width: 290px;
+    position: relative;
+}
+
+.nOTP {
+    display: flex;
+    justify-content: space-between;
+}
+
+#resend-otp {
+    z-index: 1000;
+    color: #ED2F51;
+}
+
+
+#resend-otp:disabled {
+    z-index: 1000;
+    color: rgba(171, 171, 171, 1);
+}
+
+
+#too-many-otp {
+    display: none;
+}
+
+.resend-otp-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.mobile-enter {
+    height: 40px
+}
+
+.otp-input-boxes {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.otp-input {
+    height: 48px;
+    width: 48px;
+    text-align: center;
+}
+
+.continue-button-container {
+    padding-bottom: 20px;
+}
+
+.or {
+    height: 30px;
+    width: 100%;
+    border-bottom: solid 1px #f2f2fd;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.or>p {
+    padding: 5px;
+    background-color: #FAFAFA;
+    position: relative;
+    bottom: -10px;
+    color: #83808B;
+    display: inline-block;
+    margin: auto;
+    font-size: 18px;
+}
+
+.roovo-whatsapp-button {
+    box-shadow: none !important;
+}

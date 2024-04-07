@@ -1,0 +1,108 @@
+.container {
+    /* background-color: aqua; */
+    padding: 2.5em 1.2em 1.2em;
+}
+
+.teamName {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    color: #201254;
+}
+
+.back-arrow {
+    width: 24px;
+    height: 24px;
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.hightlight {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+}
+
+.highlight-key {
+    color: #282828;
+}
+
+.highlight-value {
+    color: #F06161;
+}
+
+.team-header {
+    padding: 0.5em 0 1em 0;
+    border-bottom: 2px solid #F2F2FD;
+}
+
+.createdAt {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #64607D;
+}
+
+.teamPersonImage {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5em;
+    border-radius: 50%;
+}
+
+.teamAdminName {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    color: #282828;
+}
+
+.teamMemberName {
+    color: #64607D;
+}
+
+.teamAdminLabel {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #ED2F51;
+}
+
+.teamPageItemContainer {
+    padding: 1em 0;
+}
+
+.teamMemberHeading {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+}
+
+.showMore {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: #201254;
+    justify-content: flex-end !important;
+    margin-top: -0.5em;
+    gap: 0 !important;
+    cursor: pointer;
+}
+
+@media only screen and (max-width:380px) {
+    .timeRemaining {
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+        padding: 0.5em 0 !important;
+    }
+}

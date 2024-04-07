@@ -1,0 +1,186 @@
+.header {
+    z-index: 2;
+    display: flex;
+    position: relative;
+    padding: 15px 20px;
+    width: 100%;
+    gap: 1em;
+    align-items: center;
+    justify-content: stretch;
+    background-color: #fff;
+    color: #282828;
+    border-bottom:2px solid #f2f2fd;
+}
+
+.header>h1 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+}
+
+.header>img {
+    width: 20px;
+    height: 20px;
+}
+
+.summary-section {
+    padding: 1em;
+    background: #FFFFFF;
+    border-bottom: 1px solid #F2F2FD;
+}
+
+.team-name-text{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    color: #282828;
+}
+
+.team-nudge-text{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #64607D;
+    padding-top: 0.5em;
+}
+
+.section-boundary{
+    padding-top: 1em;
+    border: 1px solid #F2F2FD;
+    border-radius: 4px;
+    margin-bottom: 1em;
+}
+
+.section-content{
+    padding:0em 1em 1em;
+}
+
+.product-bottom-banner{
+    background: rgba(237, 47, 81, 0.25);
+    border-radius: 0px 0px 4px 4px;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+    padding:0.5em 0.5em;
+}
+
+.group-deal-text{
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    color: #ED2F51;
+    padding-bottom:0.5em;
+    text-transform:capitalize;
+}
+
+.product-description-text {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.product-image {
+    width: 96px;
+    height: 96px;
+    border: 1px solid #F6F6F6;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+.product-name-text {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 20px;
+    color: #282828;
+}
+
+.product-description-heading {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+    margin-bottom: 1em;
+}
+
+.product-description-text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #83808B;
+}
+
+.product-deal-price {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    color: #ED2F51;
+}
+
+.product-mrp-price {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #B2B0BE;
+}
+
+.product-deal-off {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    color: #198989;
+}
+
+.team-section-heading{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #282828;
+    padding: 0 0.5em 1em;
+    border-bottom: 1px solid #F2F2FD;
+}
+
+.team-section-nudge{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #282828;
+}
+
+.team-admin-name-text{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    color: #282828;
+}
+
+.team-admin-label-text{
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: #ED2F51;
+}
+
+.group-details-text{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #64607D;
+}
+
+.sticky-bottom-full {
+    position: absolute;
+    width: calc(100% - 2em);
+    bottom: 1em;
+}
+
+.scrollableBody {
+    overflow-y: hidden;
+}
+
+section:last-child {
+    height: 100%;
+}

@@ -1,0 +1,83 @@
+.conversations h6 {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.chat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    justify-content: space-between;
+}
+
+.chat .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.chat img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.chat h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.chat p {
+    font-size: 14px;
+    color: #9b9b9b;
+}
+.chat .time {
+    font-size: 12px;
+    color: #9b9b9b;
+    margin-left: auto;
+}
+.chat .unread {
+    background-color: #FF3742;
+    color: white;
+    padding: 5px;
+    border-radius: 45%;
+    /* height: 20px; */
+    width: 30px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.chat .unread p {
+    margin: 0;
+}
+
+.chat-content {
+    width: 80%;
+}
+
+.chat-content p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+.chat .chat-header {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.chat .unread-count {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #fff;
+}

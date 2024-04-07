@@ -1,0 +1,11 @@
+/* import fonts here */
+/* Manrope is our default font, stored in the static directory in fonts folder */
+@font-face {
+  font-family: 'Manrope';
+  src: url('../fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+  font-display: swap;
+}
+
+body {
+  font-family: 'Manrope', sans-serif !important;
+}

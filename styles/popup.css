@@ -1,0 +1,71 @@
+.popupBG{
+    font-family: 'Manrope';
+    background-color:rgba(0, 0, 0, 0.7);
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index:10;
+}
+
+.popupBody{
+    padding:1.5em 2em;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+    width:90%;
+    margin:0 5%;
+}
+
+#instaPopup{
+    display:none;
+}
+
+.popupHeader{
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 27px;
+    color:#282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.popupContent{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    color:#282828;
+}
+
+.popupContent li{
+    margin:0.75em 0;
+}
+
+.popupContent span{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    margin:0.5em 0;
+    color: #83808B;
+}
+
+.popupCTA{
+    text-align: center;
+    padding:0.5em;
+    width:100%;
+    margin:0;
+    background-color: #ed2f51;
+    color: white;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+}
