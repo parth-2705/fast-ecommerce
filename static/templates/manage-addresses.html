@@ -1,0 +1,89 @@
+{{define "manageAddresses"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/review.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/address.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+    
+    <div class="header">
+        {{template "websiteHeaderWBack" dict "head" "Addresses"}}
+    </div>
+    <div class="scrollableBody">
+        <div class="address-cover">
+            {{if ne .defaultAddress.IsDefault false}}
+                <h2>Default Address</h2>
+                <div class="address-item">
+                    <div class="address-section">
+                        <div class="address-info">
+                            <div class="address-main">
+                            <h3>{{.defaultAddress.Name}}</h3>
+                            </div>
+                            <p>{{.defaultAddress.HouseArea}},{{.defaultAddress.City}},{{.defaultAddress.State}}-{{.defaultAddress.PinCode}}</p>
+                            <p>{{.defaultAddress.Phone}}</p>
+                        </div>
+                        
+                    </div>
+                    <div class="cta-cover">
+                        <a href="/addresses/edit/{{.defaultAddress.ID}}"><button>Edit</button></a>
+                        <button onclick="deleteAddress(event,{{.defaultAddress.ID}})">Delete</button>
+                    </div>
+                </div>
+                {{if ne (len .addresses) 0}}
+                    <h2>Other addresses</h2>
+                {{end}}
+            {{end}}
+            {{range $idx,$address := .addresses}}
+                <div class="address-item">
+                    <div class="address-section">
+                        <div class="address-info">
+                            <div class="address-main">
+                            <h3>{{$address.Name}}</h3>
+                            <button onclick="setDefault(event,{{$address.ID}})">Set As Default</button>
+                            </div>
+                            <p>{{$address.HouseArea}},{{$address.City}},{{$address.State}}-{{$address.PinCode}}</p>
+                            <p>{{$address.Phone}}</p>
+                        </div>
+                    </div>
+                    <div class="cta-cover">
+                        <a href="/addresses/edit/{{$address.ID}}"><button>Edit</button></a>
+                        <button onclick="deleteAddress(event,{{$address.ID}})">Delete</button>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+    </div>
+        
+        <div class="secondarySubmitCover footer">
+            <a href="/addresses/new"><button class="secondaryButton">Add New Address</button></a>
+        </div>
+    </div>
+    {{template "outer-section"}}
+    <script>
+        async function deleteAddress(event, addressID) {
+            event.preventDefault();
+            await fetch("/address?id=" + addressID, { method: "DELETE" }).then(() => {
+                window.location.reload()
+                return;
+            })
+        }
+        async function setDefault(event, addressID) {
+            event.preventDefault();
+            await fetch("/addresses/default?id=" + addressID, { method: "POST" }).then(() => {
+                window.location.reload()
+                return;
+            })
+        }
+    </script>
+</div>
+</body>
+{{template "tracking"}}
+
+</html>
+{{end}}

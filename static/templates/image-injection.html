@@ -1,0 +1,172 @@
+{{define "image-injection"}}
+    <script>
+        document.addEventListener("DOMContentLoaded",()=>{
+            console.log("image injection")
+            
+            try {
+                recentlyViewedCards();
+            } catch (error) {
+                console.error('Recently viewed:',error);
+            }
+
+            try {
+                brandProducts();
+            } catch (error) {
+                console.error('Recently viewed:',error);
+            }
+
+            try {
+                similarProducts();
+            } catch (error) {
+                console.error('Recently viewed:',error);
+            }
+            
+            try {
+                productImages();
+            } catch (error) {
+                console.error('ProductImages:',error);
+
+            }
+            
+            try {
+                couponImg();
+            } catch (error) {
+                console.error('Coupon Image:',error);
+            }
+
+        })
+
+        function couponImg(){
+            var temp=document.getElementById("coupon").children
+            var couponImg=document.createElement("img")
+            couponImg.src="/static/assets/images/coupon10.svg"
+            temp=[couponImg,...temp]
+            document.getElementById("coupon").replaceChildren(...temp)
+        }
+    
+        function recentlyViewedCards(){
+            var recentlyViewed={{.recentlyViewedProducts}}
+            var tempRecently=recentlyViewed.map(item=>{
+                var tempElem=document.createElement("div")
+                tempElem.className="product-horizontal"
+                tempElem.innerHTML=`<a href="/product/`+item.id+`">
+                                <img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/` + item.thumbnail+`' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>`+item.brand.name+`</span></h4>
+                                    <h4>`+item.name+`</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            <h3>-`+Math.round(item.price.discountPercentage)+`%</h3>
+                                            <h2>₹`+item.price.sellingPrice+`</h2>
+                                        </div>
+                                        <h4><del>₹`+item.price.mrp+`</del></h4>
+                                    </div>
+                                </div>
+                            </a>`
+                return tempElem
+            })
+            document.getElementById("recently-viewed-products-list").replaceChildren(...tempRecently)
+        }
+
+        function brandProducts(){
+            var brandProducts={{.brandProducts}}
+            var tempBrand=brandProducts.map(item=>{
+                var tempElem=document.createElement("div")
+                tempElem.className="product-horizontal"
+                tempElem.innerHTML=`<a href="/product/`+item.id+`">
+                                <img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/` + item.thumbnail+`' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>`+item.brand.name+`</span></h4>
+                                    <h4>`+item.name+`</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            <h3>-`+Math.round(item.price.discountPercentage)+`%</h3>
+                                            <h2>₹`+item.price.sellingPrice+`</h2>
+                                        </div>
+                                        <h4><del>₹`+item.price.mrp+`</del></h4>
+                                    </div>
+                                </div>
+                            </a>`
+                return tempElem
+            })
+            document.getElementById("brand-products-list").replaceChildren(...tempBrand)
+        }
+
+        function similarProducts(){
+            var similarProductList={{.similarProducts}}
+            var tempSimilar=similarProductList.map(item=>{
+                var tempElem=document.createElement("a")
+                tempElem.href=`/product/`+item.id
+                tempElem.className="productUrl"
+                tempElem.innerHTML=`<div class="product">
+                                <img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/` + item.thumbnail+`' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>`+item.brand.name+`</span></h4>
+                                    <h4>`+item.name+`</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            <h3>-`+Math.round(item.price.discountPercentage)+`%</h3>
+                                            <h2>₹`+item.price.sellingPrice+`</h2>
+                                        </div>
+                                        <h4><del>₹`+item.price.mrp+`</del></h4>
+                                    </div>
+                                </div></div>`
+                return tempElem
+            })
+            document.getElementById("similarProductList").replaceChildren(...tempSimilar)
+        }
+
+        function productImages(){
+            var imageArr={{.product.Media}}
+            var descImages=[]
+            var bigSliderImages=[]
+            var smallSliderImages=[]
+            console.log("in loop:",imageArr)
+            imageArr.map((item,index)=>{
+                var descElem
+                if (item.type == "Image"){
+                    descElem = document.createElement("img")
+                    descElem.src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/' + item.id
+                } else{
+                    descElem = document.createElement("div")
+                    const inner = `<img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/${item.thumbnailID}' style="width: 100%" />
+                       <img src='/static/assets/images/play.svg' class="play-button"/>`
+                    descElem.innerHTML = inner
+                }
+                descElem.onclick=function(){
+                    openFullScreenImageSlider(item,index)
+                }
+                descElem.className="desc-img"
+                descImages.push(descElem);
+                var bigImageElem=document.createElement("div")
+                if (item.type =="Image"){
+                    bigImageElem.innerHTML=`<img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+item.id+`'/>`
+                }else{
+                    bigImageElem.innerHTML=`<video src='https://storage.googleapis.com/roovo-images/rawImages/`+item.id+`' controls loop />`
+                }
+                bigImageElem.className="img"
+                bigImageElem.id="big-image-"+index
+                bigSliderImages.push(bigImageElem);
+
+                var smallImageElem=document.createElement("div")
+                smallImageElem.className="small-image"
+                smallImageElem.id="small-image-"+index
+                if (item.type =="Image"){
+                    smallImageElem.innerHTML=`<img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+item.id+`'/>`
+                } else{
+                    smallImageElem.innerHTML=`<img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+item.thumbnailID+`'/>`
+                }
+                smallImageElem.onclick=function(){
+                    setFullImage(item,index)
+                }
+                smallSliderImages.push(smallImageElem);
+                return
+            })
+            document.getElementById("desc-images").replaceChildren(...descImages)
+            document.getElementById("big-image").replaceChildren(...bigSliderImages)
+            document.getElementById("small-image-slider").replaceChildren(...smallSliderImages)
+        }
+
+    </script>
+
+{{end}}

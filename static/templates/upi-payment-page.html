@@ -1,0 +1,88 @@
+{{define "UPI-Payment-Page"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/styles/loader.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/upiPaymentPage.css">
+    {{template "title" "UPI Payment"}}
+
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "UPI Payment Options"}}
+        </div>
+
+        <div class="scrollableBody padded white-background">
+            <div class="loader loader-hide">
+                                <div class="loader-container">
+                    <div class="spinner" id="loader-container"></div>
+                </div>
+            </div>
+            <div class="amount-section">
+                <h3>Total Payable</h3>
+                <h2>₹{{.payableAmount}}</h2>
+            </div>
+
+            <div class="upi-options-container">
+                {{range .upiOptions}}
+                <!-- <div>{{.DeepLink}}</div> -->
+                <div onclick="openUPILink('{{.DeepLink}}')">
+                    <div class="upi-option-container">
+                        <div class="upi-option">
+                            <div class="upi-option-image-container">
+                                <img src="{{.IconPath}}">
+                            </div>
+                            <span>{{.OptionLabel}}</span>
+                        </div>
+                        <div class="right-arrow-wrapper">
+                            <img src="/static/assets/rightArrowBlack.svg">
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+
+    function openUPILink(link) {
+        document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+         // Poll Backend to check payment Status
+    const myInterval = setInterval(pollPaymentStatus, 2000)
+    let count = 0
+    async function pollPaymentStatus() {
+        count = count + 1
+        const response = await fetch("/payments/status/{{.paymentID}}", { method: "GET" })
+        const jsonResponse = await response.json()
+        if (response.status != 200) {
+            alert("Can't check payment Status: " + JSON.stringify(jsonResponse))
+            clearInterval(myInterval)
+        document.getElementsByClassName("loader")[0].classList.add("loader-hide")
+
+        }
+
+        if (jsonResponse.paymentStatus == "Succeeded") {
+            clearInterval(myInterval)
+            window.location.assign("/order/success?orderId=" + '{{.orderID}}')
+        }
+    }
+    window.location.assign(link)
+    }
+
+   
+</script>
+{{template "tracking"}}
+
+{{end}}

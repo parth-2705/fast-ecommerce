@@ -1,0 +1,133 @@
+{{define "influencerCampaignList"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer">
+                    <img src="/static/assets/images/roovoLogo.svg"/>
+                </a>
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                <div class="campaignCover">
+                    {{range $i,$a := .campaigns}}
+                        <div class="campaignCard cardShadow">
+                        <div class="campaignBannerCover">
+                            <img class="campaignBanner" src="https://roovo.in/cdn-cgi/image/width=500,format=auto/{{.Banner}}"/>
+                            <div class="loginOptions">
+                                {{if .Platform.Instagram}}
+                                <div class="loginItem">
+                                    <img src="/static/icons/instagram.svg"/>
+                                </div>
+                                {{end}}
+                                {{if .Platform.YouTube}}
+                                <div class="loginItem">
+                                    <img src="/static/icons/youtube.svg"/>
+                                </div>
+                                {{end}}
+                                {{if .Platform.Snapchat}}
+                                <div class="loginItem">
+                                    <img src="/static/icons/snapchat.svg"/>
+                                </div>
+                                {{end}}
+                                <!-- <div class="loginItem">
+                                    <img src="/static/icons/twitter.svg"/>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="campaignContent">
+                            <div class="brandName">{{.Brand.Name}}</div>
+                            <div class="brandCaption">{{.Title}}</div>
+                            <div class="brandTags">
+                                <div class="topRow">
+                                    <div class="minTag">
+                                        <img src="/static/icons/gender.svg"/>
+                                        <p>{{makeGenderChoiceString .Genders}}</p>
+                                    </div>
+                                    <div class="minTag">
+                                        <img src="/static/icons/age.svg"/>
+                                        <p>{{.MinAge}}-{{.MaxAge}} Years</p>
+                                    </div>
+                                </div>
+                                <div class="maxTag">
+                                    <img src="/static/icons/location.svg"/>
+                                    <p>{{join .Locations ","}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="campaignCTA">
+                            <a href="/influencer/campaign/{{.ID}}">
+                                <button class="detailsCTA">
+                                    View Details
+                                </button>
+                            </a>
+                        </div>
+                        </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+</html>
+{{end}}

@@ -1,0 +1,12 @@
+{{define "teamPageItem"}}
+<div class="rowFlex">
+    <img src="https://ca.slack-edge.com/T033C5Q7JCQ-U043VRCJZ43-eab450ec0327-72" alt="picture"
+        class="teamPersonImage" />
+    <div>
+        <div class="teamAdminName {{if .IsAdmin}}teamMemberName{{end}}">Eric Joshua </div>
+        {{if .IsAdmin}}
+        <div class="teamAdminLabel">Admin</div>
+        {{end}}
+    </div>
+</div>
+{{end}}

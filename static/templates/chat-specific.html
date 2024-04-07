@@ -1,0 +1,223 @@
+{{define "chat-specific"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/stream-chat"></script>
+</head>
+
+<body>
+    <div id="body">
+    
+    <link rel="stylesheet" href="/static/styles/chat.css" />
+    <div class="header left-header">
+        <a href="/chat"><img src="/static/assets/arrow-back.svg" /></a>
+        <h3>Chat With Us</h3>
+    </div>
+    <div class="loader-container">
+            <div class="spinner" id="loader-container"></div>
+        </div>
+    <div class="scrollableBody">
+        <div id="message-body"></div>
+        
+    </div>
+    <div class="footer">
+        <div class="message-footer">
+            <input type="text" class="message-input" placeholder="Type your message here..." id="message"/>
+            <label for="file-upload" class="attach"> 
+                <img src="/static/assets/attach-icon.svg"/>
+                <div id="file-number"></div>
+            </label>
+            <input type="file" id="file-upload" style="display: none;" oninput="uploadFile(event)" accept="image/*">
+            <button class="send-message" onclick="sendMessage()">
+                <img src="/static/assets/send-icon.svg"/>
+            </button>
+        </div>
+    </div>
+</div>
+{{template "outer-section"}}
+    <script>
+        var channel;
+        var state;
+        var file="";
+        var client;
+        var lastMessageId = "";
+
+        // function to tranform datetime to chat readable
+        // if the date is older than a day, but less than 2 days, display "Yesterday" with the time
+        // if the date is older than 2 days, display the date in the format "dd/mm/yyyy"
+        // if the date is the same day, just display the time with am/pm
+        function transformDatetimeToChatReadable(datetime) {
+            var date = new Date(datetime);
+            var today = new Date();
+            var yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
+            if (date.getDate() == today.getDate() && date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()) {
+                return date.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+            } else if (date.getDate() == yesterday.getDate() && date.getMonth() == yesterday.getMonth() && date.getFullYear() == yesterday.getFullYear()) {
+                // yesterday with time
+                return "Yesterday " + date.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+            } else {
+                return date.toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            }
+        }
+
+        async function initChat() {
+
+            client = StreamChat.getInstance("{{.StreamKey}}");
+            await client.connectUser({
+                "id": "{{.UserID}}",
+                "name": "{{.UserName}}",
+
+            }, {{.UserToken}});
+            channel = client.channel({{.channel}}['type'], {{.channel}}['id']);
+            state=await channel.watch()
+            // remove loader visibility
+            lastMessageId=await makeMessages(state.messages,"{{.UserID}}");
+            document.getElementById('loader-container').style.display='none';
+
+
+            channel.on('message.new',event=>{
+                addUserMessage(event.message,event.user.id,{{.UserID}})
+            })
+        }
+        initChat();
+
+        async function scrollToLastUnread(lastMessageId){
+            const { unread_count: unreadCount } = await channel.countUnread();
+            if (unreadCount > 0) {
+                const { messages } = await channel.query({ limit: 1, mark_read: true });
+                const lastUnreadMessage = messages[0];
+                document.getElementById('message_'+lastUnreadMessage.id).scrollIntoView({behavior:"smooth"});
+            }
+            await channel.markRead();
+        }
+
+        async function uploadFile(event){
+            elem=document.getElementById('file-number');
+            if(event.target.files.length>0){
+                elem.style.display='flex'
+                elem.innerHTML=event.target.files.length
+            }else{
+                elem.style.display='none'
+            }
+            if(file!=""){
+                await channel.deleteImage(file);
+                file=''
+            }
+            file=await channel.sendFile(event.target.files[0])
+        }
+
+        function addUserMessage(message,messageSenderID,userID){
+            var mainBody=document.getElementById("message-body");
+            var messageItem;
+            messageType = message.user.id == userID ? "user" : "response";
+            messageItem = `<div class="${messageType}-message message" id="message_${message.id}"><div class="blue-content"><div class="text-content">${message.html}</div></div><div class="time-content">${transformDatetimeToChatReadable(message.created_at)}</div></div>`;
+
+            // append to mainBody
+            if (message.attachments.length > 0) {
+                messageItem = `<div class="${messageType}-message message" id="message_${message.id}"><div class="blue-content"><div class="text-content">${message.html}</div><div class="img-content"><img id="img_${message.id}"/></div></div><div class="time-content">${transformDatetimeToChatReadable(message.created_at)}</div></div>`;
+            }
+            // create element
+            var div = document.createElement('div');
+            // add classes to element
+            div.className = `${messageType}-message message`;
+            // add id to element
+            div.id = `message_${message.id}`;
+            div.innerHTML = messageItem;
+            // append to mainBody
+            mainBody.appendChild(div);
+            if (message.attachments.length > 0) {
+                document.getElementById(`img_${message.id}`).src = message.attachments[0].assetUrl.file;
+            }
+            document.getElementById('message_'+message.id).scrollIntoView({behavior:'smooth'});
+            channel.markRead();
+
+        }
+
+
+        async function makeMessages(messages,UserID){
+            var mainBody=document.getElementById("message-body");
+            var content=""
+            var images = [];
+            // for loop instead of forEach
+            for (let index = 0; index < messages.length; index++) {
+                var message = messages[index];
+                var messageItem;
+                messageType = message.user.id == UserID ? "user" : "response";
+                messageItem = `<div class="${messageType}-message message" id="message_${message.id}"><div class="blue-content"><div class="text-content">${message.html}</div></div><div class="time-content">${transformDatetimeToChatReadable(message.created_at)}</div></div>`;
+                // append to mainBody
+                if (message.attachments.length > 0) {
+                    messageItem = `<div class="${messageType}-message message" id="message_${message.id}"><div class="blue-content"><div class="text-content">${message.html}</div><div class="img-content"><img id="img_${message.id}"/></div></div><div class="time-content">${transformDatetimeToChatReadable(message.created_at)}</div></div>`;
+                }
+                mainBody.innerHTML += messageItem;
+                if (message.attachments.length > 0) {
+                    // add image id to array
+                    images.push(message.id);
+                    document.getElementById(`img_${message.id}`).src = message.attachments[0].assetUrl.file;
+                }
+                
+            }
+
+            // add listener to last image
+            if (images.length > 0) {
+                document.getElementById(`img_${images[images.length - 1]}`).onload = function () {
+                    document.getElementById('message_'+lastMessageId).scrollIntoView({behavior:'smooth'});
+                    channel.markRead();
+                }
+            }
+            
+            return messages[messages.length-1].id
+        }
+
+        document.getElementById('message').addEventListener('keypress',function (e){
+            if(e.key=='Enter'){
+                sendMessage();
+            }
+        })
+
+        async function sendMessage(){
+            console.log('sending message:',document.getElementById('message').value)
+            messageText=document.getElementById('message').value
+            if ((messageText == '') && (file=='')) {
+                return;
+            }
+            document.getElementById('message').value=''
+            document.getElementById('file-number').style.animation='none';
+            if(file==''){
+                await channel.sendMessage({
+                    text: messageText,
+                });
+            }else{
+                await channel.sendMessage({
+                    text: messageText,
+                    attachments:[{
+                        assetUrl:file,
+                    }]
+                });
+                file=''
+            }
+            document.getElementById('file-number').style.display = 'none';
+            // reset #file-upload input
+            document.getElementById('file-upload').value = '';
+            
+        }
+    </script>
+
+</body>
+</html>
+{{end}}

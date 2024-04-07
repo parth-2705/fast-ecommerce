@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roovo - Contact Us</title>
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/form.css"/>
+
+    <style>
+        .footer-local {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            padding: 1em;
+            width: 100%;
+        }
+
+        .form-group:nth-last-of-type(2) {
+            margin-bottom: 100px;
+        }
+
+        .footer-local button {
+            padding: 1em;
+            width: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+    
+    <div class="header">
+        {{template "websiteHeaderWBack" dict "head" "Contact Us"}}
+    </div>
+    <div class="scrollableBody padded-side">
+        <div class="information-section">
+            <div class="info-item">
+                    <div class="roovo-color">
+                        <h6>Locate us at</h6>
+                    </div>
+                    <small class="roovo-dark-color">
+                        UG-006, MGF Metropolis Mall Gurugram, Haryana 122002
+
+                    </small>
+            </div>
+            <div class="info-item">
+                    <div class="roovo-color">
+                        <h6>Reach us at</h6>
+                    </div>
+                    <small>
+                        <a href="+919910606373" class="roovo-dark-color">+919910606373</a>
+
+                    </small>
+            </div>
+            <div class="info-item">
+                    <div class="roovo-color">
+                        <h6>Write to us at</h6>
+                    </div>
+                    <a href="mailto:support@roovo.in" class="roovo-dark-color">support@roovo.in</a>
+            </div>
+        </div>
+
+        <h3 class="contact-us-heading">Contact us</h3>
+
+        {{range .flashes}}
+        <div class="alert alert-primary" role="alert">
+            {{.}}
+        </div>
+        {{end}}
+
+        <form method="post" class="roovo-dark-color">
+            <div class="form-group">
+                <label for="FirstName">First Name*</label>
+                <input type="text" class="roovo-input" name="first_name" id="inputName"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="LastName">Last Name*</label>
+                <input type="text" class="roovo-input" name="last_name" id="inputName"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email Address*</label>
+                <input type="email" class="roovo-input" name="email" id="inputEmail"
+                     required>
+            </div>
+            <div class="form-group">
+                <label for="inputMobile">Mobile*</label>
+                <input type="number" maxlength="10" class="roovo-input" name="mobile" id="inputMobile" required>
+            </div>
+            <div class="form-group">
+                <label for="inputMessage">Message*</label>
+                <textarea class="roovo-input" id="inputMessage" name="message" rows="5" required
+                    placeholder="Type your message here..."></textarea>
+            </div>
+            <div class="footer-local">
+                <button type="submit" class="btn btn-block btn-primary roovo-button" style="font-weight:600;">SUBMIT</button>
+            </div>
+        </form>
+    </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+
+    function mobileValidation(event){
+        disallowAlphaAndSpecialChars(event);
+    }
+
+    function disallowAlphaAndSpecialChars(event) {
+        // Get the character code of the pressed key
+        const charCode = event.which || event.keyCode;
+
+        // Ensure that the character code is a number between 48 and 57 (inclusive)
+        if (charCode < 48 || charCode > 57) {
+            console.log("Invalid Character Added")
+            // If the character is not a number, prevent the default action
+            event.preventDefault();
+        }
+    }
+</script>
+
+</html>

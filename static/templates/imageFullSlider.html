@@ -1,0 +1,24 @@
+{{define "imageFullSlider"}}
+<div class="fullscreen-slider scrollableBody hidden-fullscreen">
+    <div class="centred-wrapper">
+        <div id="fullscreen-image-number"></div>
+        <button id="cross" onclick="closeFullScreenImagesSlider()"><img src="/static/assets/images/cross.svg"></button>
+        <div id="big-image">
+            <!-- {{range $idx, $a := .images}}
+            <div class="img" id="big-image-{{$idx}}">
+                <img
+                    src='{{getImageURL 500 $a}}'></img>
+            </div>
+            {{end}} -->
+        </div>
+        <div id="small-image-slider">
+            <!-- {{range $idx, $a := .images}}
+            <div class="small-image" id="small-image-{{$idx}}" onclick="setFullImage('{{$a}}', '{{$idx}}')">
+                <img
+                    src='{{getImageURL 500 $a}}'></img>
+            </div>
+            {{end}} -->
+        </div>
+    </div>
+</div>
+{{end}}

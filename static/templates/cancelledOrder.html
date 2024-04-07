@@ -1,0 +1,69 @@
+{{define "cancelledOrder"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/cancelledOrder.css" />
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{if and .homePage (eq (getEnvVariable "ENVIRONMENT") "prod")}}
+    <meta name="facebook-domain-verification" content="3otcss70m5oxov7hotk7bqmsdjap3v" />
+    {{end}}
+
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header padded">
+        </div>
+        <div class="scrollableBody">
+            <div class="success padded">
+                <img class="success-icon" src="/static/assets/images/success.svg">
+                <h3>Order cancelled!</h3>
+                <p class="roovo-light">Your order has been cancelled. Any refund amount will be credited to the source
+                    account within 3-4
+                    working days.</p>
+            </div><br>
+            <h5 class="padded-side">Cancelled Items</h5>
+            <div class="items padded bg-white">
+                <div class="order-product">
+                    <div class="order-product-grid">
+                        <img class="thumbnail"
+                            src='{{ getImageURL 500 .order.Variant.Thumbnail}}' />
+                        <div class="order-product-description">
+                            <h3>{{.order.Brand.Name}}</h3>
+                            <p>{{.order.Product.Name}}</p>
+                            <div class="attribute">
+                                {{template "variantSummary" dict "product" .order.Product "variant" .order.Variant}}
+                                <span class="attributeName">Qty: </span><span class="attributeValue">1</span>
+                            </div>
+                        </div>
+                        <a href="/product/{{.order.Product.ID}}" class="order-product-right"><img
+                                src="/static/assets/rightArrowGey.svg" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-method padded bg-white">
+                <h5>Payment Method</h5>
+                <p>{{.order.Payment.Method}}</p>
+            </div>
+        </div>
+
+        <div class="footer padded">
+            <a href="/"><button class="roovo-button-new padded">Continue Shopping</button></a>
+            <a href="/order"><button class="roovo-color padded">Back to Orders</button></a>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+<script>
+    function cancel() {
+        document.getElementById("cancel-form").submit()
+    }
+</script>
+
+</html>
+{{end}}

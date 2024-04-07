@@ -1,0 +1,22 @@
+{{define "variantSummary"}}
+
+{{ range .product.Attributes}}
+
+{{if eq .VisType 0}}
+<div class="attribute">
+    <span class="attributeName">{{.Name}}</span>:
+    <span class="attributeValue">{{index $.variant.Attributes .Name}}</span>
+</div>
+{{end}}
+
+{{if eq .VisType 1}}
+<div class="attribute">
+    <span class="attributeName">{{.Name}}</span>:
+    <span class="attributeValue">{{index $.variant.Attributes .Name}}</span>
+</div>
+{{end}}
+
+{{end}}
+
+
+{{end}}

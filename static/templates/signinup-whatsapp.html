@@ -1,0 +1,80 @@
+{{define "sign-in-up-whatsapp"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <style>
+        #whatsapp-login {
+            border-radius: 5px !important;
+        }
+    </style>
+    <title>Rovoo Login/Signup</title>
+</head>
+
+<body class="d-flex flex-column">
+    <div id="body">
+    
+
+        <main role="main" class="flex-shrink-0">
+            <div class="container">
+                <div class="row py-4 px-2">
+                    <div class="col">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2">
+                                <a href="index.html" class="text-dark">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_39_1914)">
+                                            <path d="M20.25 12H3.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10.5 5.25L3.75 12L10.5 18.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_39_1914">
+                                                <rect width="24" height="24" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-4 px-2" id="login_header" class="remove_on_load">
+                    <div class="col">
+                        <h4>Login/Sign Up to continue</h4>
+                    </div>
+                </div>
+
+                <div class="row py-3 px-2" id="login" class="remove_on_load">
+                    <div class="col-12">
+                        <button id="whatsapp-login"></button>
+                    </div>
+                </div>
+
+                <div class="row py-3 px-2" id="loader" style="display: none;">
+                    <div class="col-12 text-center my-auto">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <span class="h5"> &nbsp; Logging you in...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script src="https://amigo.authlink.me/js/sdk/otpless.js"></script>
+
+</html>
+
+{{end}}

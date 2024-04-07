@@ -1,0 +1,225 @@
+{{define "brandPage"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/brand.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/loader.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="brand-header">
+            <a href="/"><img src="/static/assets/arrow-back.svg" /></a>
+            <img src="/static/assets/shareIcon.svg" />
+        </div>
+        <div class="sticky-header">
+            <div class="brand-logo">
+                <img src="{{.brand.Logo}}" />
+            </div>
+            <h2 class="name-section">{{.brand.Name}}
+            </h2>
+        </div>
+        <div class="scrollableBody" id="scrollableBody">
+            <!-- {{.}} -->
+
+            <div class="description">
+                {{.brand.Description}}
+            </div>
+            {{if ne (len .brand.Features) 0}}
+            {{if ne (index .brand.Features 0) ""}}
+            <div class="feature-section">
+                <h2>Why choose <span style="color:#ED2F51;">{{.brand.Name}}</span></h2>
+                <div class="feature-cover">
+                    {{range $feature := .brand.Features}}
+                    {{if ne $feature ""}}
+                    <div class="feature">
+                        <div class="inner-feature">
+                            <div class="content-cover">
+                                <div class="content">
+                                    {{$feature}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+            {{end}}
+            {{if ne (len .categories) 0}}
+            <div class="categories">
+                <h2>Categories</h2>
+                <div class="category-cover" id="category-cover">
+                    {{range $category := .categories}}
+                    <a href="/categories/{{$category.Category.ID}}" class="category-item">
+                        <img src="{{getImageURL 300 $category.Category.Image }}" />
+                        <p>{{$category.Category.Name}}</p>
+                    </a>
+                    {{end}}
+                </div>
+                <div class="view" id="view-more" {{if gt (len .categories) 3}} style="display:flex;" {{end}}
+                    onclick="viewMore()">
+                    <p>View More</p><img src="/static/assets/chevron-down-red.svg" />
+                </div>
+                <div class="view" id="view-less" onclick="viewLess()">
+                    <p>View Less</p><img src="/static/assets/chevron-up-red.svg" />
+                </div>
+            </div>
+            {{end}}
+            <div class="products">
+                {{if ne (len .products) 0}}
+                <h2 class="productHeader">Products</h2>
+                <div class="product-list" id="product-list">
+                    {{range $a := .products}}
+                    <a class="productUrl" href="/product/{{$a.ID}}">
+                        <div class="product">
+                            <img
+                                src='{{getImageURL 500 $a.Thumbnail }}'></img>
+                            <div class="productDetails">
+                                <h4><span>{{$a.Brand.Name}}</span></h4>
+                                <h4> {{$a.Name}}</h4>
+                                <div class="priceContainer">
+                                    <div>
+                                        {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                        <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                    </div>
+                                    {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {{end}}
+                </div>
+                {{end}}
+            </div>
+            <div class="loader" id="loader">
+                <div class="spinner">
+                </div>
+            </div>
+            <!-- <div class="explore-cover">
+                <a href="/brands">
+                    <button class="explore">
+                        EXPLORE ALL →
+                    </button>
+                </a>
+            </div> -->
+        </div>
+    </div>
+    {{template "outer-section"}}
+    <script type="text/javascript">
+
+        var currentPage = 1;
+        var pagination;
+        var brandID = "";
+        var locked = false;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // console.log("Triggered");
+            document.getElementById('loader').style.display = 'none';
+            initPagination({{.paginater }}, {{.brand.ID }});
+        })
+
+        function initPagination(paginater, brandId) {
+            {{ if ne (len .categories) 0 }}
+            document.getElementById('category-cover').style.maxHeight = '9.5em'
+            {{ end }}
+            pagination = paginater
+            brandID = brandId
+        }
+
+        function viewMore() {
+            document.getElementById('category-cover').style.maxHeight = 'unset'
+            document.getElementById('view-less').style.display = 'flex';
+            document.getElementById('view-more').style.display = 'none';
+        }
+
+        function viewLess() {
+            document.getElementById('category-cover').style.maxHeight = '9.5em'
+            document.getElementById('view-less').style.display = 'none';
+            document.getElementById('view-more').style.display = 'flex';
+        }
+
+        function makeCategoryChildren(categoryArr) {
+            categoryPlaceholder = []
+            for (var i = 0; i < categoryArr.length; ++i) {
+                var tempElem = document.createElement('a')
+                tempElem.href = `/category/` + categoryArr[i].id;
+                tempElem.innerHTML = `<img src="` + categoryArr[i].image + `"/><p>` + categoryArr[i].name + `</p>`
+                categoryPlaceholder.push(tempElem)
+            }
+            console.log(categoryPlaceholder);
+            return categoryPlaceholder
+        }
+
+        function makeProductCards(products) {
+            console.log("these are paginated products:", products);
+            var elems = []
+            products.forEach(item => {
+                var elem = document.createElement('a')
+                elem.className = 'productUrl'
+                elem.href = '/product/' + item.id
+                var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `<div class="product">
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>
+                    </div>`
+                elems.push(elem);
+            })
+            document.getElementById('product-list').append(...elems)
+        }
+        function showFilter(event) {
+            document.getElementById("filterPage").classList.remove("hidden-filter")
+        }
+
+        document.getElementById('scrollableBody').addEventListener('scroll', async (event) => {
+            // console.log("Triggered");
+            scrollableBody = document.getElementById('scrollableBody');
+            scrollCheck = (scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight < 100)
+            if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+                return;
+            }
+            if (currentPage < pagination['total_pages']) {
+                // console.log("Triggered start");
+                locked = true;
+                document.getElementById('loader').style.display = 'flex';
+                // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+                await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}&brandID=${brandID}`)
+                    .then(async response => {
+                        data = await response.json();
+                        console.log("this is response:", data);
+                        document.getElementById('loader').style.display = 'none';
+                        makeProductCards(data["products"]);
+                        currentPage = currentPage + 1;
+                        locked = false;
+                    }).catch(err => {
+                        document.getElementById('loader').style.display = 'none';
+                        locked = false;
+                    })
+            }
+        })
+    </script>
+</body>
+
+</html>
+{{end}}

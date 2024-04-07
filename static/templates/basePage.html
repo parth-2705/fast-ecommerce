@@ -1,0 +1,235 @@
+{{define "basePage"}}
+<html>
+
+<head>
+    <title>GeekRoboCook</title>
+    <link rel="stylesheet" href="../static/styles/testing.css" />
+    <script>
+        function menuClick() {
+            let elem = document.getElementById("sticky-menu")
+            if (elem.style.maxHeight == "0em") {
+                elem.style.maxHeight = "30em";
+            } else {
+                elem.style.maxHeight = "0em";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="body">
+        <div class="header">
+            <p class="discount">Use Coupon Code: "WINTER5" and Avail 5% OFF On All Orders Above Rs.4999/-</p>
+        </div>
+        <div class="sticky-header-cover">
+            <div class="sticky-header">
+                <div class="section">
+                    <span onclick="menuClick()">☰</span>
+                    <img src="../static/assets/images/testing/logo.svg" class="logo" />
+                </div>
+                <div class="section">
+                    <a>Products</a>
+                    <a>Accessories</a>
+                    <a>Recipes</a>
+                    <a>Blog</a>
+                    <a>Home Chef's</a>
+                    <a>Support</a>
+                </div>
+                <div class="section">
+                    <img src="../static/assets/images/testing/user-login.png" class="icon" />
+                    <img src="../static/assets/images/testing/cart-icon.png" class="icon" />
+                </div>
+            </div>
+            <div id="sticky-menu" style="max-height:0em">
+                <div>
+                    <a>Products</a>
+                    <a>Accessories</a>
+                    <a>Recipes</a>
+                    <a>Blog</a>
+                    <a>Home Chef's</a>
+                    <a>Support</a>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="carousel">
+                <div class="carousel-inner">
+                    <img src="../static/assets/images/testing/main-1.webp" class="slide" />
+                </div>
+            </div>
+            <div class="primary-container">
+                <div class="illustration-section">
+                    <video controls muted loop preload="none" id="main-vid"
+                        poster="../static/assets/images/testing/home-page-video.webp">
+                        <source src="https://storage.googleapis.com/amigo-media/robocook-vid.mov" type="video/mp4" />
+                    </video>
+                </div>
+                <div class="text-section">
+                    <div class="title">
+                        <h2>It's not a cooker.</h2>
+                        <h2><span style="font-weight: 600;">It's a cook.</span></h2>
+                    </div>
+                    <div class="subtext">
+                        Robocook is an intelligent electric pressure cooker with Programmable Intelligent Cooking.
+                        It uses heat and pressure intelligently to take the pressure off you.
+                    </div>
+                </div>
+            </div>
+            <div class="single-column-container">
+                <div class="text-section" style="text-align:center">
+                    <div class="alt-title">
+                        <h2><span style="font-weight:600">Why choose</span> Robocook?</h2>
+                        <p>One of the world’s favourite kitchen appliances. And now, India’s top selling electric pressure
+                            cooker. That’s because the Geek Robocook is one of the simplest, easiest buying decisions ever.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-section">
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/11-in-one.svg" /></div>
+                        <h2>Does Everything</h2>
+                        <p>Geek Robocook is an automatic electric cooker that does 11 things, including sauteing, steaming,
+                            slow cooking, baking, and pressure cooking. You’ll have more reasons to be happy with it than
+                            you can imagine.</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/one-button.svg" /></div>
+                        <h2>One Touch Cooking</h2>
+                        <p>Geek Robocook has inbuilt preset menus for popular Indian dishes, ready to make your favourites
+                            with one touch programming.</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/biriyani.svg" /></div>
+                        <h2>Biriyani? Sambar? Pasta? All easy as pie.</h2>
+                        <p>Indian, Chinese, continental, experimental… Geek Robocook electric multi cooker lets you enjoy
+                            variety like never before.</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/for-everyone.svg" /></div>
+                        <h2>For everyone who likes food</h2>
+                        <p>Geek Robocook doesn’t care if you’re a pro cook or a rookie who doesn’t know a spoon from a
+                            ladle. It automatically produces perfect dishes for you, every time.</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/leisure.svg" /></div>
+                        <h2>Leisure & peace of mind both</h2>
+                        <p>Geek Robocook has 7 safety features for complete protection. It is also among the healthiest ways
+                            to cook because it helps preserve nutrition.</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-img"><img src="../static/assets/images/testing/range.svg" /></div>
+                        <h2>Range of accessories to choose from</h2>
+                        <p>Pots, lids, ladles, mitts, racks and many more exclusive accessories and spares are available for
+                            Geek Robocook.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="two-column-section">
+                <div class="text-section">
+                    <b>Product</b>
+                    <div class="alt-title">
+                        <h2>Robocook <span style="font-weight: 600;">Zeta</span></h2>
+                        <p>The essential kitchen assistant. It’s one electric pot that has 1l different functions, and
+                            enough presets to cook delicious meals with minimal fuss, and maximum taste and nutrition. It’s
+                            safe, it’s smart, it’s exactly what you need.</p>
+                    </div>
+                    <div class="cta">
+                        Learn More >
+                    </div>
+                </div>
+                <div class="image-section expand">
+                    <img src="../static/assets/images/testing/product-zeta.webp" />
+                </div>
+            </div>
+            <div class="two-column-section reverse">
+                <div class="text-section">
+                    <b>Product</b>
+                    <div class="alt-title">
+                        <h2>Robocook <span style="font-weight: 600;">Nuvo</span></h2>
+                        <p>This automatic electric pressure cooker is our ode to all the masterchef’s out there. Robocook
+                            Nuvo lets you explore & experiment a whole range of cuisines & dishes.</p>
+                    </div>
+                    <div class="cta">
+                        Learn More >
+                    </div>
+                </div>
+                <div class="image-section expand">
+                    <img src="../static/assets/images/testing/product-nuvo.webp" />
+                </div>
+            </div>
+            <div class="two-column-section" style="background-color:transparent;">
+                <div class="text-section">
+                    <div class="alt-title">
+                        <h2>What are you going<br />
+                            to <span style="font-weight: 600;">cook with<br />
+                                Robocook</span> today?</h2>
+                        <p>We’ve put together some amazing recipes from different
+                            cuisines that you can make with Robocook in no time. It’s time
+                            to bring out the Masterchef in you.</p>
+                    </div>
+                    <div class="cta" style="font-weight:700;">
+                        Browse Recipes >
+                    </div>
+                </div>
+                <div class="image-section" style="min-height:40em;height: 40em;">
+                    <img src="../static/assets/images/testing/product-cook.webp" />
+                </div>
+            </div>
+            <div class="two-column-section reverse" style="background-color:#ffdb7c;">
+                <div class="text-section">
+                    <div class="alt-title">
+                        <img src="../static/assets/images/testing/geek-facebook.webp" />
+                        <p style="padding:0 4em">We’ve put together some amazing recipes from different
+                            cuisines that you can make with Robocook in no time. It’s time
+                            to bring out the Masterchef in you.</p>
+                    </div>
+                    <div style="padding: 0 4em;">
+                        <div class="cta" style="font-weight:700;">
+                            Join Now >
+                        </div>
+                    </div>
+                </div>
+                <div class="image-section" style="height:40em">
+                    <img src="../static/assets/images/testing/facebook-community.webp" />
+                </div>
+            </div>
+            <div class="two-column-section" style="background-color:#fd7281;padding:3em 2% 3em 8%">
+                <div class="text-section">
+                    <div class="alt-title" style="text-align: center;">
+                        <img src="../static/assets/images/testing/stories.webp" style="width:50%" />
+                        <p style="padding:0 4em;text-align: left;">People are doing awesome things with their Geek Robocook
+                            automatic electric pressure cookers. Watch these interesting stories brought to you straight
+                            from the kitchens across India.</p>
+                    </div>
+                    <div style="padding: 0 4em;">
+                        <div class="cta" style="font-weight:700;">
+                            More Stories >
+                        </div>
+                    </div>
+                </div>
+                <div class="image-section" style="height:40em">
+                    <img src="../static/assets/images/testing/stories-img.webp" />
+                </div>
+            </div>
+            <div class="two-column-section reverse">
+                <div class="text-section">
+                    <div class="alt-title">
+                        <h2>Do more with the<br />
+                            <span style="font-weight: 600;">Geek Robocook App</span>
+                        </h2>
+                        <p>Indian, Chinese, Continental and a whole lot more. Explore 1000+ exclusive Robocook recipes in
+                            the Geek Robocook App and become a sought after cook.</p>
+                    </div>
+                    <img src="../static/assets/images/testing/google-play-cta.png" class="google-play-cta" />
+                </div>
+                <div class="image-section" style="height:40em">
+                    <img src="../static/assets/images/testing/iphone-gif.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+
+</html>
+{{end}}

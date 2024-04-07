@@ -1,0 +1,32 @@
+{{define "quantity"}}
+<div class="quantity">
+    <button class="subtract" onclick="subtract(event)">-</button>
+    <p class="counter">{{.quantity}}</p>
+    <button class="add" onclick="add(event)">+</button>
+</div>
+<script>
+
+    const maxValInput = {{.maxValInput}}
+    var maxVal = 9
+
+    if (maxValInput == null) {
+        maxVal = 9
+    } else {
+        maxVal = Math.min(9, maxValInput)
+    }
+
+    function add(evt) {
+        const counter = evt.target.parentElement.getElementsByClassName("counter")[0] 
+        var count = parseInt(counter.innerText)
+        if (count == maxVal) return
+         counter.innerText = count + 1
+    }
+
+    function subtract(evt){
+        const counter = evt.target.parentElement.getElementsByClassName("counter")[0] 
+        var count = parseInt(counter.innerText)
+        if (count == 1) return
+         counter.innerText = count - 1
+    }
+</script>
+{{end}}

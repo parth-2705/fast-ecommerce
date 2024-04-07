@@ -1,0 +1,101 @@
+{{define "cancelOrder"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/cancelOrder.css" />
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{if and .homePage (eq (getEnvVariable "ENVIRONMENT") "prod")}}
+    <meta name="facebook-domain-verification" content="3otcss70m5oxov7hotk7bqmsdjap3v" />
+    {{end}}
+
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+
+            {{template "websiteHeaderWBack" dict "head" "Cancel Order"}}
+        </div>
+        <div class="scrollableBody ">
+            <div class="order-section bg-white padded">
+                <div class="order-product">
+                    <div class="order-product-grid">
+                        <img class="thumbnail"
+                            src='{{getImageURL 500 .order.Variant.Thumbnail}}' />
+                        <div class="order-product-description">
+                            <h3>{{.order.Brand.Name}}</h3>
+                            <p>{{.order.Product.Name}}</p>
+                            <div class="attribute">
+                                {{template "variantSummary" dict "product" .order.Product "variant" .order.Variant}}
+                                <span class="attributeName">Qty: </span><span class="attributeValue">1</span>
+                            </div>
+                        </div>
+                        <a href="/product/{{.order.Product.ID}}" class="order-product-right"><img
+                                src="/static/assets/rightArrowGey.svg" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="cancel-reason-section bg-white padded">
+                <h4>Reason for cancellation</h4>
+                <p>Please tell us the reason for cancellation. This information is only used to improve our service</p>
+                <div class="select-reason">
+                    <form id="cancel-form" method="POST">
+                        <h6>Select Reason</h6>
+                        <input type="radio" id="size" name="reason" value="size">
+                        <label for="size">Incorrect size ordered</label><br>
+                        <input type="radio" id="color" name="reason" value="color">
+                        <label for="color">Wants to change style/ color</label><br>
+                        <input type="radio" id="not-required" name="reason" value="not-required">
+                        <label for="not-required">Product not required anymore</label><br>
+                        <input type="radio" id="mistake" name="reason" value="mistake">
+                        <label for="mistake">Ordered by mistake</label><br>
+                        <input type="radio" id="delay" name="reason" value="delay">
+                        <label for="delay">Delayed delivery cancellation</label><br>
+                        <input type="radio" id="duplicate" name="reason" value="duplicate">
+                        <label for="duplicate">Duplicate order</label><br>
+                        <button type="submit" id="submit-cancel" style="display: none;"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer padded bg-white">
+            <div class="footer-price">
+                <p class="roovo-light">Refund Details</p>
+                <h6>₹ 0</h6>
+            </div>
+            <button class="roovo-button-new" onclick="cancel('{{.order.ID}}')">Cancel</button>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+    async function cancel(orderID) {
+        var formData = new FormData(document.getElementById("cancel-form"))
+        const formProps = Object.fromEntries(formData);
+        console.log(formProps)
+        await fetch("/order/cancel/" + orderID, { method: "POST", body: JSON.stringify(formProps) }).then(function (response) {
+            // When the page is loaded convert it to text
+            return response.text()
+        })
+            .then(function (html) {
+                // Initialize the DOM parser
+                var parser = new DOMParser();
+
+                // Parse the text
+                // You can now even select part of that html as you would in the regular DOM 
+                // Example:
+                // var docArticle = doc.querySelector('article').innerHTML;
+
+                document.getElementsByTagName("body")[0].innerHTML = html
+            })
+    }
+</script>
+
+</html>
+{{end}}

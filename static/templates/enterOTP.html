@@ -1,0 +1,307 @@
+{{define "enterOTP-2"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <style>
+        .pointer {
+            cursor: pointer
+        }
+
+        .scrollable{
+            overflow-y: auto;
+            height: calc(100% - 100px);
+        }
+
+        .page-heading {
+            font-weight: 800;
+            font-size: 20px;
+            line-height: 30px;
+            color: #282828;
+        }
+
+        .page-sub-heading {
+            font-weight: 800;
+            font-size: 14px;
+            line-height: 16px;
+            color: rgba(40, 40, 40, 1);
+
+        }
+
+        .under-input {
+            padding-top: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+        .under-input-left {
+            color: rgba(120, 129, 136, 1);
+        }
+
+        .under-input-right {
+            color: rgba(237, 47, 81, 1);
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .light-green-bg {
+            background: #F1FAF0;
+        }
+
+        .dark-green-text {
+            color: #282828;
+        }
+
+        .light-grey-bg {
+            background: #FAFAFA;
+        }
+
+        .light-grey-text {
+            color: #788188;
+        }
+
+        .amigo-red-button {
+            background: #201254;
+            color: #fff;
+            border: 1px solid #201254;
+        }
+
+        .amigo-red-text {
+            color: #201254;
+        }
+
+        .text-smaller {
+            font-size: 0.9rem;
+        }
+
+        .quantity .col {
+            padding: 0 5px;
+        }
+
+        .spacer {
+            height: 8px;
+            background: #E9E9E9;
+            margin-top: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .content-margin {
+            margin-top: 0.1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        u.dotted {
+            border-bottom: 1px dotted #000;
+            text-decoration: none;
+        }
+
+        u.green-dotted {
+            border-bottom: 1px dotted #28a745;
+            text-decoration: none;
+        }
+
+        strong.small {
+            font-weight: bolder;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        #mobile-form input,
+        #otp {
+            height: 50px;
+            color: #788188;
+        }
+
+        #mobile-form .input-group,
+        #otp {
+            border: 1px solid #f8e7eb;
+            border-radius: 0.25rem;
+        }
+
+        #mobile-form .input-group-text {
+            background: white;
+            color: #788188;
+            border-right: 1px solid #f8e7eb;
+            font-size: 13px;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            font-size:13px;
+            font-weight: 700;
+            color: rgba(120, 129, 136, 1) !important;
+        }
+    </style>
+    <title>Rovoo Login/Sign up</title>
+</head>
+
+<body class="d-flex flex-column">
+    <div id="body">
+        
+        <main role="main" class="scrollable flex-shrink-0">
+            <div class="container">
+                <div class="row py-4 px-2">
+                    <div class="col">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2">
+                                <a onclick="back({{.next}})" class="text-dark">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_39_1914)">
+                                            <path d="M20.25 12H3.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10.5 5.25L3.75 12L10.5 18.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_39_1914">
+                                                <rect width="24" height="24" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-4 px-2" id="login_header" class="remove_on_load">
+                    <div class="col">
+                        <h4 class="page-heading">Verify OTP</h4>
+                    </div>
+                </div>
+
+                <!-- verify otp here -->
+                <div class="row px-2 mt-4" id="otp-col">
+                    <div class="col-12">
+                        <small class="page-sub-heading">Enter OTP</small>
+                        <!-- enter otp here -->
+                        <div class="mt-1">
+                            <input type="number" maxength="6" minlength="6" class="form-control" id="otp"
+                                placeholder="OTP" aria-label="OTP" aria-describedby="basic-addon1">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row px-2 under-input" id="resend-row">
+                    <div class="col-7 under-input-left">
+                        <p>Didn't receive OTP?</p>
+                    </div>
+                    <div class="col-5 text-right">
+                        <div class="under-input-right pointer" id="resend">
+                            <p>Resend OTP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-3 px-2" id="loader" style="display: none;">
+                    <div class="col-12 text-center my-auto">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer mt-auto py-1 bg-light">
+            <div class="container">
+                <div class="place-order py-2 px-3">
+                    <button type="button" onclick="next({{ .next}}, {{.mobileNumber}})" id="verify-otp"
+                        class="btn btn-primary roovo-button btn-lg btn-block"><small>Verify
+                            OTP</small></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+    // if clicked on #change, reload the page 
+    // document.querySelector("#change").addEventListener("click", function () {
+    //     location.reload();
+    // });
+
+    function back(nextParam) {
+        window.location.href = `/auth/sign-in-up?next=${nextParam}`
+    }
+
+    // on clicking #verify-otp, send post fetch request to /auth/otp with mobile number and otp as query params
+    // on success, redirect to /home
+    // on failure, alert the user that there was an error verifying the OTP
+    function next(nextParam, mobileNumber) {
+        const mobile = mobileNumber
+        const otp = document.querySelector("#otp").value;
+        if (otp.length != 6) {
+            alert("Please enter a valid OTP");
+            return;
+        }
+        document.querySelector("#loader").style.display = "block";
+        document.querySelector("#verify-otp").style.display = "none";
+        // get query params from url
+        fetch(`/auth/otp`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                mobile: `${mobile}`,
+                otp: otp,
+                whatsapp: document.querySelector("#whatsapp-check").checked,
+            })
+        }).then(response => response.json())
+            .then(data => {
+                console.log("data", data)
+                if (data.valid) {
+                    window.location.href = nextParam ? nextParam : "/categories";
+                } else {
+                    // handle error case
+                    alert("Invalid OTP");
+                    document.querySelector("#loader").style.display = "none";
+                    document.querySelector("#verify-otp").style.display = "block";
+
+                }
+            }).catch(err => {
+                console.log(err);
+                window.location.href = "/auth/sign-out";
+            })
+
+    }
+
+
+    // Pressing enter on OTP field will click verify OTP button
+    var otpInput = document.getElementById("otp");
+    otpInput.addEventListener("keypress", function (event) {
+        console.log("enter")
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("verify-otp").click();
+        }
+    });
+</script>
+
+</html>
+
+
+{{end}}

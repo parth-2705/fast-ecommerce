@@ -1,0 +1,256 @@
+{{define "campaignApplicationPlatformsPage"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/card.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/{{.campaign.ID}}">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+                <div>Application</div>
+            </div>
+            <div>
+                <img src="/static/assets/images/campaign-application-1.svg" style="width: 100%;" />
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                        <div class="campaignContent bandBottom">
+                            {{if eq .campaign.Platform.Instagram true}}
+                                <div class="connectedSection">
+                                    <div class="connectedFirst">
+                                        <img src="/static/icons/instagram.svg"/>
+                                        {{if .influencer.Instagram.IsConnected}}
+                                        <div>Connected</div>
+                                        {{else}}
+                                        <div>Not Connected</div>
+                                        {{end}}
+                                    </div>
+                                    {{if ne .influencer.Instagram.IsConnected true}}
+                                    <button class="connector" onclick="connect('instagram');">
+                                        + Connect Now
+                                    </button>
+                                    {{end}}
+                                </div>
+                                <div class="deliverables">
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/deliverables.svg"/>
+                                            <span>Deliverables</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            <ul>
+                                                {{if gt .campaign.Deliverables.InstagramDeliverable.Post 0}}
+                                                <li>{{.campaign.Deliverables.InstagramDeliverable.Post}} Post</li>{{end}}
+                                                {{if gt .campaign.Deliverables.InstagramDeliverable.Reel 0}}
+                                                <li>{{.campaign.Deliverables.InstagramDeliverable.Reel}} Reel</li>{{end}}
+                                                {{if gt .campaign.Deliverables.InstagramDeliverable.Story 0}}
+                                                <li>{{.campaign.Deliverables.InstagramDeliverable.Story}} Story</li>{{end}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {{if ne .campaign.Deliverables.InstagramDeliverable.Title ""}}
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/titleText.svg"/>
+                                            <span>Post Title</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            Must include `{{.campaign.Deliverables.InstagramDeliverable.Title}}`
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                    {{if ne (len .campaign.Deliverables.InstagramDeliverable.Hashtags) 0}}
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/hashtags.svg"/>
+                                            <span>Hashtags</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            Must include {{join .campaign.Deliverables.InstagramDeliverable.Hashtags " "}}
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                    {{if ne (len .campaign.Deliverables.InstagramDeliverable.Accounts) 0}}
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/tagged.svg"/>
+                                            <span>Accounts to be tagged</span>
+                                        </div>
+                                        <div class="deliverableContent accountHighlight">
+                                            {{join .campaign.Deliverables.InstagramDeliverable.Accounts " "}}
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                </div>
+                            {{end}}
+                            <div class="spacing"></div>
+                            {{if eq .campaign.Platform.YouTube true}}
+                                <div class="connectedSection">
+                                    <div class="connectedFirst">
+                                        <img src="/static/icons/youtube.svg"/>
+                                        {{if .influencer.YouTube.IsConnected}}
+                                        <div>Connected</div>
+                                        {{else}}
+                                        <div>Not Connected</div>
+                                        {{end}}
+                                    </div>
+                                    {{if ne .influencer.YouTube.IsConnected true}}
+                                    <button class="connector" onclick="connect('youtube');">
+                                        + Connect Now
+                                    </button>
+                                    {{end}}
+                                </div>
+                                <div class="deliverables">
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/deliverables.svg"/>
+                                            <span>Deliverables</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            <ul>
+                                                {{if gt .campaign.Deliverables.YoutubeDeliverable.Video 0}}
+                                                <li>{{.campaign.Deliverables.YoutubeDeliverable.Video}} Video</li>{{end}}
+                                                {{if gt .campaign.Deliverables.YoutubeDeliverable.Short 0}}
+                                                <li>{{.campaign.Deliverables.YoutubeDeliverable.Short}} Short</li>{{end}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {{if ne .campaign.Deliverables.YoutubeDeliverable.Title ""}}
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/titleText.svg"/>
+                                            <span>Video Title</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            Must include `{{.campaign.Deliverables.YoutubeDeliverable.Title}}`
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                    {{if ne (len .campaign.Deliverables.YoutubeDeliverable.Hashtags) 0}}
+                                    <div class="deliverableItem">
+                                        <div class="deliverableHeader">
+                                            <img src="/static/icons/hashtags.svg"/>
+                                            <span>Hashtags</span>
+                                        </div>
+                                        <div class="deliverableContent">
+                                            Must include {{join .campaign.Deliverables.YoutubeDeliverable.Hashtags " "}}
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                </div>
+                            {{end}}
+                        </div>
+                </div>
+                <div class="noAccountConnectedPopUpContainer" id="noAccountPopUp">
+                    <div class="noAccountPopUp">
+                        Platform accounts not connected. Connect to continue
+                    </div>
+                </div>
+                <div class="footer campaignFooterContainer">
+                    <div onclick="handleContinue(event)" style="cursor: pointer;">
+                        <div class="campaignFooterCTA">
+                            Continue
+                        </div>
+                    </div>
+                </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    <script>
+
+        function handleContinue(event){
+            if ({{.influencer.YouTube.IsConnected}} && {{.influencer.Instagram.IsConnected}}){
+                window.location.assign("/influencer/campaign/apply/{{.campaign.ID}}/2")
+                return
+            }else{
+                const popup = document.getElementById("noAccountPopUp")
+                // Show the popup
+                popup.style.display = "block";
+                
+                // Set a timeout to hide the popup after 2 seconds
+                setTimeout(function() {
+                    popup.classList.add("fade-out");
+                    
+                    // Remove the popup from the DOM after fade out
+                    setTimeout(function() {
+                    popup.style.display = "none";
+                    popup.classList.remove("fade-out");
+                    }, 1000); // Wait for fade out transition to complete (1s)
+                }, 2000); // Wait for 2 seconds
+            }
+            return
+        }
+
+        async function connect(type){
+            console.log("type",type)
+            try{
+                let resp=await fetch('/influencer/'+type+'/oauth?redirect=/influencer/campaign/apply/{{.campaign.ID}}')
+                let response=await resp.json()
+                window.location.assign(response.url);
+            }catch(e){
+                console.error(e);
+            }
+        }
+    </script>
+</html>
+{{end}}

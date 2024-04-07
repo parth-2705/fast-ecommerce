@@ -1,0 +1,392 @@
+{{define "select-payment"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- load bootstrap styles optimally -->
+    {{template "title" "Payment"}}
+    <link rel="stylesheet" href="/static/styles/loader.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/radio.css">
+    <link rel="stylesheet" href="/static/styles/select-payments.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/global.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/grid.bootstrap.min.css">
+    <style>
+        /* submit-payment will be at the bottom of the page and have 5px rounded border  */
+        #submit-payment {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .footer {
+            padding: 20px 15px;
+            background: #FFFFFF;
+            box-shadow: 0px -1px 2px #F2F2FD;
+        }
+
+        .mrp-price {
+            text-decoration: line-through;
+            font-weight: 400;
+            color: #B2B0BE;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Payment"}}
+        </div>
+        <div class="COD-popup" id="COD-popup">
+            <div class="COD-popup-card">
+                <h5 class="padded">Placing Your Order</h5>
+                <div class="popup-body padded">
+                    <h6>Product Description</h6>
+                    <div class="product-details">
+                        <img src='{{getImageURL 500 .product.Thumbnail}}'>
+                        <div class="text">
+                            {{if .hasActiveDeal}}
+                            <p class="roovo-color"><strong> GROUP DEAL</strong> </p>
+                            {{end}}
+                            <p class="brandname font-weight-700">{{.brand.Name}}</p>
+                            <p class="productname font-weight-400">{{.product.Name}}</p>
+                            <p class="dealprice roovo-color">{{if .hasActiveDeal}}
+                                <strong>₹ {{.deal.MemberPrice}}</strong>
+                                {{else}}
+                                <strong>₹ {{.order.OrderAmount.TotalAmount | int}}</strong>
+                                {{end}}
+                            </p>
+                            <!-- <p class="mrp"><del>₹ {{.variant.Price.MRP}}</del></p>
+                        <p class="discount">{{ .variant.Price.DiscountPercentage | int}} %</p> -->
+                        </div>
+                    </div>
+                    <br>
+                    <h6>Delivery Address</h6>
+                    <p><strong>{{.address.Name}}</strong></p>
+                    <p class="roovo-light">{{.address.HouseArea}},</p>
+                    <p class="roovo-light">{{.address.City}}, {{.address.State}}, {{.address.PinCode}},</p>
+                    <p class="roovo-light">Phone Number: {{.address.Phone}}</p>
+                    <br>
+                    <h6>Payment Method</h6>
+                    <p>Cash on Delivery</p>
+                    <br>
+                    <div class="timerBarWrapper">
+                        <div id="timerBarOuter">
+                            <div id="timerBarInner"></div>
+                        </div>
+                        <button onclick="cancelTimer()" class="roovo-color">Cancel</button>
+                    </div>
+                    <p class="cancelText">You can also cancel your order later from 'My Orders'.</p>
+                </div>
+            </div>
+        </div>
+        <div class="scrollableBody padded white-background">
+
+            <!-- Full Page Loader -->
+            <div class="loader loader-hide">
+                <div class="loader-container">
+                    <div class="spinner" id="loader-container"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h4 class="section-heading">Select Payment Option</h4>
+                <div class="cards-container">
+
+                    {{range .paymentOptions}}
+                    <button id="newCard" class="card" onclick="selectPaymentMethod('{{.MethodID}}')">
+                        <div class="card-container">
+
+                            <!-- Left most section containing Payment Method Info -->
+                            <div class="saved-card-info">
+                                <div class="payment-icon-container">
+                                    <img src='{{.Icon}}'>
+                                </div>
+                                <div class="cardDetails">
+                                    <h6>{{.Name}}</h6>
+                                    <div class="payment-providers">
+                                        {{range $idx, $provider := .Providers}}
+                                        <div class="payment-provider" style="z-index:{{minus 5 $idx}}">
+                                            <img src="{{$provider}}">
+                                        </div>
+                                        {{end}}
+                                    </div>
+                                    {{if ne .Name "Cash On Delivery"}}
+                                    <p class="payment-method-discount">
+                                        Save <span style="color: #3AA32F">&nbsp;₹{{int .Amount.PaymentMethodDiscount.DiscountAmount}}&nbsp;</span> on prepaid orders
+                                    </p>
+                                    {{end}}
+                                </div>
+                            </div>
+
+                            <!-- Middle section containing -->
+                            <div class="saved-card-info">
+                            </div>
+
+                            <!-- Right section containing Payment Amount -->
+                            <div class="saved-card-info">
+                                <span>₹{{.Amount.TotalAmount}}</span>
+                                <div class="right-arrow-wrapper">
+                                    <img src="/static/assets/rightArrowBlack.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <img class="endIcon" src="/static/assets/images/chevron-right.svg"> -->
+                        <!-- <input name="card-object" class="endIcon" type="radio" /> -->
+                    </button>
+                    {{end}}
+
+                    <!-- Wallet Payment Option Card -->
+                    {{if (ne (.wallet.Balance|int) 0)}}
+                    {{if .walletBalanceSufficient}}
+                    <button id="wallet-payment-option" class="card" onclick="selectPaymentMethod('wallet')">
+                        <div class="card-container">
+
+                            <!-- Left most section containing Payment Method Info -->
+                            <div class="saved-card-info">
+                                <div class="payment-icon-container">
+                                    <img src='/static/assets/images/payment-wallet.svg'>
+                                </div>
+                                <div class="cardDetails">
+                                    <h6>Reward Points</h6>
+                                    <span>Available Balance: ₹{{.wallet.Balance | int}}</span>
+                                </div>
+                            </div>
+                            <!-- Right section containing Payment Amount -->
+                            <div class="saved-card-info">
+                                <span>₹{{.order.OrderAmount.TotalAmount}}</span>
+                                <div class="right-arrow-wrapper">
+                                    <img src="/static/assets/rightArrowBlack.svg">
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    {{else}}
+                    <button id="wallet-payment-option" class="card">
+                        <div class="card-container">
+
+                            <!-- Left most section containing Payment Method Info -->
+                            <div class="saved-card-info disabled-card">
+                                <div class="payment-icon-container">
+                                    <img src='/static/assets/images/payment-wallet-disabled.svg'>
+                                </div>
+                                <div class="cardDetails">
+                                    <h6>Reward Points</h6>
+                                    <span>Insufficient Balance: ₹{{.wallet.Balance | int}}</span>
+                                </div>
+                            </div>
+                            <!-- Right section containing Payment Amount -->
+                            <div class="saved-card-info disabled-card">
+                                <span>₹{{.order.OrderAmount.TotalAmount}}</span>
+                                <div class="right-arrow-wrapper">
+                                    <img src="/static/assets/rightArrowBlack.svg">
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    {{end}}
+                    {{end}}
+
+                </div>
+            </div>
+
+            {{ if (and (getEnvVariable "SAVED_CARDS_ENABLED" | eq "true") (.payment_methods)) }}
+
+            <div class="section">
+
+                <h4 class="section-heading">Your Saved Cards</h4>
+                <div class="cards-container">
+                    {{range .payment_methods}}
+                    <button class="card" onclick="expandCard('stripe_card_{{.ID}}')" id="stripe_card_{{.ID}}">
+                        <div class="card-container">
+                            <div class="saved-card-info">
+                                <img src="/static/assets/images/{{.Card.Brand}}.svg">
+                                <div class="cardDetails">
+                                    <h6>{{.Card.Type}} Card</h6>
+                                    <p>******{{.Card.Last4}}</p>
+                                    <!-- <div class="cvvBox">
+                                        <input type="text" class="cvv" placeholder="CVV" maxlength="3" minlength="3">
+                                        <div class="cvv-btn roovo-button">Pay</div>
+                                    </div> -->
+                                    <p class="payment-method-discount">
+                                        Save <span style="color: #3AA32F">&nbsp;₹{{int .Amount.PaymentMethodDiscount.DiscountAmount}}&nbsp;</span> on prepaid orders
+                                </div>
+                            </div>
+                            <div class="saved-card-info">
+                                <span>₹{{.Amount.TotalAmount}}</span>
+                                <div class="right-arrow-wrapper">
+                                    <img src="/static/assets/rightArrowBlack.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <input class="endIcon" type="radio" name="card-object" onclick="expandCard('{{.ID}}')"> -->
+                    </button>
+                    {{end}}
+                </div>
+
+            </div>
+            {{end}}
+
+        </div>
+
+
+        <div class="footer padded" style="display: none;">
+            <form id="payment-form-custom" method="POST">
+                <input type="hidden" id="payment_method_input" name="payment_method"
+                    value="{{.last_used_payment_method}}">
+                <input type="hidden" name="order" value="{{.order.ID}}">
+                <!-- <input type="hidden" name="variant" value="{{.variant.ID}}"> -->
+                {{if .hasActiveDeal}}
+                <!-- <input type="hidden" name="deal" value="{{.deal.ID}}"> -->
+                {{end}}
+                <button type="submit" id="submit-payment" class="roovo-button-new padded">
+                    <div class="row">
+                        <div class="col text-left">
+                            {{if .hasActiveDeal}}
+                            <strong>₹ {{.deal.MemberPrice}}</strong>
+                            {{else}}
+                            <strong>₹ {{.order.OrderAmount.TotalAmount}}</strong>
+                            {{end}}
+                        </div>
+                        <div class="col text-right align-self-center" onclick="sendTracking('Pay Now Clicked')">
+                            Pay Now <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_369_949)">
+                                    <path d="M6 13L11 8L6 3" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_369_949">
+                                        <rect width="16" height="16" fill="white"
+                                            transform="matrix(1 -1.74846e-07 -1.74846e-07 -1 0 16)" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+
+
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+    </div>
+    {{template "outer-section"}}
+    <script>
+        var currentTime = 0;
+        const timerMax = 2;
+        var totalWidth
+        var myTimeout
+        var timeChecker
+
+        function cancelTimer() {
+            sendTracking("cancelled in confirmation window")
+            clearTimeout(myTimeout)
+            clearInterval(timeChecker)
+            document.getElementById("COD-popup").classList.remove("unhide")
+        }
+
+        function startTimer(form) {
+            currentTime = 0;
+            timeChecker = setInterval(function () {
+                currentTime += 0.025;
+                currentTime *= 1000;
+                currentTime = Math.round(currentTime)
+                currentTime /= 1000;
+                document.getElementById("timerBarInner").style.width = (currentTime / timerMax * totalWidth).toString() + "px"
+            }, 25)
+            myTimeout = setTimeout(function () { console.log("ENDED"); clearInterval(timeChecker); form.submit() }, timerMax * 1000);
+        }
+        function OverrideSubmit() {
+            const form = document.getElementById("payment-form-custom")
+            form.addEventListener("submit", function (event) {
+                event.preventDefault()
+                if (document.getElementById("payment_method_input").value == "") {
+                    alert("Please select a payment method")
+                    return
+                }
+                else if (document.getElementById("payment_method_input").value == "COD") {
+                    document.getElementById("COD-popup").classList.add("unhide")
+                    totalWidth = document.getElementById("timerBarOuter").offsetWidth
+                    document.getElementById("timerBarInner").style.width = "0px"
+                    startTimer(form)
+                    return
+                }
+                form.submit()
+            })
+        }
+
+        function PreselectPaymentMethod(payment_method) {
+            if (payment_method == "") returnn
+            if (payment_method == "COD") {
+                expandCOD()
+                return
+            }
+            console.log("hello123", payment_method)
+            expandCard(payment_method)
+
+        }
+
+        // console.log("{{.last_used_payment_method}}")
+        // PreselectPaymentMethod("{{.last_used_payment_method}}")
+        // console.log("{{.last_used_payment_method}}")
+
+        OverrideSubmit()
+
+        function expandCard(id) {
+            document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+            console.log(id)
+            const cardButton = document.getElementById(id)
+            // change the value of the hidden input field
+            document.getElementById("payment_method_input").value = id
+
+            const form = document.getElementById("payment-form-custom")
+            form.submit()
+        }
+
+        function expandCOD() {
+            document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+            const cardButton = document.getElementById("COD")
+            const form = document.getElementById("payment-form-custom")
+            document.getElementById("payment_method_input").value = "COD"
+
+            form.submit()
+        }
+
+        function selectUPI() {
+            document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+            const cardButton = document.getElementById("UPI")
+            document.getElementById("payment_method_input").value = "UPI"
+
+            const form = document.getElementById("payment-form-custom")
+            form.submit()
+        }
+
+        function selectPaymentMethod(method) {
+            document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+            const cardButton = document.getElementById(method)
+            document.getElementById("payment_method_input").value = method
+
+            const form = document.getElementById("payment-form-custom")
+            form.submit()
+        }
+
+        function expandNewCard() {
+            document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+            const cardButton = document.getElementById("newCard")
+            document.getElementById("payment_method_input").value = "newCard"
+
+            const form = document.getElementById("payment-form-custom")
+            form.submit()
+        }
+
+    </script>
+
+</body>
+{{template "tracking"}}
+
+</html>
+{{end}}

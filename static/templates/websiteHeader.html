@@ -1,0 +1,13 @@
+{{define "websiteHeader"}}
+<div class="headerDiv">
+    <a href="/" onclick='sendTracking("logo clicked")'>
+        <img class="logo" src="/static/assets/images/roovoLogo.svg"></img>
+    </a>
+</div>
+{{if .rightButtons}}
+<div class="headerDiv rightDiv">
+    <a class="rightButton" onclick='sendTracking("go to wishlist")' href="/wishlist"><img
+            src="/static/assets/images/heart-black.svg"></a>
+</div>
+{{end}}
+{{end}}

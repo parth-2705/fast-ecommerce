@@ -1,0 +1,200 @@
+{{define "influencerAuthorize"}}
+    
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="/static/styles/signInUp.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/authorize.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/color.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/popup.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <style>
+        #body{
+            max-width: 420px !important;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            align-items: stretch;
+            overflow: hidden;
+            margin: 0 auto;
+            margin-top: 10px;
+            height: unset;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column; 
+        }
+        @media only screen and (max-width:2140px){
+            #body{
+                height: calc(100vh - 91px);
+                position: relative;
+                top:unset;
+                bottom:unset;
+                left:unset;
+                right:unset;
+            }
+        }
+        @media only screen and (max-width: 1024px) {
+            #body {
+                height: 100vh;
+                margin: 0 auto;
+                border-radius: 0px;
+            }
+        }
+        @media only screen and (max-width: 420px) {
+            #body {
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+    {{template "title" "Authorize"}}
+    <script async defer src="/static/js/back.js"></script>
+</head>
+
+    <body>
+        <div id="body">
+            <div class="scrollableBody container">
+                <div class="back">
+                    <a href="/influencer" class="text-dark">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_39_1914)">
+                                <path d="M20.25 12H3.75" stroke="#282828" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M10.5 5.25L3.75 12L10.5 18.75" stroke="#282828" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_39_1914">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+                </div>
+                <div class="page-heading" id="login_header">
+                    <h2 class="page-heading-text push-padding-bottom">Authorize</h2>
+                </div>
+                <div class="subtitle">
+                    Connect one social account to continue
+                </div>
+                <div class="popupBG" id="instaPopup" onclick="toggleInstaPopup()">
+                    <div class="popupBody" onclick="event.stopPropagation()">
+                        <div class="popupHeader">
+                            How to Connect Instagram
+                        </div>
+                        <div class="popupContent">
+                            <ol>
+                                <li>Open Instagram App</li>
+                                <li>Go to Settings</li>
+                                <li>Tap on ‘Account type and tools’</li>
+                                <li>Tap ‘Switch to Professional Account’</li>
+                                <li>Tap Continue</li>
+                                <li>Select your desired Category</li>
+                                <li>Tap Done</li>
+                                <li>Open Edit Profile</li>
+                                <li>Add a Facebook Page to your Instagram<br/><span>You need to be the admin of the page to connect. Check your Page settings and make sure you have the required permission.</span></li>
+                            </ol>
+                        </div>
+                        <div class="popupCTA" onclick="connect('instagram')">
+                            Okay, Proceed to Connect
+                        </div>
+                    </div>
+                </div>
+                <div class="authorizeCover">
+                    <div class="authorizeItem" {{if eq .influencer.Instagram.IsConnected false}} onclick="toggleInstaPopup()" {{else}} style="cursor:default" {{end}}>
+                        <img src="/static/icons/instagram.svg" style="width:40px;"/>
+                        <p>Instagram</p>
+                        <img id="instaAuth" 
+                        {{if eq .influencer.Instagram.IsConnected false}}
+                            src="/static/icons/not-connected.svg"
+                        {{else}}
+                            src="/static/icons/connected.svg"
+                            style="cursor:default;"
+                        {{end}}
+                        />
+                    </div>
+                    <div class="authorizeItem" {{if eq .influencer.YouTube.IsConnected false}} onclick="connect('youtube')" {{else}} style="cursor:default" {{end}}>
+                        <img src="/static/icons/youtube.svg" style="width:40px;"/>
+                        <p>Youtube</p>
+                        <img id="instaAuth" 
+                        {{if eq .influencer.YouTube.IsConnected false}}
+                            src="/static/icons/not-connected.svg"
+                            onclick="connect('youtube')"
+                        {{else}}
+                            src="/static/icons/connected.svg"
+                            style="cursor:default;"
+                        {{end}}
+                        />
+                    </div>
+                    <!-- <div class="authorizeItem" {{if eq .influencer.Snapchat.IsConnected false}} onclick="connect('snapchat')" {{else}} style="cursor:default" {{end}}>
+                        <img src="/static/icons/snapchat.svg" style="width:40px;"/>
+                        <p>Snapchat</p>
+                        <img id="instaAuth" 
+                        {{if eq .influencer.Snapchat.IsConnected false}}
+                            src="/static/icons/not-connected.svg"
+                            onclick="connect('snapchat')"
+                        {{else}}
+                            src="/static/icons/connected.svg"
+                            style="cursor:default;"
+                        {{end}}
+                        />
+                    </div> -->
+                </div>
+                
+                {{if or .influencer.Instagram.IsConnected .influencer.YouTube.IsConnected}}
+                <a href="/influencer/approval">
+                    <button class="roovo-red-button next-button" id="continue">
+                        Continue
+                    </button></a>
+                    {{else}}
+                    <button class="roovo-red-button next-button disabled-button" id="continue">
+                        Continue
+                    </button>
+                    {{end}}
+
+                <div class="subtitle" style="padding-bottom: 0.5em;font-size:11px;">We use Amigo Data, a software tool, for verification purposes. By authorizing it, Facebook shares your Instagram account insights securely with us.</div>
+            </div>
+        </div>
+    </body>
+    <script>
+        function toggleInstaPopup(){
+            let elem=document.getElementById('instaPopup')
+            if(elem.style.display=='flex')
+            {
+                elem.style.display="none"
+            }else{
+                elem.style.display="flex"
+            }
+        }
+
+        async function connect(type){
+            try{
+                let resp=await fetch('/influencer/'+type+'/oauth')
+                let response=await resp.json()
+                window.location.assign(response.url);
+            }catch(e){
+                console.error(e);
+            }
+        }
+    </script>
+    {{template "outer-section"}}
+
+</html>
+{{end}}

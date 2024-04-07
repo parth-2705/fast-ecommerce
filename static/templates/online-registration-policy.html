@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <title>Roovo - Online Registation Policy</title>
+    <style>
+        #content,
+        p,
+        li {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size:14px;
+        }
+
+        h5 {
+            color: #282828 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+        
+
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Online Registration Policy"}}
+        </div>
+
+
+        <div class="container scrollableBody">
+            <!-- a navbar that's always on top and has a logo in the middle -->
+
+            <div class="row text-center mt-4">
+                <div class="col-12">
+                    <h5>Online Registration Policy</h5>
+                </div>
+            </div>
+
+            {{template "company-info"}}
+
+            <div class="row">
+                <div class="col-12" id="content">
+
+                    <p><span></span></p>
+                    <p><span>In order to create an account with us, you will need to register online. By doing so, you agree
+                            to the
+                            following terms and conditions:</span></p>
+                    <p><span></span></p>
+                    <p><span>Personal Information: You will need to provide us with your personal information, including
+                            your full name,
+                            email address, shipping address, and phone number. We will use this information to create your
+                            account and
+                            to provide you with the best possible service.</span></p>
+                    <p><span></span></p>
+                    <p><span>Password: You will need to choose a password to access your account. It is your responsibility
+                            to keep your
+                            password secure and confidential. If you suspect that your password has been compromised, please
+                            contact us
+                            immediately.</span></p>
+                    <p><span></span></p>
+                    <p><span>Accuracy: You agree to provide accurate and up-to-date information when registering with us.
+                            This includes
+                            updating your information if it changes.</span></p>
+                    <p><span></span></p>
+                    <p><span>Account Security: You are responsible for all activity that occurs under your account,
+                            including any
+                            purchases made with your account. If you suspect that your account has been compromised, please
+                            contact us
+                            immediately.</span></p>
+                    <p><span></span></p>
+                    <p><span>Termination: We reserve the right to terminate your account at any time if you violate any of
+                            our terms and
+                            conditions or if we believe that you are using our site for fraudulent purposes.</span></p>
+                    <p><span></span></p>
+                    <p><span>Communications: By registering with us, you agree to receive promotional and marketing
+                            communications from
+                            us. You can opt out of these communications at any time by clicking on the unsubscribe link at
+                            the bottom of
+                            our emails.</span></p>
+                    <p><span></span></p>
+                </div>
+            </div>
+
+            {{template "basicFooter"}}
+
+        </div>
+
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+</script>
+
+</html>

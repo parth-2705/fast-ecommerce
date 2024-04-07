@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roovo - About Us</title>
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <style>
+        #content,
+        p,
+        li {
+            text-align: justify;
+            text-justify: inter-word;
+            font-size:14px;
+        }
+
+        h5 {
+            color: #282828 !important;
+        }
+
+        .header {
+            top: 0;
+            z-index: 200;
+            display: flex;
+            position: relative;
+            padding: 10px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            box-shadow: 0px 4px 4px 0px rgba(242, 242, 253, 1);
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "About Us"}}
+        </div>
+
+        <div class="scrollableBody info-content padded">
+            <h5 class="info-heading">About Us</h5>
+            {{template "company-info"}}
+            <p><span></span></p>
+            <p><span>Welcome to Roovo, your ultimate fashion destination for clothing and accessories. Our mission is to
+                    empower
+                    our customers to express their unique style and individuality through our carefully curated
+                    selection of
+                    on-trend and affordable fashion.</span></p>
+            <p><span></span></p>
+            <p><span>At Roovo, we are passionate about fashion and committed to providing our customers with the latest
+                    fashion
+                    trends, high-quality products, and exceptional customer service. Our fashion-forward team is
+                    dedicated
+                    to
+                    curating a collection of stylish and affordable clothing that is perfect for any occasion.</span>
+            </p>
+            <p><span></span></p>
+            <p><span>We believe that fashion should be accessible to everyone, regardless of shape, size, or budget.
+                    That&#39;s
+                    why we offer a diverse range of sizes and styles to cater to every customer&#39;s unique needs and
+                    preferences. Whether you&#39;re looking for casual wear, workwear, or something special for a night
+                    out,
+                    we
+                    have everything you need to feel confident and stylish.</span></p>
+            <p><span></span></p>
+            <p><span>Our team is dedicated to providing exceptional customer service, and we pride ourselves on our
+                    commitment
+                    to our customers. We are always on hand to assist with any questions or concerns you may have, and
+                    we
+                    strive
+                    to ensure that every customer has a positive shopping experience with us.</span></p>
+            <p><span></span></p>
+            <p><span>Thank you for choosing Roovo as your fashion destination. We look forward to helping you express
+                    your
+                    unique style and individuality.</span></p>
+            {{template "basicFooter"}}
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+</script>
+
+</html>

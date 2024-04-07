@@ -1,0 +1,164 @@
+{{define "fake-attempt"}}
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/styles/fake-attempt.css" />
+</head>
+
+<body>
+    <div class="modal whatsapp whatsapp-chat" id="download">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="all_header_wp">
+                    <div class="wp-android">
+                        <div class="wp-android-header">
+                            <div class="modal-header">
+                                <div class="modal-header-child-container">
+                                    <div class="header-icon whatsapp-arrow-img pull-left">
+                                        <img alt="back icon"
+                                            src="https://fakedetail.com/assets/images/telegram-back-icon.png" height="24"
+                                            width="24" loading="lazy">
+                                    </div>
+                                    <div class="modal-title whatsapp-title whatsapp_pro_img">
+                                        <div class="modal-title-img whatsapp-android-img">
+                                            <div class="profile-wrap">
+                                                <img alt="profile" src="https://fakedetail.com/assets/images/profile.jpg"
+                                                    height="40" width="40" loading="lazy">
+                                            </div>
+                                        </div>
+                                        <div class="header-content whatsapp-content-name">
+                                            <span class="name-text">{{.order.User.Phone}}</span>
+                                            <span class="status-text">Online</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="header-icon whatsapp-header-icon whatsapp-header-custom pull-right">
+                                    <img alt="header icon"
+                                        src="https://fakedetail.com/assets/images/whatsapp-android-header-icon.png"
+                                        loading="lazy">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body whatsapp-body whatsapp-body-ios" id="mainbodydiv" data-chat-type="old"
+                    style="background-image:url('/static/assets/whatsapp_bg.webp')">
+
+                    <div class="date-label input-main-div darg-icon">
+                        <span class="date-text date1-text" style="display: block;">Today</span>
+                    </div>
+                    <div class="message is-not message-box darg-icon message-sent" id="message-box1">
+                        <div class="message-container u-table whatsapp-sent" style="display: none;">
+                            <div class="message-message u-tableCell u-alignBottom">
+                                <div class="message-bubble Caret Caret-right whatsapp-caret">
+                                    <div class="message-text whatsapp-text">
+                                        <p class="text-msg">Hi <strong>{{.order.Address.Name}}</strong>, we couldn't deliver your <strong>Roovo</strong> order today. <br/><br/>Items included in the shipment: <strong>{{.Product.Name}}</strong> <br/><br/>Payment Mode: <strong>{{.paymentMethod}}</strong>  <br/><br/>Please help us by selecting your delivery preference: <br/>1 - Reschedule Delivery <br/>2 - No Attempt Made<br/>3 - More Options
+                                        </p><span class="space-ex"></span>
+                                        <div class="msg-activity"><span class="msg-time" data-time="08:42">{{.time}}
+                                                </span>
+                                            <div class="message-status msg-status" data-status="read"><svg
+                                                    viewBox="0 0 16 11" height="11" width="16"
+                                                    preserveAspectRatio="xMidYMid meet" style="fill: #53bdeb;">
+                                                    <path
+                                                        d="M11.0714 0.652832C10.991 0.585124 10.8894 0.55127 10.7667 0.55127C10.6186 0.55127 10.4916 0.610514 10.3858 0.729004L4.19688 8.36523L1.79112 6.09277C1.7488 6.04622 1.69802 6.01025 1.63877 5.98486C1.57953 5.95947 1.51817 5.94678 1.45469 5.94678C1.32351 5.94678 1.20925 5.99544 1.11192 6.09277L0.800883 6.40381C0.707784 6.49268 0.661235 6.60482 0.661235 6.74023C0.661235 6.87565 0.707784 6.98991 0.800883 7.08301L3.79698 10.0791C3.94509 10.2145 4.11224 10.2822 4.29844 10.2822C4.40424 10.2822 4.5058 10.259 4.60313 10.2124C4.70046 10.1659 4.78086 10.1003 4.84434 10.0156L11.4903 1.59863C11.5623 1.5013 11.5982 1.40186 11.5982 1.30029C11.5982 1.14372 11.5348 1.01888 11.4078 0.925781L11.0714 0.652832ZM8.6212 8.32715C8.43077 8.20866 8.2488 8.09017 8.0753 7.97168C7.99489 7.89128 7.8891 7.85107 7.75791 7.85107C7.6098 7.85107 7.4892 7.90397 7.3961 8.00977L7.10411 8.33984C7.01947 8.43717 6.97715 8.54508 6.97715 8.66357C6.97715 8.79476 7.0237 8.90902 7.1168 9.00635L8.1959 10.0791C8.33132 10.2145 8.49636 10.2822 8.69102 10.2822C8.79681 10.2822 8.89838 10.259 8.99571 10.2124C9.09304 10.1659 9.17556 10.1003 9.24327 10.0156L15.8639 1.62402C15.9358 1.53939 15.9718 1.43994 15.9718 1.32568C15.9718 1.1818 15.9125 1.05697 15.794 0.951172L15.4386 0.678223C15.3582 0.610514 15.2587 0.57666 15.1402 0.57666C14.9964 0.57666 14.8715 0.635905 14.7657 0.754395L8.6212 8.32715Z">
+                                                    </path>
+                                                </svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message is-not message-box darg-icon message-receive" id="message-box2">
+                        <div class="message-container u-table whatsapp-received" style="display: none;">
+                            <div class="message-message u-tableCell u-alignBottom">
+                                <div class="message-bubble Caret Caret-left whatsapp-caret">
+                                    <div class="whatsapp-text-img received-carat"><span class="anroid-left-carat"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 12.19" height="21"
+                                                width="12">
+                                                <path d="M1.81,1H7V12.19L.53,3.57C-.53,2.16,0,1,1.81,1Z"
+                                                    style="isolation:isolate;opacity:0.12999999523162842"></path>
+                                                <path class="msg-arrow-left"
+                                                    d="M1.81,0H7V11.19L.53,2.57C-.53,1.16,0,0,1.81,0Z"
+                                                    style="fill:#202c33"></path>
+                                            </svg></span></div>
+                                    <div class="message-text whatsapp-text">
+                                        <p class="text-msg">2 - No Attempt Made</p><span class="space-ex"></span>
+                                        <div class="msg-activity"><span class="msg-time" data-time="08:42">{{.time}}
+                                                </span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message is-not message-box darg-icon message-sent" style="padding-bottom: 1em;" id="message-box1">
+                        <div class="message-container u-table whatsapp-sent" style="display: none;">
+                            <div class="message-message u-tableCell u-alignBottom">
+                                <div class="message-bubble Caret Caret-right whatsapp-caret">
+                                    <div class="message-text whatsapp-text">
+                                        <p class="text-msg">Thank you for letting us know. We will make every effort to expedite the delivery.
+                                        </p><span class="space-ex"></span>
+                                        <div class="msg-activity"><span class="msg-time" data-time="08:42">{{.time}}
+                                                </span>
+                                            <div class="message-status msg-status" data-status="read"><svg
+                                                    viewBox="0 0 16 11" height="11" width="16"
+                                                    preserveAspectRatio="xMidYMid meet" style="fill: #53bdeb;">
+                                                    <path
+                                                        d="M11.0714 0.652832C10.991 0.585124 10.8894 0.55127 10.7667 0.55127C10.6186 0.55127 10.4916 0.610514 10.3858 0.729004L4.19688 8.36523L1.79112 6.09277C1.7488 6.04622 1.69802 6.01025 1.63877 5.98486C1.57953 5.95947 1.51817 5.94678 1.45469 5.94678C1.32351 5.94678 1.20925 5.99544 1.11192 6.09277L0.800883 6.40381C0.707784 6.49268 0.661235 6.60482 0.661235 6.74023C0.661235 6.87565 0.707784 6.98991 0.800883 7.08301L3.79698 10.0791C3.94509 10.2145 4.11224 10.2822 4.29844 10.2822C4.40424 10.2822 4.5058 10.259 4.60313 10.2124C4.70046 10.1659 4.78086 10.1003 4.84434 10.0156L11.4903 1.59863C11.5623 1.5013 11.5982 1.40186 11.5982 1.30029C11.5982 1.14372 11.5348 1.01888 11.4078 0.925781L11.0714 0.652832ZM8.6212 8.32715C8.43077 8.20866 8.2488 8.09017 8.0753 7.97168C7.99489 7.89128 7.8891 7.85107 7.75791 7.85107C7.6098 7.85107 7.4892 7.90397 7.3961 8.00977L7.10411 8.33984C7.01947 8.43717 6.97715 8.54508 6.97715 8.66357C6.97715 8.79476 7.0237 8.90902 7.1168 9.00635L8.1959 10.0791C8.33132 10.2145 8.49636 10.2822 8.69102 10.2822C8.79681 10.2822 8.89838 10.259 8.99571 10.2124C9.09304 10.1659 9.17556 10.1003 9.24327 10.0156L15.8639 1.62402C15.9358 1.53939 15.9718 1.43994 15.9718 1.32568C15.9718 1.1818 15.9125 1.05697 15.794 0.951172L15.4386 0.678223C15.3582 0.610514 15.2587 0.57666 15.1402 0.57666C14.9964 0.57666 14.8715 0.635905 14.7657 0.754395L8.6212 8.32715Z">
+                                                    </path>
+                                                </svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="all_footer_wp" style="display: block">
+                        <div class="whatapp-android-footer add-message-input-btn">
+                            <div class="post_write_comment">
+                                <div class="txt">
+                                    <div class="text_block">
+                                        <div class="comment">
+                                            <div class="img">
+                                                <svg class="icon-dark" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                    viewBox="0 0 24.5 24.5" style="enable-background:new 0 0 24.5 24.5;"
+                                                    xml:space="preserve" height="24" width="24">
+                                                    <circle fill="#202c33" cx="12.2" cy="12.2" r="12"></circle>
+                                                    <circle fill="#90A4AE" cx="12.2" cy="12.2" r="10.2"></circle>
+                                                    <ellipse fill="#202c33" cx="9.2" cy="9.7" rx="1.6" ry="2.1"></ellipse>
+                                                    <path fill="#202c33"
+                                                        d="M5.7,13.3c0-0.3-0.1,5.7,6.6,6.1c6.6-0.3,6.6-6.1,6.6-6.1C12.3,14.9,5.7,13.3,5.7,13.3z M12.5,16.7 c-3.8,0-5.9-1.3-6.1-2.1c0,0,6.4,1.2,11.6,0C18,14.5,17.3,16.7,12.5,16.7z">
+                                                    </path>
+                                                    <ellipse fill="#202c33" cx="15.6" cy="9.7" rx="1.6" ry="2.1"></ellipse>
+                                                </svg>
+                                            </div>
+                                            <div class="pull-left text-wrcommenttext add-message-input-btn">
+                                                Message
+                                            </div>
+                                            <div class="pull-right text-right whatsapp-comment-bar">
+                                                <img alt="whatsapp comment"
+                                                    src="https://fakedetail.com/assets/images/whatsapp-chat-android-footer-icon.svg?1.2"
+                                                    height="66" width="18" loading="lazy">
+                                            </div>
+                                            <div class="whatsapp-recoder">
+                                                <img alt="whatsapp recoder"
+                                                    src="https://fakedetail.com/assets/images/whatsapp-recoder.svg?117"
+                                                    loading="lazy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{{end}}

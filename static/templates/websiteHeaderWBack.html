@@ -1,0 +1,22 @@
+{{define "websiteHeaderWBack"}}
+<style>
+    .header {
+        justify-content: flex-start !important;
+    }
+</style>
+<script async src="/static/js/back.js"></script>
+<div class="headerDiv">
+    <a onclick="sendTracking('Back CTA Clicked'); back()">
+        <button class="backButton">
+            <img src="/static/assets/arrow-back.svg">
+        </button></a>
+</div>
+<div class="headerDiv name">
+    <h1>{{.head}}</h1>
+</div>
+{{if .rightButtons}}
+<div class="headerDiv rightDiv">
+    <a class="rightButton" href="/wishlist"><img src="/static/assets/images/heart-black.svg"></a>
+</div>
+{{end}}
+{{end}}

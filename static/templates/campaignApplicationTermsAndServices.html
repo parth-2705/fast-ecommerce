@@ -1,0 +1,175 @@
+{{define "campaignApplicationTermsAndServices"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/global.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/apply/{{.campaignID}}/3">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+                <div>Application</div>
+            </div>
+            <div>
+                <img src="/static/assets/images/campaign-application-4.svg" style="width: 100%;" />
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                    <div class="campaignContent" style="text-align: center;">
+                        <div>Terms of Service</div>
+                    </div>
+                    <div class="tAndCContainer">
+                        By participating in the campaign, you agree to the following:
+                        <br/><br/>
+                        1) You will purchase product(s) from the brand as per your choice, in exchange, you will promote the products as agreed in content guidelines. Upon successful completion of the campaign, the cost of product will be refunded back to you.
+                        <br/><br/>
+                        2) Your deliverables for this campaign are to be selected.
+                        <br/><br/>
+                        3) You agree to submit content for this collaboration within 7 days of receiving the products from the brand and complete it with posting within 15 days of receiving the products.
+                        <br/><br/>
+                        4) You agree and completely understand that any lapse in the above conditions might result in legal action from our side.
+                        <br/><br/>
+                        5) You understand that your performance and ethics during every collaboration are recorded and observed, and will affect all future collaborations we do with you.
+                        <br/><br/>
+                        6) You must comply to a basic code of conduct throughout this collaboration and must keep responding and communicating with our representatives.
+                        <br/><br/>
+                        7) If you deny or fail to deliver the agreed content as promised, Roovo has the right to deny refund initiation for the product.
+                    </div>
+                    <div class="rowFlex mt-05" style="margin-left: 1em;">
+                        <input type="checkbox" style="cursor: pointer;" id="terms" />
+                        <div class="addressText">I agree to the Terms of Service</div>
+                    </div>
+            </div>
+            <div class="noAccountConnectedPopUpContainer" id="noAccountPopUp">
+                <div class="noAccountPopUp">
+                    Please agree to the Terms to continue
+                </div>
+            </div>
+            <div class="footer campaignFooterContainer">
+                <div onclick="handleContinue(event)" style="cursor: pointer;">
+                    <div class="campaignFooterCTA">
+                        Submit
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    <script>
+        var campaignID = {{.campaignID}}
+        var influencerID = {{.influencer.ID}}
+
+
+        console.log(campaignID, {{.campaignID}})
+        console.log(influencerID ,{{.influencer.ID}})
+
+        async function handleContinue(event){            
+            const terms = document.getElementById("terms")
+            
+            if (terms.checked){
+                await submitApplication()
+                return
+            }else{
+                const popup = document.getElementById("noAccountPopUp")
+                // Show the popup
+                popup.style.display = "block";
+                
+                // Set a timeout to hide the popup after 2 seconds
+                setTimeout(function() {
+                    popup.classList.add("fade-out");
+                    
+                    // Remove the popup from the DOM after fade out
+                    setTimeout(function() {
+                    popup.style.display = "none";
+                    popup.classList.remove("fade-out");
+                    }, 1000); // Wait for fade out transition to complete (1s)
+                }, 2000); // Wait for 2 seconds
+            }
+            return
+        }
+
+        async function submitApplication(){
+            let data = { campaignID,influencerID }
+            fetch(`/influencer/campaign/apply/${campaignID}/4`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasOwnProperty("error")) {
+                        alert(data.error);
+                        return
+                    }
+                    window.location.assign(`/influencer/campaign/apply/${campaignID}/submit`)
+                    return
+                }).catch(error => {
+                    alert("Invalid request"+error);
+                    return
+                });
+        }
+
+    </script>
+</html>
+{{end}}

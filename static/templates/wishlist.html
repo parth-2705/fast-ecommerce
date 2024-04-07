@@ -1,0 +1,54 @@
+{{define "wishlist"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/wishlist.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Wishlist"}}
+        </div>
+        <div class="scrollableBody padded">
+            {{range .wishlist}}
+            <a class="productUrl" href="/product/{{.Product.ID}}">
+                <div class="product">
+                    <img src='{{getImageURL 500 .Product.Thumbnail}}'></img>
+                    <div class="productDetails">
+                        <h4><span>{{.Product.Brand.Name}}</span></h4>
+                        <h4> {{.Product.Name}}</h4>
+                        <div class="priceContainer">
+                            <div>
+                                {{if ne .Product.Price.MRP .Product.Price.SellingPrice}}<h3>-{{.Product.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                <h2>₹{{.Product.Price.SellingPrice | int}}</h2>
+                            </div>
+                            {{if ne .Product.Price.MRP .Product.Price.SellingPrice}}<h4><del>₹{{.Product.Price.MRP | int}}</del></h4>{{end}}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {{end}}
+        </div>
+    </div>
+    {{template "outer-section"}}
+    <script>
+
+        function categoryDropdown() {
+            const open = document.getElementsByClassName("open")[0]
+            const categoryOptions = document.getElementsByClassName("categoryOptions")[0]
+            open ? categoryOptions.classList.remove("open") : categoryOptions.classList.add("open")
+        }
+    </script>
+
+</body>
+{{template "tracking"}}
+
+</html>
+{{end}}

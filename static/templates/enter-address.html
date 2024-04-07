@@ -1,0 +1,454 @@
+{{define "enter-address"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!-- load bootstrap styles optimally -->
+    <title>Roovo - {{if .new}} Add {{else}} Edit {{end}} Address</title>
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/form.css" />
+
+    <script async defer src="/static/js/back.js"></script>
+
+    <!-- in styles set the viewport to be only of mobile size, no desktop site supported -->
+    <style>
+        .light-green-bg {
+            background: #F1FAF0;
+        }
+
+        .dark-green-text {
+            color: #282828;
+        }
+
+        .light-grey-bg {
+            background: #FAFAFA;
+        }
+
+        .amigo-red-button {
+            background: #201254;
+            color: #fff;
+            border: 1px solid #201254;
+        }
+
+        .amigo-red-text {
+            color: #201254;
+        }
+
+        .text-smaller {
+            font-size: 0.9rem;
+        }
+
+        .quantity .col {
+            padding: 0 5px;
+        }
+
+        .spacer {
+            height: 8px;
+            background: #E9E9E9;
+            margin-top: 1.5rem;
+            margin-bottom: 0rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0rem;
+        }
+
+        .content-margin {
+            margin-top: 0.1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        u.dotted {
+            border-bottom: 1px dotted #000;
+            text-decoration: none;
+        }
+
+        u.green-dotted {
+            border-bottom: 1px dotted #28a745;
+            text-decoration: none;
+        }
+
+        strong.small {
+            font-weight: bolder;
+        }
+
+        .setDefaultRadio {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.25em;
+            margin: 1em 0.25em 0;
+        }
+
+        .setDefaultRadio>input {
+            height: 1em;
+            width: 1em;
+            cursor: pointer;
+        }
+
+        .setDefaultRadio>p {
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 16px;
+            color: #282828;
+            margin: 0;
+        }
+
+        .mainLabel {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 19px;
+            color: #282828;
+            margin: 1em 0
+        }
+
+        .semiMainLabel {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 16px;
+            color: #282828;
+            margin-bottom: 0.25em;
+            margin-top: 0.5em;
+        }
+
+        .mainParent {
+            display: flex;
+            align-items: center;
+            gap: 0.25em;
+        }
+
+        .container {
+            /* overflow: scroll; */
+        }
+
+        .header-label {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 22px;
+            color: #282828;
+            margin: 0.5em 0;
+        }
+
+        .local-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column">
+    <div id="body">
+
+        <div class="header">
+            {{if .new}} {{template "websiteHeaderWBack" dict "head" "Add New Address"}}{{else}}{{template
+            "websiteHeaderWBack" dict "head" "Edit Address"}}{{end}}
+        </div>
+        <div class="scrollableBody">
+            <div class="container">
+                <form id="details-form" onsubmit="event.preventDefault()">
+                    <div class="">
+                        <div class="form-group-address">
+                            <!-- name input -->
+                            <label for="name" class="semiMainLabel">Name</label>
+                            <input type="text" name="name" id="name" class="roovo-input" {{if .new}}
+                                value="{{.user.Name}}" {{else}} value="{{.address.Name}}" {{end}}>
+                        </div>
+                        <div class="form-group-address">
+                            <!-- phone input -->
+                            <!-- <label for="phone" class="semiMainLabel">Mobile Number</label> -->
+                            <div class="phone-input">
+                                <!-- <div class="countrycode">+91</div> -->
+                                <input type="hidden" name="phone" id="phone" {{if .new}}
+                                    value="{{substring .user.Phone 3 11}}" {{else}}
+                                    value="{{substring .address.Phone 3 11}}" {{end}} class="roovo-input"
+                                    onkeypress="mobileValidation(event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="form-group-address">
+                            <!-- pincode input -->
+                            <label for="pincode" class="semiMainLabel">Pin Code</label>
+                            <input type="tel" onkeypress="pincodeValidation(event)" name="pincode" id="pincode"
+                                class="roovo-input" value="{{.address.PinCode}}">
+                        </div>
+                        <div class="form-group-address">
+                            <!-- House number input -->
+                            <label for="houseArea" class="semiMainLabel">House No, Building, Street, Area</label>
+                            <input type="text" name="houseArea" id="houseArea" class="roovo-input"
+                                value="{{.address.HouseArea}}">
+                        </div>
+                        <div class="flexer">
+                            <div>
+                                <!-- City input -->
+                                <label for="city" class="semiMainLabel">City / District</label>
+                                <input type="text" name="city" id="city" class="roovo-input" value="{{.address.City}}">
+                            </div>
+                            <div>
+                                <!-- State input -->
+                                <label for="state" class="semiMainLabel">State</label>
+                                <!-- state is a dropdown -->
+                                <select name="state" id="state" class="roovo-input">
+                                    {{range $state := .states}}
+                                    <option value="{{$state}}" {{if eq $.address.State $state}} selected {{end}}>
+                                        {{$state}}
+                                    </option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setDefaultRadio">
+                            <!-- is Default check -->
+                            <input type="checkbox" name="isDefault" id="isDefault" checked />
+                            <p>Set as Default Address</p>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+        <!-- Create a stick footer here with a Place Order button -->
+        <footer class="footer ">
+            <!-- <div class="container"> -->
+            <div class="place-order py-3 px-3">
+                <button type="button" onclick="submit({{.new}},{{.address.ID}})"
+                    class="btn btn-primary roovo-button btn-lg btn-block"><small>
+                        {{if .new}}Add{{else}}Save{{end}} Address</small></button>
+            </div>
+            <!-- </div> -->
+        </footer>
+    </div>
+    {{template "outer-section"}}
+</body>
+<!-- write a script that loads after the page loads -->
+{{template "tracking"}}
+<script>
+    var sendingAddress = false;
+
+    function mobileValidation(event) {
+        const charCode = event.which || event.keyCode;
+        if ((charCode < 48 || charCode > 57)) {
+            console.log("Invalid Character Added ", charCode)
+            event.preventDefault();
+            return;
+        }
+        let phoneElem = document.getElementById('phone');
+        if (event.target.value.length >= 10) {
+            phoneElem.value = event.target.value.substring(0, 10);
+            event.preventDefault();
+        }
+    }
+
+    function pincodeValidation(event) {
+        const charCode = event.which || event.keyCode;
+        if ((charCode < 48 || charCode > 57)) {
+            console.log("Invalid Character Added ", charCode)
+            event.preventDefault();
+            return;
+        }
+        let pincodeElem = document.getElementById('pincode');
+        if (event.target.value.length >= 6) {
+            pincodeElem.value = event.target.value.substring(0, 6);
+            event.preventDefault();
+        }
+    }
+
+    function selectElement(id, valueToSelect) {
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
+
+    function validateIndianMobileNumber(mobileNumber) {
+        // Remove any non-digit characters from the phone number
+        mobileNumber = mobileNumber.replace(/\D/g, '');
+
+        // If the phone number starts with "91", remove the first two digits
+        if (mobileNumber.startsWith('91')) {
+            mobileNumber = mobileNumber.slice(2);
+        }
+        const regex = /^[6-9]\d{9}$/;
+        // return only boolean value
+        return regex.test(mobileNumber);
+    }
+
+    async function validatePincode(pincode) {
+        console.log("pincode:",pincode);
+        if (pincode.length === 6 && !isNaN(pincode)) {
+                // make a request to the api
+                let resp=await fetch(`/address/pincodes/${pincode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.hasOwnProperty("error")) {
+                            return false
+                        }
+                        return true
+                    }).catch(error => {
+                        return false
+                    });
+                    return resp;
+            }else{
+                return false
+            }
+    }
+
+    // function that gets the last url segment
+    function getLastUrlSegment() {
+        // get the url
+        const url = window.location.href;
+        // split the url by /
+        const urlSegments = url.split("/");
+        // return the last segment
+        return urlSegments[urlSegments.length - 1];
+    }
+
+    // write your code here
+    // wait for the page to load
+    document.addEventListener("DOMContentLoaded", () => {
+        sendTracking("add new address form")
+        // add event listener to pincode that listens for change, keyup, paste and input
+        document.querySelector("#pincode").addEventListener("keyup", () => {
+            console.log("fired")
+            // get the pincode
+            const pincode = document.querySelector("#pincode").value;
+            // check if length is 6 and only numbers
+            if (pincode.length === 6 && !isNaN(pincode)) {
+                // make a request to the api
+                fetch(`/address/pincodes/${pincode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.hasOwnProperty("error")) {
+                            alert("Invalid Pincode");
+                            return
+                        }
+                        // check if the data is valid
+                        const city = data.city;
+                        const state = data.state;
+                        // set the city and state
+                        document.querySelector("#city").value = city;
+                        // select the state option with the value
+                        selectElement('state', state)
+                    }).catch(error => {
+                        alert("Invalid Pincode");
+                    });
+            }
+        });
+    });
+
+    function hasQueryParams(url) {
+        return url.includes('?');
+    }
+
+    // on clicking the #save-address button make a post request to /address
+    // before sending the request validate and get data from the forms: contact-details-form and address-form
+    // if the data is valid send the data to the server
+    // if the data is invalid show an alert
+
+    async function submit(newCheck, addressID) {
+        if (sendingAddress) {
+            console.log("Repeat click")
+            return;
+        }
+        sendTracking("Address Added")
+        sendingAddress = true;
+        const detailsForm = document.querySelector("#details-form");
+        // get the data from the forms
+        const detailsFormData = new FormData(detailsForm);
+        // const addressFormData = new FormData(addressForm);
+        // create an object to store the data
+        const data = {};
+        // loop through the contact details form data and add it to the data object
+        for (const [key, value] of detailsFormData.entries()) {
+            data[key] = value;
+        }
+        // loop through the address form data and add it to the data object
+        // check if the data is valid
+        // if (data.name && validateIndianMobileNumber(data.phone) && validatePincode(data.pincode) && data["houseArea"] && data["houseArea"].length>5 && data["streetName"] && data["streetName"].length>5 && data.city && data.state) {
+        // if (true) { // Removed above mentioned validations
+        if(!data.pincode || data["pincode"].length<6){
+            sendingAddress=false;
+            alert("Please enter a valid pincode");
+            return;
+        }
+        if(!data.houseArea || data["houseArea"].length<5){
+            sendingAddress=false;
+            alert("Please enter a valid house area");
+            return;
+        }
+        if(!data.name){
+            sendingAddress=false;
+            alert("Please enter a valid name");
+            return;
+        }
+        var resp=await validatePincode(data.pincode)
+        console.log("This is resp:",resp)
+        if (resp) {
+            // make a post request to /address 
+            data.phone = "+91" + data.phone;
+            console.log("This is data:", data);
+            data["isDefault"] = document.getElementById("isDefault").checked
+            if (newCheck) {
+                fetch(`/addresses`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(async (data) => {
+                        sendingAddress = false;
+                        // response is a redirect 302 object, redirect to the url
+                        const responseData = await data.json()
+                        if (hasQueryParams({{.redirect }})) {
+                    window.location.assign("/" + {{.redirect }} +"&address=" + responseData.id)
+            } else {
+                window.location.assign("/" + {{.redirect }})
+        }
+
+        return
+    }).catch (err=> {
+        console.error("couldn't add the address ", err)
+        sendingAddress = false;
+    });
+            } else {
+        fetch(`/addresses?id=${addressID}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(async (data) => {
+                // response is a redirect 302 object, redirect to the url
+                sendingAddress = false;
+                //window.location.assign("/"+{{.redirect}})
+                const responseData = await data.json()
+                if (hasQueryParams({{.redirect }})) {
+            window.location.assign("/" + {{.redirect }} +"&address=" + responseData.id);
+    }else {
+        window.location.assign("/" + {{.redirect }});
+                        }
+
+    return
+                    }).catch (err=> {
+        console.error("couldn't update the address ", err)
+        sendingAddress = false;
+    });;
+            }
+        } else {
+        sendingAddress = false;
+        alert("Please fill in a valid Pincode");
+    }
+    }
+
+</script>
+
+</html>
+{{end}}

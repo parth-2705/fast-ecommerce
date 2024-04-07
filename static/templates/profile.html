@@ -1,0 +1,98 @@
+{{define "profile"}}
+<html>
+
+<head>
+    <title>Roovo | Profile</title>
+    <link rel="stylesheet" href="/static/styles/profile.css" />
+    <link rel="stylesheet" href="/static/styles/slider.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/homeFooter.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+
+<body>
+    <div id="body">
+        
+        <div class="header">
+            {{template "websiteHeader" dict "trackingMap" .trackingMap}}
+        </div>
+        <div class="scrollableBody">
+            {{if .loggedIn}}
+            <div class="profileSection">
+                <img src="/static/assets/images/profilePage.svg">
+                <div class="profileDetails">
+                    <h3>Roovo User</h3>
+                    <p>{{.phone}}</p>
+                </div>
+            </div>
+            <div class="profileLinks">
+                {{range .profileLinks}}
+                <a class="profileLink" href="{{.Url}}">
+                    <img src="{{.Icon}}" style="width: 24px; height:24px;">
+                    <p>{{.Text}}</p>
+                    <img src="/static/assets/images/chevron-right.svg">
+                </a>
+                {{end}}
+            </div>
+            {{else}}
+            <div class="profileSection" style=" align-items: center;">
+                <img src="/static/assets/images/profilePage.svg">
+                <div class="profileDetails">
+                    <a href="/auth/sign-in-up?next=/profile&back=/profile" onclick="sendTracking('login/Sign Up clicked')"><button class="login roovo-button">Login / Sign Up</button></a>
+                </div>
+            </div>
+            <div class="profileLinks">
+                {{range .profileLinks}}
+                {{ if eq .IsPublic true }}
+                <a class="profileLink" href="{{.Url}}">
+                    {{else}}
+                    <a class="profileLink" href="/auth/sign-in-up?next={{.Url}}">
+                        {{end}}
+                        <img src="{{.Icon}}">
+                        <p>{{.Text}}</p>
+                        <img src="/static/assets/rightArrowBlack.svg">
+                    </a>
+                    {{end}}
+            </div>
+            {{end}}
+            <div class="space"></div>
+            <div class="publicLinks">
+                {{range .publicLinks}}
+
+                <a class="publicLink" href="{{.Url}}">
+                    <p>{{.Text}}</p>
+                </a>
+                {{end}}
+            </div>
+            {{if .loggedIn}}
+            <a href="/auth/sign-out"><button class="logOut roovo-outline-button">Log Out</button></a>
+            {{end}}
+        </div>
+        <div class="footer">
+            <a class="footerButton" id="home" href="/">
+                <img src=" /static/assets/images/home.svg">
+                <p>Home</p>
+            </a>
+            <a class="footerButton" id="categories" href="/categories">
+                <img src="/static/assets/images/categories.svg">
+                <p>Categories</p>
+            </a>
+            <!-- <a class="footerButton" id="chat" href="/chat" onclick="sendTracking('chat CTA clicked')">
+                <img src="/static/assets/chat-icon.svg">
+                <p>Chat</p>
+            </a> -->
+            <a class="footerButton" id="profile" href="/profile">
+                <img src="/static/assets/images/profile-filled.svg">
+                <p class="activeFooter">Profile</p>
+            </a>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+
+</html>
+{{end}}

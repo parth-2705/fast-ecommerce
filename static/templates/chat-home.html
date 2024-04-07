@@ -1,0 +1,184 @@
+{{define "chat-home"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/chat-home.css">
+    <script src="https://cdn.jsdelivr.net/npm/stream-chat"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+    
+    <link rel="stylesheet" href="/static/styles/chat.css" />
+    <div class="header left-header">
+        <a href="/"><img src="/static/assets/arrow-back.svg" /></a>
+        <h3>Chats</h3>
+    </div>
+    <div class="scrollableBody">
+        {{if eq (len .chatsData) 0}}
+            <div class="empty-area">
+                <img src="/static/assets/empty-chat.svg"/>
+                <h2>Your chats will appear here</h2>
+                <p>Start chatting with sellers to learn more about the products</p>
+                {{.chats}}
+            </div>
+        {{else}}
+        <div class="conversations">
+            <h6>Conversations</h6>
+            <!-- loop over chat data to render chat messages -->
+            <div id="chats">
+            
+
+            {{ range .chatsData }}
+            {{ if eq .ChatType "support" }}
+                <a href="/chat/{{.ChatType}}">
+                    <div class="chat" id="{{.ChatID}}">
+                    <div class="left">
+                        <img src="/static/icons/chat_human.svg" alt="" srcset="">
+                        <div class="chat-content">
+                            <span class="chat-header">Customer service</span>
+                            <p>{{.LastMessage}}</p>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="unread-count unread" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {{else if eq .ChatType "product-support" }}
+                <a href="/chat/{{.ChatType}}?variant_id={{.Variant.ID}}">
+                    <div class="chat" id="{{.ChatID}}">
+                        <div class="left">
+                            <img src="/static/icons/chat_human.svg" alt="" srcset="">
+                            <div class="chat-content">
+                                <span class="chat-header">Product Support</span>
+                                <p>{{.LastMessage}}</p>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="unread-count unread" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {{end}}
+            {{end}}
+
+        </div>
+            </div>
+        {{end}}
+
+        
+    </div>
+    <div class="footer">
+        <div class="footer-cover">
+            <a href="/chat/support">
+            <button class="footer-content">
+                <div class="main-section">
+                    <img src="/static/assets/chat-icon-black.svg"/>
+                    <h3>Chat with Roovo support</h3>
+                </div>
+                <div class="subtitle">
+                    Average response time: 5 minutes or less
+                </div>
+            </button>
+            </a>
+        </div>
+    </div>
+</div>
+{{template "outer-section"}}
+</body>
+<script>
+    let watchers = {};
+    let user = "{{.user.ID}}";
+    async function getChannels() {
+    const chatClient = StreamChat.getInstance("{{.StreamKey}}");
+    await chatClient.connectUser({
+        "id": "{{.UserID}}",
+        "name": "{{.UserName}}",
+
+    }, {{.UserToken}});
+    let filter = {};
+    let sort = {};
+    {{if ne (len .channelTypes) 0}}
+
+    {{range .channelTypes}}
+
+    filter =  {type: '{{.}}', members: { $in: [user] }};
+    sort = [{ last_message_at: -1 }];
+    
+    watchers["{{.}}"] = await chatClient.queryChannels(filter, sort, {
+        watch: true,
+        state: true,
+    });
+
+    {{end}}
+
+    {{end}}
+
+    console.log(watchers);
+
+    if (watchers["support"]) {
+        if ((watchers["support"].length) == 1) {
+            // get unread count
+            let unreadCount = watchers["support"][0].state.unreadCount;
+            console.log(watchers["support"][0].state)
+            console.log(unreadCount, "unread count");
+            if (unreadCount > 0) {
+                console.log("unread count is greater than 0");
+                let chat = document.getElementById(watchers["support"][0].id);
+                if (chat) {
+                    chat.querySelector(".unread-count").style.display = "block";
+                    chat.querySelector(".unread-count").style.display = "block";
+                    chat.querySelector(".unread-count").innerHTML = unreadCount;
+                }
+            }
+            watchers["support"][0].on('message.new', (event) => {
+                console.log(event, "event 2");
+                let chat = document.getElementById(event.channel_id);
+                if (chat) {
+                    chat.querySelector(".chat-content p").innerHTML = event.message.text;
+                    chat.querySelector(".unread-count").style.display = "block";
+                    unreadCount = chat.querySelector(".unread-count").innerHTML || 0;
+                    chat.querySelector(".unread-count").innerHTML = parseInt(unreadCount) + 1;
+                }
+            });
+        }
+    }
+
+    if (watchers["product-support"]) {
+        // loop over product support channels
+        for (let i = 0; i < watchers["product-support"].length; i++) {
+            let channel = watchers["product-support"][i];
+            let variantID = channel.data.variant_id;
+            let chat = document.getElementById(channel.id);
+            if (chat) {
+                let unreadCount = channel.state.unreadCount;
+                if (unreadCount > 0) {
+                    chat.querySelector(".unread-count").style.display = "block";
+                    chat.querySelector(".unread-count").innerHTML = unreadCount;
+                }
+                channel.on('message.new', (event) => {
+                    console.log(event);
+                    let chat = document.getElementById(event.channel_id);
+                    if (chat) {
+                        chat.querySelector(".chat-content p").innerHTML = event.message.text;
+                        chat.querySelector(".unread-count").style.display = "block";
+                        // get unread count from html
+                        unreadCount = chat.querySelector(".unread-count").innerHTML || 0;
+                        chat.querySelector(".unread-count").innerHTML = parseInt(unreadCount) + 1;
+                    }
+                });
+            }
+        }
+    } 
+
+    }
+    getChannels();
+</script>
+</html>
+{{end}}

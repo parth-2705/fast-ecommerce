@@ -1,0 +1,232 @@
+{{define "campaignApplicationSelectProductsPage"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/card.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/apply/{{.campaign.ID}}">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+                <div>Application</div>
+            </div>
+            <div>
+                <img src="/static/assets/images/campaign-application-2.svg" style="width: 100%;" />
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                        <div class="campaignContent">
+                            <div class="products" id="productList">
+                                {{range $i, $a := .campaign.ProductArray}}
+                                <div class="productUrl">
+                                    <div class="product" style="margin-bottom: 0.5em;">
+                                        <img {{if gt $i 3}}loading="lazy" {{end}}
+                                            src='{{getImageURL 500 $a.Thumbnail}}'/>
+                                            <!-- productSelected -->
+                                        <div class="productDetails" id="productSelect{{$i}}">
+                                            <h4><span>{{$.campaign.Brand.Name}}</span></h4>
+                                            <h4> {{$a.Name}}</h4>
+                                            <div class="priceContainer">
+                                                <div style="margin:1em 0 0.5em;align-items:center;position:relative;">
+                                                    {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                                    <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                                    <img src="/static/assets/selected-card.svg" style="position:absolute;right:0.5em;display:none;" />
+                                                </div>
+                                                {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="productSelectButton productUnselectButton" id="productSelectButton{{$i}}" onclick="selectProduct({{$i}})">
+                                        Select
+                                    </button>
+                                    <input type="checkbox" style="display:none" id="isSelected{{$i}}" />
+                                </div>
+                                {{end}}
+                            </div>
+                        </div>
+                </div>
+                <div class="noAccountConnectedPopUpContainer" id="noAccountPopUp">
+                    <div class="noAccountPopUp">
+                        Please select only one product to continue
+                    </div>
+                </div>
+                <div class="footer campaignFooterContainer">
+                    <div onclick="handleContinue(event)" style="cursor: pointer;">
+                        <div class="campaignFooterCTA">
+                            Continue
+                        </div>
+                    </div>
+                </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    <script>
+        var campaignID = {{.campaign.ID}}
+        var influencerID = {{.influencer.ID}}
+        var productArray = {{.campaign.ProductArray}}
+        var selectedProduct = {{.selectedProduct}}
+
+        function selectDefaultProduct(){
+            console.log("s",selectedProduct,{{.selectedProduct}})
+
+            if (selectedProduct.length === 0){
+                return
+            }
+
+            let id = 0;
+            for(let i=0; i<productArray.length; i++){
+                let product = productArray[i]
+                
+                console.log(product.id, selectedProduct,product.id === selectedProduct)
+
+                if(product.id === selectedProduct){
+                    selectProduct(i)
+                    return
+                }
+            }
+        }
+
+        selectDefaultProduct()
+
+        function getSelectedProducts(){
+            console.log("productArray: ",productArray)
+            let selectedProduct = []
+
+            for(let i=0; i<productArray.length; i++){
+                const productSelected =  document.getElementById(`isSelected${i}`)
+                console.log("productSelected: ",productSelected)
+                if (productSelected.checked){
+                    selectedProduct.push(productArray[i])
+                }
+            }
+
+            console.log("selectedProduct: ",selectedProduct)
+            return selectedProduct
+        }
+
+        function selectProduct(id) {
+           const productDetails =  document.getElementById(`productSelect${id}`)
+           const productButton =  document.getElementById(`productSelectButton${id}`)
+           const productSelected =  document.getElementById(`isSelected${id}`)
+
+           if (!productDetails.classList.contains("productSelected")){
+            productDetails.classList.add("productSelected")
+            productButton.innerText = "Unselect"
+            productSelected.checked = true
+        }else{
+            productDetails.classList.remove("productSelected")
+            productButton.innerText = "Select"
+            productSelected.checked = false
+           }
+        }
+
+        async function handleContinue(event){
+
+            let selectedProducts = getSelectedProducts()
+            if (!selectedProducts || selectedProducts.length === 1 || selectedProducts[0].length === 0){
+                await productChoosen(selectedProducts[0].id)
+                return
+            }else{
+                const popup = document.getElementById("noAccountPopUp")
+                // Show the popup
+                popup.style.display = "block";
+                
+                // Set a timeout to hide the popup after 2 seconds
+                setTimeout(function() {
+                    popup.classList.add("fade-out");
+                    
+                    // Remove the popup from the DOM after fade out
+                    setTimeout(function() {
+                    popup.style.display = "none";
+                    popup.classList.remove("fade-out");
+                    }, 1000); // Wait for fade out transition to complete (1s)
+                }, 2000); // Wait for 2 seconds
+            }
+            return
+        }
+
+        function productChoosen(productID){
+            let data = { productID,campaignID,influencerID }
+            fetch(`/influencer/campaign/apply/${campaignID}/2/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasOwnProperty("error")) {
+                        alert(data.error);
+                        return
+                    }
+                    window.location.assign(`/influencer/campaign/apply/${campaignID}/3`)
+                    return
+                }).catch(error => {
+                    alert("Invalid request"+error);
+                    return
+                });
+        }
+
+    </script>
+</html>
+{{end}}

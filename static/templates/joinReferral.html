@@ -1,0 +1,107 @@
+{{define "join-referral"}}
+<html>
+
+<head>
+    <title>Roovo | Referral</title>
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/join-referral.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async defer src="/static/js/back.js"></script>
+
+</head>
+
+
+<body>
+    <div id="body">
+        <div class="scrollableBody">
+            <header class="referral-header">
+                <img src="/static/assets/back-arrow-white.svg" onclick="event.stopPropagation();back()">
+                <div>JOIN REFERRAL PROGRAM</div>
+            </header>
+            <div class="referral-heading-container">
+                <div class="referral-heading-text">Refer and Earn!</div>
+                <div class="referral-heading-sub-text">Many of your friends might not be Roovo users.
+                    Invite them and start earning today!</div>
+            </div>
+            <div class="referral-body-container">
+                <div class="referral-body-sub-container">
+                    <img src="/static/assets/referral-invite.svg"/>
+                    <div class="referral-body-sub-text">
+                        <div>1. </div>
+                        <div>Invite friends to log onto Roovo.in via your link</div>
+                    </div>
+                </div>
+
+                <!-- <div class="referral-body-sub-container" style="margin-bottom:1em;">
+                    <img src="/static/assets/referral-mobile.svg"/>
+                    <div>
+                        <div class="referral-body-sub-text">
+                            <div>2. </div>
+                            <div>Friends log in and place orders with the following benefits to them</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text">30% OFF</span> on the first 3 orders</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text">10% OFF</span> on future orders</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-truck.svg">
+                            <div class="referral-normal-text">Shipping benefits & Easy returns</div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="referral-body-sub-container">
+                    <img src="/static/assets/referral-moneybag.svg"/>
+                    <div>
+                        <div class="referral-body-sub-text">
+                            <div>2. </div>
+                            <div>You get the following benefits when they log in and place order</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight-2 align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text-2">5%</span> commission on friends’ order value</div>
+                        </div>
+                        <!-- <div class="referral-body-sub-text sub-text-highlight-2 align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text-2">₹10</span> for every friend that logs in</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="referral-footer">
+           <button class="referral-btn" onclick="joinProgram(event)">
+                <span>Join Program</span>
+                <img src="/static/assets/back-arrow-white.svg" />
+           </button>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+
+    function joinProgram(event) {
+        event.stopPropagation();
+
+        if ({{.loggedIn}}){
+            fetch("/user/join", { method: "POST" }).then(function (response) {
+                if (response.status == 200) {
+                    window.location.assign("/referral")
+                }
+            })  
+        }else{
+            window.location.assign(`/auth/sign-in-up?next=/referral/join&back=/referral/join`)
+        }
+        return;
+    }
+
+
+</script>
+</html>
+{{end}}

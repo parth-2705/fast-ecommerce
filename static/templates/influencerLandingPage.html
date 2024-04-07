@@ -1,0 +1,211 @@
+{{define "influencerLanding"}}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+            <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+            <link rel="stylesheet" href="/static/styles/outer-section.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+            
+            <!-- <script async defer src="/static/js/back.js"></script> -->
+            <style>
+                #body{
+                    max-width: 420px !important;  
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: stretch;
+                    align-items: stretch;
+                    overflow: hidden;
+                    margin: 0 auto;
+                    margin-top: 10px;
+                    background: #000000;
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column; 
+                }
+                @media only screen and (max-width:2140px){
+                    #body{
+                        height: calc(100vh - 91px);
+                        position: relative;
+                        top:unset;
+                        bottom:unset;
+                        left:unset;
+                        right:unset;
+                    }
+                }
+                @media only screen and (max-width: 1024px) {
+                    #body {
+                        height: 100vh;
+                        margin: 0 auto;
+                        border-radius: 0px;
+                    }
+                }
+                @media only screen and (max-width: 420px) {
+                    #body {
+                        height: unset;
+                        width: 100%;
+                        position: fixed;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+            </style>
+
+        </head>
+        <body>
+            <div id="body">
+                <div class="scrollableBody">
+                    <div class="header">
+                        <img class="backgroundImage" src="/static/icons/backgroundStarfish.svg"/>
+                        <a href="/" style="z-index:2;">
+                            <img class="headingLogo" src="/static/icons/roovo-white.svg"/>
+                        </a>
+                        {{if eq .influencer.ID ""}}
+                        <a href="/influencer/authorize" style="z-index:2;">
+                            <button class="loginHeader">
+                                Login
+                            </button>
+                        </a>
+                        {{else}}
+                        <a href="/auth/sign-out" style="z-index:2;">
+                            <button class="loginHeader">
+                                Logout
+                            </button>
+                        </a>
+                        {{end}}
+                    </div>
+                    <div class="heroSection">
+                        <div class="chip">
+                            Influencer Program
+                        </div>
+                        <div class="heroText">
+                            <span style="color:#BDFF00">Try</span> products,<br/>
+                            <span style="color:#46FFD3">Share </span> with followers,<br/>
+                            <span style="color:#FF619A">Earn</span> rewards.
+                        </div>
+                        <div class="heroSubtitle">
+                            Get cash rewards and free products!
+                        </div>
+                        <img class="heroImage" src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/influencerHero.png"/>
+                        <a href="/influencer/authorize">
+                            <button class="mainCTA">
+                            <div>Join Program</div>
+                                <img src="/static/icons/fancyContinue.svg"/>
+                            </button>
+                        </a>
+                        <div class="explore" onclick="document.getElementById('campaigns').scrollIntoView({behavior:'smooth'})">
+                            <p>Explore Campaigns</p>
+                            <img src="/static/icons/chevronDown.svg"/>
+                        </div>
+                    </div>
+                    
+                    <div class="contentBody">
+                        <div class="subHeading">
+                            What's in it for you?
+                        </div>
+                        <div class="benefits-section">
+                            <img src="https://roovo.in/cdn-cgi/image/width=800,format=auto/https://storage.googleapis.com/roovo-images/rawImages/freeSamples.png"/>
+                            <div>FREE PRODUCT SAMPLES</div>
+                            <img src="https://roovo.in/cdn-cgi/image/width=800,format=auto/https://storage.googleapis.com/roovo-images/rawImages/commissions.png"/>
+                            <div>EARN COMMISSIONS ON ORDERS</div>
+                        </div>
+                        <div class="subHeading"  id="campaigns">
+                            Explore Campaigns
+                        </div>
+                        <div class="campaignCover">
+                            <div class="campaignCard">
+                                <div class="campaignBannerCover">
+                                    <img class="campaignBanner" src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/imgBanner.png"/>
+                                    <div class="loginOptions">
+                                        <div class="loginItem">
+                                            <img src="/static/icons/instagram.svg"/>
+                                        </div>
+                                        <div class="loginItem">
+                                            <img src="/static/icons/youtube.svg"/>
+                                        </div>
+                                        <div class="loginItem">
+                                            <img src="/static/icons/snapchat.svg"/>
+                                        </div>
+                                        <div class="loginItem">
+                                            <img src="/static/icons/twitter.svg"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="campaignContent">
+                                    <div class="brandName">HAUTE SAUCE</div>
+                                    <div class="brandCaption">Premium lifestyle with Haute Sauce bags & accessories</div>
+                                    <div class="brandTags">
+                                        <div class="topRow">
+                                            <div class="minTag">
+                                                <img src="/static/icons/gender.svg"/>
+                                                <p>Male, Female</p>
+                                            </div>
+                                            <div class="minTag">
+                                                <img src="/static/icons/age.svg"/>
+                                                <p>18-25 Years</p>
+                                            </div>
+                                        </div>
+                                        <div class="maxTag">
+                                            <img src="/static/icons/location.svg"/>
+                                            <p>Mumbai, Delhi, Hyderabad, Bengaluru</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="/influencer/authorize">
+                            <button class="mainCTA">
+                                <div>Get Started</div>
+                                <img src="/static/icons/fancyContinue.svg"/>
+                            </button>
+                        </a>
+                        <div class="subHeading" style="margin-top:2em;">
+                            How does it work?
+                        </div>
+                        <img src="https://roovo.in/cdn-cgi/image/width=1200,format=auto/https://storage.googleapis.com/roovo-images/rawImages/works.png" class="works"/>
+                    </div>
+
+                    <div class="influencerFooter">
+                        <div class="topRightHook">
+                            <img src="/static/icons/backgroundStarfish.svg"/>
+                        </div>
+                        <div class="mainFooter">
+                            <div class="heading">
+                                Join the Program
+                            </div>
+                            <div class="heroSubtitle">
+                                Order your sample products today and share it with your fans!
+                            </div>
+                            <a href="/influencer/authorize">
+                                <button class="mainCTA">
+                                    <div>Join Program</div>
+                                <img src="/static/icons/fancyContinue.svg"/>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="subFooter">
+                            <div class="footerLogo">
+                                <img src="/static/icons/roovo-gray.svg" />
+                            </div>
+                            <div class="footerSubtitle">
+                                © All rights reserved. Roovo.in 2023
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{template "outer-section"}}
+        </body>
+    </html>
+{{end}}

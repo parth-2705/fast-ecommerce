@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <div id="body">
+    {{template "fullPageLoaderWText"}}
+    <div id="message"></div>
+    
+    <script>
+      const orderId = new URLSearchParams(window.location.search).get('orderId');
+      const paymentId = new URLSearchParams(window.location.search).get('paymentId');
+
+      url = "{{.StatusUrl}}"
+      c = new WebSocket(url)
+      c.onmessage = function (e) {
+        console.log(e.data)
+        if (e.data == "Succeeded") {
+          document.getElementById("message").innerHTML = "Payment successful"
+          window.location.href = "/order/success?orderId=" + orderId
+        } else if (e.data == "Failed") {
+          document.getElementById("message").innerHTML = "Payment failed"
+          window.location.href = "/order/failed?orderId=" + orderId
+        } else if (e.data == "Processing") {
+          document.getElementById("message").innerHTML = "Payment pending"
+          window.location.href = "/order/pending?orderId=" + orderId
+        } else if (e.data != "Initiated") {
+          document.getElementById("message").innerHTML = "Payment failed"
+          window.location.href = "/order/failed?orderId=" + orderId
+        }
+      }
+
+      // on open send the paymentId as json string to the server
+      c.onopen = function (e) {
+        c.send(JSON.stringify({paymentId: paymentId}))
+      }
+
+      c.onclose = function (e) {
+        console.log("Connection closed")
+      }
+    </script>
+</div>
+{{template "outer-section"}}
+</body>
+</html>

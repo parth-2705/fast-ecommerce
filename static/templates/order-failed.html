@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/animate.css">
+    <title>Order Successfully Placed! </title>
+    <style>
+        .order-details > span {
+            margin-right: 0.7rem;
+            font-size: 1.1rem;
+        }
+        .product-name {
+            line-height: 1.2;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="body">
+        {{ template "viewPort" . }}
+        <div class="light-red-background h-100">
+            <div class="container">
+                <div class="row bg-white" style="padding: 3rem 0;">
+                    <div class="col-12 text-center">
+                        <div class="status-image pulsate-bck">
+                            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_302_1159)">
+                                <path d="M36 72C55.8822 72 72 55.8822 72 36C72 16.1177 55.8822 0 36 0C16.1177 0 0 16.1177 0 36C0 55.8822 16.1177 72 36 72Z" fill="#F15249"/>
+                                <path d="M20.8955 52.2398L40.3151 71.6594C56.6684 69.7288 69.6147 56.896 71.6589 40.5426L52.1258 21.0095L20.8955 52.2398Z" fill="#AD0E0E"/>
+                                <path d="M53.0343 43.9495C54.6242 45.5394 54.6242 48.265 53.0343 49.8549L49.8545 53.0347C48.2646 54.6246 45.539 54.6246 43.9491 53.0347L18.9649 28.0505C17.375 26.4606 17.375 23.735 18.9649 22.1451L22.2583 18.8517C23.8482 17.2618 26.5737 17.2618 28.1636 18.8517L53.0343 43.9495Z" fill="white"/>
+                                <path d="M39.8608 30.6625L30.6621 39.8612L43.9492 53.0347C45.5391 54.6246 48.2646 54.6246 49.8545 53.0347L53.1479 49.7413C54.7378 48.1514 54.7378 45.4259 53.1479 43.836L39.8608 30.6625Z" fill="#D6D6D6"/>
+                                <path d="M43.9491 18.9653C45.539 17.3754 48.2646 17.3754 49.8545 18.9653L53.1479 22.2586C54.7378 23.8485 54.7378 26.5741 53.1479 28.164L28.0501 53.0347C26.4602 54.6246 23.7346 54.6246 22.1447 53.0347L18.9649 49.8548C17.375 48.2649 17.375 45.5394 18.9649 43.9495L43.9491 18.9653Z" fill="white"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_302_1159">
+                                <rect width="72" height="72" fill="white"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="status-title my-3">
+                            <h3>Sorry, your payment was <br> unsuccessful.</h3>
+                        </div>
+                        <div class="status-text roovo-dark-color">
+                        Please check that the information entered is correct if the problem persists, please contact your bank for further assistance. Thank you.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Create a stick footer here with a Place Order button -->
+            <footer class="footer mt-auto py-1">
+                <!-- <div class="container"> -->
+                <div class="place-order pt-2 px-3">
+                    <button type="button" id="save-address" class="btn btn-primary roovo-red-button btn-lg btn-block" onclick="window.location.href='/order/{{.order.ID}}'">
+                        <small>Try Again &nbsp; 
+                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 11L6 6L0.999998 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </small>
+                    </button>  
+                </div>
+
+                <div class="text-center mt-2 mb-3">
+                    <a href="/contact-us" class="roovo-red2-color font-weight-600">Contact Us</a>
+                </div>
+                <!-- </div> -->
+            </footer>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+</html>

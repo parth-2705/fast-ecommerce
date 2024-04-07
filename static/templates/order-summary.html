@@ -1,0 +1,533 @@
+{{define "order-summary"}}
+<html>
+
+<head>
+    {{template "title" "Order Summary"}}
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/global.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/orderSummary.css" />
+    <link rel="stylesheet" href="/static/styles/quantity.css" />
+    <link rel="stylesheet" href="/static/styles/loader.css?randomizer={{randomizer}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            <a href='/product/{{.product.ID}}'><img src="/static/assets/arrow-back.svg" alt="back"
+                    style="cursor:pointer;" /></a>
+            <h1>Order Summary</h1>
+        </div>
+        <div class="scrollableBody bodyFill position-relative" style="background-color: #E9E9E9;">
+
+            <!-- Full page hidden loader -->
+            <div class="loader-hide loader new-loader">
+                <div class="loader-container">
+                    <div class="spinner" id="loader-container"></div>
+                </div>
+            </div>
+            <p class="payment-discount">Extra <span style="color: #FFE161; font-weight: 500;">5% Off </span> on Prepaid Orders upto ₹30</p>
+            <section class="summary-section">
+                <div class="product-description-heading">Product Description</div>
+                <div class="rowFlex align-start" id="{{.variant.ID}}">
+                    <img src='{{getImageURL 500 .product.Thumbnail}}' class="product-image" alt="product-image">
+                    <div>
+                        {{if .hasActiveDeal}}
+                        <div class="group-deal-text">
+                            GROUP DEAL
+                        </div>
+                        {{end}}
+                        <h2 class="product-name-text">{{.product.Brand.Name}}</h2>
+                        <p class="product-description-text">{{.product.Name}}</p>
+                        {{template "variantSummary" dict "product" .product "variant" .variant}}
+                        {{if .hasActiveDeal}}
+                        <div class="rowFlex" style="margin: 0.25em 0;">
+                            <h3 class="product-deal-price">₹{{.deal.MemberPrice}}</h3>
+                            <del class="product-mrp-price">₹{{.variant.Price.MRP}}</del>
+                            <div class="product-deal-off">{{ calculateDiscount .deal.MemberPrice .variant.Price.MRP |
+                                int}}% OFF</div>
+                        </div>
+                        {{else}}
+                        <div class="rowFlex" style="margin: 0.25em 0;">
+                            <h3 class="product-deal-price">₹{{.variant.Price.SellingPrice}}</h3>
+                            <del class="product-mrp-price">₹{{.variant.Price.MRP}}</del>
+                            <div class="product-deal-off">{{.variant.Price.DiscountPercentage | int}}% OFF</div>
+                        </div>
+                        {{end}}
+                        {{template "quantity" dict "quantity" .quantity}}
+                    </div>
+
+                </div>
+
+            </section>
+
+            {{if .hasActiveDeal}}
+            <section class="summary-section">
+                <a href="/deal/{{.variant.ID}}/{{.deal.ID}}" class="rowFlex justify-between" style="margin-bottom:1em;">
+                    <div class="product-description-heading" style="margin:0 !important;">Group Details</div>
+                    <img src="/static/assets/rightArrowBlack.svg" alt="details" />
+                </a>
+                <div class="rowFlex justify-between">
+                    <div class="price-details-text-14">Infinity Warriors</div>
+                    <div class="rowFlex">
+                        <div class="rowFlex">
+                            <img src="/static/icons/icon-team.svg" class="cta-icon" />
+                            <div class="group-buy-time-left">1 left</div>
+                        </div>
+                        <div class="rowFlex" style="width: 120px;">
+                            <img src="/static/icons/icon-time.svg" class="cta-icon" />
+                            <div class="group-buy-time-left time-width">Ends in <span id="dealExpiry"
+                                    class="roovo-color">{{timeLeft .deal.EndsAt}}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {{end}}
+
+            {{if eq .coupon.ID ""}}
+            <section class="summary-section">
+                <a class="apply-coupon" href="/order/coupon">
+                    <img src="/static/assets/images/coupon.svg">
+                    <div class="product-description-heading">Apply Coupon</div>
+                    <img src="/static/assets/images/chevron-right.svg">
+                </a>
+            </section>
+            {{else}}
+            <section class="summary-section">
+                <div class="apply-coupon">
+                    <img src="/static/assets/images/coupon.svg">
+                    <div>
+                        <h5>{{.coupon.Code}} applied!</h5>
+                        <p class="product-description-text">Saving <span
+                                class="discount-color font-weight-600">₹{{.price.Coupon.DiscountAmount}}</span> with
+                            this coupon</p>
+                    </div>
+                    <a onclick="removeCoupon()">
+                        <p class="roovo-color price-details-text-14 font-weight-600">Remove</p>
+                    </a>
+                </div>
+            </section>
+            <div class="coupon-backdrop">
+                <div class="modal-coupon padded">
+                    <img src="/static/assets/images/success.svg">
+                    <h3>'{{.coupon.Code}}' Applied!</h3>
+                    <p class="product-description-text">You're saving <span
+                            class="discount-color">₹{{.price.Coupon.DiscountAmount}}</span> with this coupon</p>
+                    <div class="space-bar"></div>
+                    <h4 class="roovo-color" onclick="hidePopup()">Great!</h4>
+                </div>
+            </div>
+            {{end}}
+
+            <section class="summary-section">
+                <div class="rowFlex justify-between">
+                    <div class="product-description-heading">Address</div>
+                    <span class="price-details-text-14 roovo-color" style="cursor:pointer;font-weight:600;"
+                        onclick="openModal();sendTracking('change address');" id="open-modal">
+                        Change
+                    </span>
+                </div>
+                <div class="price-details-text-14" id="address-name">{{.address.Name}}</div>
+                <div class="product-description-text pt-05" id="address-details">{{.address.HouseArea}},
+                    {{.address.City}}, {{.address.State}}, {{.address.PinCode}}
+                    <br> Mobile number: {{.address.Phone}}
+                </div>
+            </section>
+            <section class="summary-section" style="margin-bottom:0em;">
+                <div class="product-description-heading">Price Details (1 Item)</div>
+                <div class="rowFlex justify-between price-details-text-13">
+                    <span>Total MRP</span>
+                    <span>₹<span id="total-mrp">{{.price.ProductPrice.MRP}}</span></span>
+                </div>
+                <div class="rowFlex justify-between price-details-text-13 ">
+                    <span>Discount on MRP</span>
+                    {{if .hasActiveDeal}}
+                    <span class="discount-color">-₹{{minus (.variant.Price.MRP | int) (.deal.MemberPrice | int)}}</span>
+                    {{else}}
+                    <span class="discount-color">-₹<span
+                            class="product-discount">{{.price.ProductPrice.Discount}}</span></span>
+                    {{end}}
+                </div>
+                {{if ne .coupon.ID ""}}
+                <div class="rowFlex justify-between price-details-text-13 ">
+                    <span>Coupon Discount</span>
+                    <span class="discount-color">-₹{{.price.Coupon.DiscountAmount}}</span>
+                </div>
+                {{end}}
+                <div class="rowFlex justify-between price-details-text-13">
+                    <span>Delivery Charges</span>
+                    <span class="roovo-color" style="font-weight:700;">FREE</span>
+                </div>
+                <div class="rowFlex justify-between price-details-text-13 pt-05" style="font-weight: 700 !important;">
+                    <span>Total Amount</span>
+                    {{if .hasActiveDeal}}
+                    <span>₹{{.deal.MemberPrice}}</span>
+                    {{else}}
+                    <span>₹<span class="total-amount">{{.price.TotalAmount}}</span></span>
+                    {{end}}
+                </div>
+                <div class="confetti">
+                    <img src="/static/icons/confetti-new.svg" alt="confetti" />
+                    {{if .hasActiveDeal}}
+                    <span>You saved
+                        <span style="color:#3AA32F;">
+                            ₹{{minus (.variant.Price.MRP | int) (.deal.MemberPrice | int)}}
+                        </span>
+                        by closing this group deal</span>
+                    {{else}}
+                    <span>You are saving
+                        <span style="color:#3AA32F;">
+                            {{if .hasActiveDeal}}
+                            ₹{{minus (.variant.Price.MRP | int) (.price.TotalAmount | int)}}
+                            {{else}}
+                            ₹<span class="product-discount">{{.price.ProductPrice.Discount}}</span>
+                            {{end}}
+                        </span>
+                        on this order!</span>
+
+                    {{end}}
+                </div>
+            </section>
+        </div>
+        <div class="footer top-border" style="background-color:white;padding:1em;">
+            <form method="POST" action="/order/create{{if .hasActiveDeal}}?deal={{.deal.ID}}{{end}}" id="form">
+                <input type="hidden" name="method" id="method" value="COD" checked>
+                <input type="hidden" name="cartID" value="{{.cartID}}">
+                <input type="hidden" name="recoveredCart" value="{{.recoveredCart}}">
+                <!-- <div class="amount-payable-section">
+                <span>Total payable</span>
+                <span class="amount-payable">₹{{(.price.TotalAmount | int)}}</span>
+            </div> -->
+                {{if .pincodeServicable}}
+                <button type="submit" class="roovo-button-new place-order" onclick="sendTracking('Place Order CTA')"
+                    style="padding: 0.75em 24px;font-size: 16px;">
+                    <div>
+                        ₹<span class="total-amount">{{(.price.TotalAmount | int)}}</span>
+                    </div>
+                    <div>
+                        {{if .hasActiveDeal}}
+                        Join & Pay
+                        ₹{{.deal.MemberPrice}}
+                        {{else}}
+                        Place Order
+                        {{end}}
+                    </div>
+                </button>
+                {{else}}
+                <button type="submit" class="roovo-disabled-button" disabled
+                    style="padding: 0.75em 24px;font-size: 16px; width: 100%">
+                    <div>
+                       Area not serviceable currently
+                    </div>
+                </button>
+                {{end}}
+            </form>
+        </div>
+        <section class="modal" id="modal">
+            <div class="modal-content">
+                <div class="rowFlex justify-between pb-1 modal-header">
+                    <div>Change delivery address</div>
+                    <img src="/static/icons/cross.svg" alt="cross" style="cursor:pointer;" onclick="closeModal();"
+                        id="close-modal" />
+                </div>
+                <section class="scrollable-addresses">
+                    {{range $idx, $addressOption := .addressOptions}}
+                    {{if eq $.address.ID $addressOption.ID}}
+                    <button onclick="addressChange({{.}})" style="width:100%;">
+                        <div class="address-section selected">
+                            <div class="rowFlex justify-between">
+                                <div class="price-details-text-14 address-name">{{.Name}}</div>
+                                <img src="/static/assets/editPencil.svg" alt="edit" style="cursor:pointer;"
+                                    onclick="editAddress(event,{{$addressOption.ID}},{{$.variant.ID}})" />
+                            </div>
+                            <div class="product-description-text address-details">{{.HouseArea}},
+                                {{.City}}, {{.State}}, {{.PinCode}}<br>
+                                Mobile number: {{.Phone}}</div>
+                        </div>
+                    </button>
+                    {{end}}
+                    {{end}}
+                    {{range $idx, $addressOption := .addressOptions}}
+                    {{if ne $.address.ID $addressOption.ID}}
+                    <button onclick="addressChange({{.}})" style="width:100%;">
+                        <div class="address-section">
+                            <div class="rowFlex justify-between">
+                                <div class="price-details-text-14 address-name">{{.Name}}</div>
+                                <img src="/static/assets/editPencil.svg" alt="edit" style="cursor:pointer;"
+                                    onclick="editAddress(event,{{$addressOption.ID}},{{$.variant.ID}})" />
+                            </div>
+                            <div class="product-description-text address-details">{{.HouseArea}},
+                                {{.City}}, {{.State}}, {{.PinCode}}<br>
+                                Mobile number: {{.Phone}}</div>
+                        </div>
+                    </button>
+                    {{end}}
+                    {{end}}
+                </section>
+                <button class="modal-button">
+                    <div onclick="addNewAddresss(event,{{$.deal.ID}},{{$.variant.ID}})">
+                        Add New Address
+                    </div>
+                </button>
+            </div>
+        </section>
+    </div>
+    {{template "outer-section"}}
+</body>
+<!-- <script src="/static/js/back.js"></script> -->
+<script src="/static/js/time-left.js"></script>
+<script>
+
+    const form = document.getElementById("form")
+    form.addEventListener("submit", (event) => {
+        event.preventDefault()
+        document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+        form.submit()
+    })
+
+    async function removeCoupon() {
+        fetch("/order/coupon", { method: "DELETE" }).then(async function (response) {
+            if (response.status == 204) {
+                window.location.assign("/cart/summary")
+            }
+        })
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        sendTracking('Order Summary Opened');
+    })
+
+    function addNewAddresss(event, dealID, variantID) {
+        let path = `/addresses/new?redirect=cart/summary`
+
+        if (dealID.length > 0) {
+            path += `?deal=${dealID}`
+        }
+
+        window.location.assign(path)
+        return
+    }
+
+    function editAddress(event, addressID, variantID) {
+        event.stopPropagation();
+        window.location.assign(`/addresses/edit/${addressID}?redirect=cart/summary?address=${addressID}`)
+        return;
+    }
+
+    function openModal() {
+        console.log("in openModal");
+        document.getElementById("modal").classList.add("active")
+        let addresses = document.getElementsByClassName("address-section")
+        if (addresses.length > 0) {
+            for (let i = 0; i < addresses.length; i++) {
+                addresses[i].addEventListener("click", () => {
+                    for (let j = 0; j < addresses.length; j++) {
+                        addresses[j].classList.remove("selected")
+                    }
+                    addresses[i].classList.add("selected")
+                })
+
+            }
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("modal").classList.remove("active")
+    }
+
+    function addressChange(address) {
+        let form = document.getElementById("form")
+        actionPath = "/order/create"
+
+        if ('{{.deal.ID }}'.length > 0) {
+            actionPath += "?deal={{.deal.ID}}&address=" + address.id
+        } else {
+            actionPath += "?address=" + address.id
+        }
+        form.setAttribute("action", actionPath)
+        document.getElementById("address-name").innerText = address.name;
+        let addressString = address.houseArea + " " + address.city + " " + address.state + " " + address.pincode + "<br>Mobile number :" + address.phone;
+        if (document.getElementById("address-details") !== null) {
+            document.getElementById("address-details").innerHTML = addressString
+        }
+        document.getElementById("modal").classList.remove("active")
+    }
+
+    function dealExpiry() {
+        let deal = document.getElementById("dealExpiry")
+        const endsAt = '{{ $.deal.EndsAt }}'
+        const newValue = TimeLeft(endsAt)
+        deal.innerHTML = newValue
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to DOMContent Loaded
+        if (document.getElementById("dealExpiry") !== null) {
+            setInterval(dealExpiry, 1000)
+        }
+        // if(document.getElementById("open-modal")!=null){
+        //     document.getElementById("open-modal").addEventListener("click", () => {
+        //         document.getElementById("modal").classList.add("active")
+
+        //         let addresses = document.getElementsByClassName("address-section")
+        //         if(addresses.length>0){
+        //             for (let i = 0; i < addresses.length; i++) {
+        //                 addresses[i].addEventListener("click", () => {
+        //                     for (let j = 0; j < addresses.length; j++) {
+        //                         addresses[j].classList.remove("selected")
+        //                     }
+        //                     addresses[i].classList.add("selected")
+        //                 })
+
+        //             }
+        //         }
+        //     })
+        // }
+        // console.log("Here")
+
+
+        // if(document.getElementById("close-modal")!=null){
+        //     document.getElementById("close-modal").addEventListener("click", () => {
+        //         document.getElementById("modal").classList.remove("active")
+        //     })
+        // }
+        if (document.getElementById("edit-address") != null) {
+            document.getElementById("edit-address").addEventListener("click", (e) => {
+                e.stopPropagation()
+                console.log("edit")
+            })
+        }
+
+        const addressHover = document.getElementsByClassName("addressess")
+        if (addressHover.length > 0) {
+            for (let i = 0; i < addressHover.length; i++) {
+                addressHover[i].addEventListener("mouseover", () => {
+                    addressHover[i].setAttribute("style", "border:1px solid #fbd5dc")
+                })
+                addressHover[i].addEventListener("mouseout", () => {
+                    addressHover[i].setAttribute("style", "border:1px solid #f2f2fd")
+                })
+            }
+        }
+    });
+</script>
+<script>
+    const popup = document.getElementsByClassName("coupon-backdrop")[0]
+    const myTimeout = window.setTimeout(() => {
+        if (popup) { hidePopup() }
+    }, 1200)
+
+    function hidePopup() {
+        popup.classList.add("hide")
+        clearTimeout(myTimeout)
+    }
+</script>
+<script>
+    const variantID = {{.variant.ID }}
+    function addQuanityEffect(e) {
+
+        console.log("add")
+
+        changeQuantityEffect(e, "add")
+
+        // //display loader
+        // document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+
+        // //send request
+        // const counter = e.target.parentElement.getElementsByClassName("counter")[0]
+        // const quantity = parseInt(counter.innerHTML)
+        // fetch("/cart/{{.cartID}}/update/", {
+        //     method: "PUT",
+        //     body: JSON.stringify({
+        //         variantID,
+        //         quantity
+        //     })
+        // }).then(async (resp) => {
+        //     if (resp.status == 200) {
+        //         //price rerendering
+
+        //         const jsonResponse = resp.json()
+        //         console.log(jsonResponse, "jsonResponse")
+
+        //     } else {
+        //         //reduce quantity by 1
+        //         e.target.parentElement.getElementsByClassName("counter")[0].innerHTML = quantity - 1
+        //     }
+        //     //hide loader
+
+        //     document.getElementsByClassName("loader")[0].classList.add("loader-hide")
+
+        // }).catch()
+    }
+
+    function subtractQuanityEffect(e) {
+        console.log("subtracted")
+
+        changeQuantityEffect(e, "sub")
+    }
+
+    function changeQuantityEffect(e, change) {
+        console.log("change")
+
+        //display loader
+        document.getElementsByClassName("loader")[0].classList.remove("loader-hide")
+
+        //send request
+        const counter = e.target.parentElement.getElementsByClassName("counter")[0]
+        const quantity = parseInt(counter.innerHTML)
+        fetch("/cart/{{.cartID}}/update/", {
+            method: "PUT",
+            body: JSON.stringify({
+                variantID,
+                quantity
+            })
+        }).then(async (resp) => {
+            if (resp.status == 200) {
+                //price rerendering
+                const jsonResponse = await resp.json()
+                console.log(jsonResponse.price)
+                const totalAmounts = document.getElementsByClassName("total-amount")
+
+                for (var i = 0; i < totalAmounts.length; i++) {
+                    totalAmounts[i].innerHTML = jsonResponse.price.totalAmount
+                }
+
+                const productDiscounts = document.getElementsByClassName("product-discount")
+                for (var i = 0; i < productDiscounts.length; i++) {
+                    productDiscounts[i].innerHTML = jsonResponse.price.productPrice.discount
+                }
+
+                const totalMRP = document.getElementById("total-mrp")
+                totalMRP.innerHTML = jsonResponse.price.productPrice.mrp
+
+            } else {
+                //reduce quantity by 1
+                if (change == "add") {
+                    e.target.parentElement.getElementsByClassName("counter")[0].innerHTML = quantity - 1
+                }
+                else {
+                    e.target.parentElement.getElementsByClassName("counter")[0].innerHTML = quantity + 1
+                }
+
+                alert("Could not change Item Quantity")
+            }
+            //hide loader
+
+            document.getElementsByClassName("loader")[0].classList.add("loader-hide")
+
+        }).catch()
+    }
+
+    document.querySelector(".add").addEventListener("click", addQuanityEffect)
+    document.querySelector(".subtract").addEventListener("click", subtractQuanityEffect)
+</script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    dataLayer.push({ "cartID": "{{.cartID}}" });
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}

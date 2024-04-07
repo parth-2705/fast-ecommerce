@@ -1,0 +1,239 @@
+{{define "order-confirmed"}}
+<html>
+
+<head>
+    {{template "title" "Order Confirmed"}}
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/orderConfirmed.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/animate.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+
+        <div id="scrollableBody" class="scrollableBody" style="background-color: rgba(237,51,84,0.04);">
+            <section class="center-aligned">
+                <img src="/static/icons/icon-confirmed.svg" alt="confirmed" class="icon-confirmed pulsate-bck" />
+                <h1 class="order-confirmed-text">Order Confirmed!</h1>
+                {{if .dealApplied}}
+                <div class="group-order-success-text">Group Completed Successfully️ </div>
+                {{end}}
+                <p class="success-text" style="{{if eq .dealApplied false}}padding-bottom:0;{{end}}">Thank you for
+                    shopping with Roovo! You’ll receive an order confirmation email/sms shortly.</p>
+                <div class="rowFlex group-nudge-text" style="gap:1em;">
+                    {{if .dealApplied}}
+                    <span class="rowFlex" style="gap:0;">
+                        <span>⚡</span>
+                        <span style="white-space:nowrap;">Group Deal</span>
+                    </span>
+                    <span class="rowFlex" style="gap:0;">
+                        <span>🔥</span>
+                        <span style="white-space:nowrap;">Group Size</span>
+                        <span class="roovo-color" style="padding-left: 0.25em;">(2)</span>
+                    </span>
+                    <span class="rowFlex" style="gap:0;">
+                        <span>🎉</span>
+                        <span>Saved</span>
+                        <span style="color:#25D366;padding-left: 0.25em;">₹{{.order.Variant.Price.Discount}}</span>
+                    </span>
+                    {{end}}
+                </div>
+                <div class="rowFlex mt-2" style="width:100%;">
+                    <a href="/" class="roovo-button-new padded-side"
+                        style="padding: 0.75em;font-size: 16px;color:white!important;flex:1;text-align:center;">Continue
+                        Shopping</a>
+                    <a href="/order" class="roovo-outline-new padded-side"
+                        style="padding: 0.75em;text-align:center;font-size: 16px;color:#ED2F51!important;flex:1;">My
+                        Orders</a>
+                </div>
+            </section>
+            <section class="bottom-section">
+                <h2 class="order-details-text">Order Details</h2>
+                <section class="summary-section">
+                    <div class="rowFlex section-content align-start">
+                        <img src='{{getImageURL 500 .product_image}}' class="product-image">
+                        <div>
+                            {{if .dealApplied}}
+                            <div class="group-deal-text">
+                                GROUP DEAL
+                            </div>
+                            {{end}}
+                            <h2 class="product-name-text">{{.order.Brand.Name}}</h2>
+                            <p class="product-description-text">{{.order.Product.Name}}</p>
+                            <div class="quantity">
+                                <span class="qty">Qty:</span>
+                                <span class="qty-amount">{{(index .order.Cart.Items 0).Quantity}}</span>
+                            </div>
+                            <div class="rowFlex" style="margin: 0.25em 0;">
+                                <h3 class="product-deal-price">₹
+                                    {{if .dealApplied}}
+                                    {{.deal.MemberPrice}}
+                                    {{else}}
+                                    {{.order.OrderAmount.TotalAmount}}
+                                    {{end}}
+                                </h3>
+                                <!-- <del class="product-mrp-price">₹{{.order.Variant.Price.MRP}}</del>
+                            <div class="product-deal-off">
+                                {{if .dealApplied}}
+                                    <span>₹{{minus (.order.Variant.Price.MRP | int) (.deal.MemberPrice | int)}}</span>
+                                {{else}}
+                                    <span>₹{{.order.Variant.Price.Discount}}</span>
+                                {{end}}
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="confetti">
+                        <img src="/static/icons/confetti-new.svg" alt="confetti" />
+                        <span>You saved
+                            <span style="color:#3AA32F;">
+                                {{if .dealApplied}}
+                                ₹{{minus (.order.Variant.Price.MRP | int) (.deal.MemberPrice | int)}}
+                                {{else}}
+                                ₹{{minus (.order.OrderAmount.ProductPrice.MRP | int) (.order.OrderAmount.TotalAmount |
+                                int)}}
+                                {{end}}
+                            </span>
+                            on this order</span>
+                    </div>
+                </section>
+            </section>
+            {{if ne (len .similarProducts) 0}}
+            <section class="bottom-section">
+                <div id="similarProducts">
+                    <div class="similarHeader">Similar Products</div>
+                    <div id="similarProductList">
+                        {{range $idx,$a := .similarProducts}}
+                        <a class="productUrl" href="/product/{{$a.ID}}">
+                            <div class="product">
+                                <img src='{{getImageURL 500 $a.Thumbnail}}' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>{{$a.Brand.Name}}</span></h4>
+                                    <h4> {{$a.Name}}</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                            <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                        </div>
+                                        {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {{end}}
+                    </div>
+                </div>
+                <div class="loader" id="loader">
+                    <div class="spinner">
+                    </div>
+                </div>
+            </section>
+            {{end}}
+        </div>
+        <!-- <div class="footer">
+            <a href="/" class="roovo-button-new padded-side"
+                style="padding: 0.75em;font-size: 16px;color:white!important;margin-bottom:0.5em;">Continue Shopping</a>
+            <a href="/order" class="roovo-outline-new padded-side" style="padding: 0.75em;font-size: 16px;">My
+                Orders</a>
+        </div> -->
+    </div>
+
+    {{template "outer-section"}}
+</body>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    dataLayer.push({"orderID":"{{.order.ID}}", "orderVal":{{.order.OrderAmount.TotalAmount}} });
+</script>
+{{template "tracking"}}
+<script>
+
+    var currentPage = 1;
+    var pagination;
+    var categoryID = "";
+    var locked = false;
+    var productID = "";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        sendTracking('Order Confirmed');
+    })
+
+    function initPagination(product, category, paginater) {
+        console.log('paginater:', product, category, paginater)
+        productID = product
+        categoryID = category
+        pagination = paginater
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("loaded");
+        document.getElementById('loader').style.display = 'none';
+        initPagination('{{.product.ID }}', '{{.product.Category }}', {{.similarPaginater }})
+    })
+
+    function makeProductCards(products) {
+        console.log("these are paginated products:", products);
+        var elems = []
+        products.forEach(item => {
+            var elem = document.createElement('a')
+            elem.className = 'productUrl'
+            elem.href = '/product/' + item.id
+            var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `<div class="product">
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>
+                    </div>`
+            elems.push(elem);
+        })
+        document.getElementById('similarProductList').append(...elems)
+    }
+
+    document.getElementById('scrollableBody').addEventListener('scroll', async (event) => {
+        scrollableBody = document.getElementById('scrollableBody');
+        scrollCheck = (scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight < 100)
+        // console.log(scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight)
+        if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+            return;
+        }
+        if (currentPage < pagination['total_pages']) {
+            locked = true;
+            document.getElementById('loader').style.display = 'flex';
+            // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+            await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}&productID=${productID}&categoryID=${categoryID}`)
+                .then(async response => {
+                    data = await response.json();
+                    console.log("this is response:", data);
+                    document.getElementById('loader').style.display = 'none';
+                    makeProductCards(data["products"]);
+                    currentPage = currentPage + 1;
+                    locked = false;
+                }).catch(err => {
+                    document.getElementById('loader').style.display = 'none';
+                    locked = false;
+                })
+        }
+    })
+
+</script>
+
+</html>
+
+{{end}}

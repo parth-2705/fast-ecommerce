@@ -1,0 +1,87 @@
+{{define "influencerApproval"}}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <link rel="stylesheet" href="/static/styles/authorize.css?randomizer={{.randomizer}}">
+        <link rel="stylesheet" href="/static/styles/global.css">
+        <style>
+            #body{
+                max-width: 420px !important;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+        {{template "title" "Authorize"}}
+        <script async defer src="/static/js/back.js"></script>
+    </head>
+
+    <body>
+        <div id="body">
+            <div class="submittedCover">
+                <img src="https://storage.googleapis.com/roovo-images/rawImages/confettiLarge.gif"/>
+                <h1>Profile Submitted!</h1>
+                <p>Your profile is under review and our team will reach
+                    out to you as soon as it’s done.</p>
+                    <div class="chip">
+                        <img src="/static/icons/stopwatch.svg"/>
+                        <div>Usually takes less than 24 hours</div>
+                    </div>
+            </div>
+            <div class="lowerCover">
+                <p>Meanwhile you can browse through the products on Roovo.</p>
+                <a href="https://roovo.in"><button class="footerCTA">Go to Roovo.in</button></a>
+            </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    </html>
+{{end}}

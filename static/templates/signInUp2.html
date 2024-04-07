@@ -1,0 +1,286 @@
+{{define "sign-in-up-2"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="/static/styles/signInUp.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/color.css?randomizer={{randomizer}}">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    {{template "title" "Login or Sign up"}}
+    <script async defer src="/static/js/back.js"></script>
+</head>
+
+<body>
+    <div id="body">
+        
+
+        <div class="scrollableBody container">
+            <div class="back">
+                <a onclick="targettedBack({{.back}})" class="text-dark">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_39_1914)">
+                            <path d="M20.25 12H3.75" stroke="#282828" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M10.5 5.25L3.75 12L10.5 18.75" stroke="#282828" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_39_1914">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="page-heading" id="login_header">
+                <h2 class="page-heading-text push-padding-bottom">Login <small>or</small> Sign Up</h2>
+            </div>
+
+            <button type="button" onclick="loginWhatsapp()" class="roovo-whatsapp-button next-button">
+                Login With Whatsapp <img
+                src="/static/assets/whatsappBuyIcon.svg"
+                style="margin-left:0.5em;width:17px;height:17px;" /></button>
+
+                <div class="or">
+                    <p>or</p>
+                </div>
+
+            <div class="page-sub-heading">
+                <h3>Enter Mobile Number</h3>
+                <!-- mobile number composite input fields with the country code as well -->
+                <div class="mobile-number-input">
+                    <div class="mobile-number-box">
+                        <span class="country-code" id="basic-addon1">+91</span>
+                    </div>
+                    <input type="tel" class="mobile-number-box mobile-number" id="mobile" placeholder="Mobile Number"
+                        aria-label="Mobile Number" aria-describedby="basic-addon1"
+                        onkeypress="disallowAlphaAndSpecialChars(event)" autocomplete="tel" inputmode="tel">
+                </div>
+                <div class="under-input-wrapper mobile-enter">
+                    <div class="under-input under-input-right" id="invalid-number"></div>
+                    <div class="under-input under-input-right" id="unknown-error">Error sending OTP</div>
+                </div>
+
+            </div>
+
+            <div>
+                <div class="loader-container">
+                    <div class="spinner" id="loader-container"></div>
+                </div>
+
+                <button type="button" id="send-otp" class="roovo-red-button next-button">Continue</button>
+            </div>
+
+            <div class="conditions">
+                <p>By continuing, I agree to:</p>
+                <ul>
+                    <li>Receive updates via WhatsApp about new products, special offers, & the status of my orders.</li>
+                    <li><a href="/terms-and-conditions" class="roovo-color" style="color:#ED2F51 !important">Terms and
+                            Conditions</a> & <a href="/privacy-policy" class="roovo-color"
+                            style="color:#ED2F51 !important">Privacy
+                            Policy</a>.</li>
+                </ul>
+            </div>
+
+            <!-- <div>
+                <div class="loader-container">
+                    <div class="spinner" id="loader-container"></div>
+                </div>
+                <button type="button" id="send-otp" class="roovo-red-button next-button">Continue</button>
+            </div> -->
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+
+<script>
+
+    function disallowAlphaAndSpecialChars(event) {
+        // Get the character code of the pressed key
+        const charCode = event.which || event.keyCode;
+
+        // Ensure that the character code is a number between 48 and 57 (inclusive)
+        if (charCode < 48 || charCode > 57) {
+            console.log("Invalid Character Added")
+            // If the character is not a number, prevent the default action
+            event.preventDefault();
+        }
+    }
+
+    var obj = document.getElementById("mobile");
+    // obj.addEventListener("keydown", stopCarret);
+    // obj.addEventListener("keyup", stopCarret);
+
+    var dirtyInput = ""
+
+    obj.addEventListener("input", (event) => {
+
+        dirtyInput = event.target.value
+
+        if (event.target.value.length > 1) {
+
+            var val = event.target.value
+            if (val[0] == '+') {
+                const codes = val.split(' ')
+                const numberCodes = codes.slice(1).join('')
+                obj.value = numberCodes.split('-').join('').replace(/\s/g, "");
+            } else {
+                obj.value = val.replace(/\s/g, "");
+            }
+
+            // const codes = event.target.value.split(' ')
+            // const numberCodes = codes.slice(1).join('')
+            // obj.value = numberCodes.split('-').join('').replace(/\s/g, "");
+            event.preventDefault();
+        }
+
+        // if (obj.value.length > 10) {
+        //     obj.value = obj.value.substring(0,10)
+        //     event.preventDefault();
+        // }
+
+    })
+
+    // function stopCarret(e) {
+    //     if (obj.value.length > 9) {
+    //         preventMoreInput(e)
+    //     }
+    // }
+
+    function preventMoreInput(e) {
+        const keyNum = parseInt(e.key)
+        console.log(keyNum)
+        if (keyNum >= 0 && keyNum <= 9) {
+            e.preventDefault();
+        }
+
+    }
+
+    obj.addEventListener('paste', (event) => {
+
+        // Get pasted data as text
+        const pastedText = event.clipboardData.getData('text/plain');
+
+        // Only allow digits in pasted data
+        const digitsOnly = pastedText.replace(/\D/g, '');
+
+        // Split digits into an array
+        const digitsArray = digitsOnly.split('');
+
+        // set value as the join of the digits
+        obj.value = digitsArray.join('');
+        event.preventDefault();
+    });
+
+    document.addEventListener("DOMContentLoaded",function(){
+        sendTracking("login/sign up opened");
+    })
+
+
+    function loginWhatsapp() {
+        fetch("/login-whatsapp");
+        sendTracking("WA login clicked")
+        tempText = "Login to my Roovo account";
+        console.log("let's go {{.hasReferralCode}}")
+        
+        if({{.hasReferralCode}}){
+            console.log("let's go")
+            tempText += "\r\nReferred Code:{{.referralCode}}"
+        }
+
+        text = encodeURIComponent(tempText)
+        console.log(text);
+        window.location.assign("https://wa.me/+{{.whatsappNum}}?text=" + text);
+    }
+
+    // on clicking #send-otp, send get fetch request to /auth/otp with mobile number as query param
+    // on success, alert the user that OTP has been sent to their mobile number
+    // on failure, alert the user that there was an error sending the OTP
+    document.querySelector("#send-otp").addEventListener("click", function () {
+        sendTracking("login/sign up mobile number")
+        document.querySelector("#invalid-number").style.display = "none";
+        document.querySelector("#unknown-error").style.display = "none";
+        const mobile = document.querySelector("#mobile").value;
+        // if (mobile.length != 10) {
+        //     document.querySelector("#invalid-number").innerHTML = "Please enter valid 10-digit number"
+        //     document.querySelector("#invalid-number").style.display = "block";
+        //     return;
+        // }
+        // disable the mobile input fields
+        document.getElementById("mobile").disabled = true;
+
+        document.querySelector("#send-otp").style.display = "none";
+        document.querySelector("#loader-container").style.display = "grid";
+        let mobileEncoded = `+91${mobile}`
+        const nextParam = '{{.next }}'
+        const backParam = '{{.back}}'
+        // url encode the mobile number
+        mobileEncoded = encodeURIComponent(mobileEncoded);
+        fetch(`/auth/otp/send`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                countryCode: '+91',
+                mobileNumber: `${mobile}`,
+                referrer: `${backParam}`,
+                dirtyInput: `${dirtyInput}`
+            })
+        })
+            .then(data => {
+                console.log(data);
+                if (data.status == 200) {
+                    console.log("next", nextParam)
+                    console.log("mobile", mobileEncoded)
+                    window.location.href = `/auth/otp/submit?next=${nextParam}&back=${backParam}`
+                    return
+                } else if (data.status == 429) {
+                    document.querySelector("#invalid-number").innerHTML = "Please wait for 30 seconds before using the same number"
+                    document.querySelector("#invalid-number").style.display = "block";
+                    document.querySelector("#send-otp").style.display = "block";
+                    document.querySelector("#loader-container").style.display = "none";
+                    document.getElementById("mobile").disabled = false;
+                }
+                else {
+                    document.querySelector("#unknown-error").style.display = "block";
+                    document.querySelector("#send-otp").style.display = "block";
+                    document.querySelector("#loader-container").style.display = "none";
+                    document.getElementById("mobile").disabled = false;
+                    // refresh the page
+                    // location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                document.querySelector("#mobile").disabled = false;
+                document.querySelector("#login").style.display = "block";
+            })
+    })
+
+    // Pressing enter on Mobile Number field will click send OTP button
+    var mobileNumberInput = document.getElementById("mobile");
+    mobileNumberInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("send-otp").click();
+        }
+    });
+
+    window.onload = function () {
+        document.getElementById("mobile").focus();
+    }
+
+</script>
+
+{{template "tracking"}}
+
+</html>
+
+
+{{end}}

@@ -1,0 +1,11 @@
+{{define "StarRating"}}
+{{range $idx := .productRatingVisualisation.FullStars}}
+<img class="{{if $.small}}star-small{{else}}star{{end}}" src="/static/assets/fullStar.svg"></img>
+{{end}}
+{{range $idx := .productRatingVisualisation.HalfStars}}
+<img class="{{if $.small}}star-small{{else}}star{{end}}" src="/static/assets/halfStar.svg"></img>
+{{end}}
+{{range $idx := .productRatingVisualisation.EmptyStars}}
+<img class="{{if $.small}}star-small{{else}}star{{end}}" src="/static/assets/emptyStar.svg"></img>
+{{end}}
+{{end}}

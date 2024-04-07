@@ -1,0 +1,1378 @@
+{{define "productPage"}}
+<html>
+
+<head>
+    {{template "title" .product.Name}}
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/product.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/slider.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/global.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/loader.css" />
+    <link rel="stylesheet" href="/static/styles/quantity.css" />
+    <link rel="stylesheet" href="/static/styles/share.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+    
+    {{template "meta" .product}}
+    <style>
+        #body{
+            height: unset;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column; 
+        }
+        @media only screen and (max-width:2140px){
+            #body{
+                position: relative;
+                height: calc(100vh - 91px);
+                top:unset;
+                bottom:unset;
+                left:unset;
+                right:unset;
+            }
+        }
+        @media only screen and (max-width: 1024px) {
+            #body {
+                height: 100vh;
+                margin: 0 auto;
+                border-radius: 0px;
+            }
+        }
+        @media only screen and (max-width: 420px) {
+            #body {
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <div id="body">
+        <div class="overlay hidden" id="coupon-overlay">
+            <div id="coupon">
+                <button class="cta"></button>
+                <button class="close" onclick="hideCouponPopup()"><img src="/static/assets/images/cross-circle.svg"/></button>
+            </div>
+        </div>
+        {{template "imageFullSlider" dict "images" .product.Images "thumbnail" .product.Thumbnail}}
+        <div class="scrollableBody" id="scrollableBody">
+            <!-- <div class="new-loader loader-hide" id="full-loader">
+                <div class="spinner">
+                </div>
+            </div> -->
+            <div class="carousel" id="touch-area">
+                <p class="out-of-stock" style="{{if (ne true .outOfStock)}}display: none{{end}}">
+                    OUT OF STOCK
+                </p>
+                <div class="imageOverlay backButtonIcon">
+                    <img onclick="event.stopPropagation();back()"
+                        src="/static/assets/SupportbackButtonWhiteBackground.svg">
+                </div>
+                <div class="imageOverlay shareButtonIcon">
+                    <img src="/static/assets/shareButton.svg"
+                        onclick='event.stopPropagation();sendTracking("Share Button clicked");openSharePopUp()'>
+                </div>
+                <div class="whatsappIcon"
+                    onclick="event.stopPropagation();sendTracking('whatsapp support CTA'); redirectToWhatsapp('{{.product.Name}}','{{.product.Brand.Name}}','{{.product.ID}}');">
+                    <img src="/static/assets/whatsapp.svg" />
+                </div>
+                <div id='slider' class="slider">
+                    {{range $i, $a := .product.Media}}
+                    <div class="slider-item" onclick="openFullScreenImageSlider('{{$a}}', '{{$i}}')">
+                        {{if eq $a.Type "Image"}}
+                        <img src='{{getImageURLNew 500 $a.ID}}' alt="" class="img-fluid">
+                        {{else}}
+                        <img src='{{getImageURLNew 500 $a.ThumbnailID}}' alt="" class="img-fluid">
+                        <img src='/static/assets/images/play.svg' class="play-button"/>
+                        {{end}}
+                    </div>
+                    {{end}}
+                </div>
+                <div class="timer" style="{{if (eq true .outOfStock)}}display: none{{end}}">
+                    <p>Extra <span style="color: #FFE161; font-weight: 700;">5% Off </span> on Prepaid Orders<span style="font-size: 8px; position: relative; bottom: 2px;">*</span> + Free Shipping&nbsp;</p>
+                    <!-- <div class="time"><div class="hms">-</div><p>:</p><div class="hms">-</div><p>:</p><div class="hms">-</div></div><p>&nbsp;left</p> -->
+                </div>
+            </div>
+
+
+            <!-- <p id="nextButton" class="carouselButton" onclick="nextSlide()">&gt;</p>
+            <p id="prevButton" class="carouselButton" onclick="prevSlide()">&lt;</p> -->
+            <!-- <ul id="dots" class="list-inline dots"></ul> -->
+                <div class="title-section">
+                    
+                    <div id="title">
+                        <h1 class="title">
+                            {{.product.Name}}
+                        </h1>
+                        <img id="down-button" onclick="expandTitle()" src="/static/assets/chevron-down.svg"/>
+                    </div>
+                    <div class="sub-title">
+                        <div class="brand">
+                            <p class="body-dark">Sold by</p>&nbsp;&nbsp;<a href="/brand/{{.product.Brand.ID}}" style="text-decoration: underline !important"><img src="{{.product.Brand.Logo}}"/><p>{{.product.Brand.Name}}</p></a>
+                        </div>
+                        {{if and (ne .product.RatingCount 0) (gt .product.AverageRating 2.5)}}
+                <button onclick="scrollToReview()">
+                    {{template "productRating" dict "small" true "product" .product "productRatingVisualisation" .productRatingVisualisation}}
+                </button>
+                {{end}}
+                    </div>
+                </div>
+            <div class="paddedScrollableBody">
+                {{if .hasActiveDeal}}
+                <div class="deal-buy-container">
+                    <div class="rowFlex justify-between">
+                        <div class="rowFlex">
+                            <img src="/static/icons/icon-group-buy.svg" class="cta-icon" />
+                            <div class="group-deal-text">Group Deal</div>
+                        </div>
+                        <div class="rowFlex" style="gap:0.5em;">
+                            <div class="rowFlex" style="gap:0.25em;">
+                                <img src="/static/icons/icon-team.svg" class="cta-icon" />
+                                <div class="group-buy-time-left">1 left</div>
+                            </div>
+                            <div class="rowFlex" style="gap:0.25em;">
+                                <img src="/static/icons/icon-time.svg" class="cta-icon" />
+                                <div class="group-buy-time-left time-width" id="dealExpiry">{{timeLeft $.deal.EndsAt}}
+                                    left</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rowFlex justify-between" style="padding: 0.5em 0;">
+                        <div class="rowFlex">
+                            <h2>₹{{.deal.AdminPrice}}</h2>
+                            <del class="group-deal-off-price-text">₹{{.product.Price.MRP}}</del>
+                            <div class="group-deal-off-text">{{calculateDiscount .deal.AdminPrice .product.Price.MRP |
+                                int}}% OFF</div>
+                        </div>
+                        <button class="roovo-button-new" style="padding:0;">
+                            <a href="/cart/create/{{.variantToShow.ID}}?deal={{.deal.ID}}" class="claim-deal-button">
+                                Claim Deal
+                            </a>
+                        </button>
+                    </div>
+                    <div class="rowFlex">
+                        <img src="/static/icons/icon-individual.svg" class="cta-icon" />
+                        <div class="group-individual-deal-text">Individual Deal</div>
+                        <div class="group-individual-deal-price-text">₹{{.variantToShow.Price.SellingPrice}}</div>
+                    </div>
+                </div>
+                {{end}}
+
+                {{if eq .hasActiveDeal false}}
+                <div id="priceCover">
+                    {{if .isDiscounted}}
+                    <div class="containerOfPrice">
+                        <!-- <p>Special price</p> -->
+                        <div class="PriceInnerContainer">
+                            {{if ne .variantToShow.Price.SellingPrice .variantToShow.Price.MRP}}<h3>-{{.variantToShow.Price.DiscountPercentage | int}}%</h3>{{end}}
+                            <h2>₹{{.variantToShow.Price.SellingPrice | int}}</h2>
+                            {{if ne .variantToShow.Price.SellingPrice .variantToShow.Price.MRP}}<p class="incusiveOfAllTaxes "><del>₹{{.product.Price.MRP | int}}</del> 
+                            </p>{{end}}
+                        </div>
+                    </div>
+                    {{else}}
+                    <div>
+                        <h2>₹{{.variantToShow.Price.MRP}}</h2>
+                        <p class="incusiveOfAllTaxes">Inclusive of all taxes</p>
+                    </div>
+                    {{end}}
+                </div>
+                {{end}}
+                {{if ne (len .product.Attributes) 0}}
+                <div class="attributes" id="attributes">
+                    {{range .product.Attributes}}
+                    <div class="attribute">
+                        <div class="attributeName">{{.Name}}</div>
+                        {{$attributeName := .Name}}
+                        {{if eq .VisType 0}}
+                        <div class="options">
+                            {{range $idx, $option := .Options}}
+                            <button id="option_{{$attributeName}}_{{$option}}"
+                                class="option text-option {{if eq (index $.mapmap $attributeName) $option}}roovo-button{{else}}roovo-unselected-button{{end}}"
+                                onclick="updateSelection('{{$attributeName}}', {{$option}})"> {{.}} </button>
+                            {{end}}
+                        </div>
+                        {{end}}
+
+                        {{if eq .VisType 1}}
+                        <div class="options">
+                            {{range $idx, $option := .Options}}
+                            <div class="option">
+                                <button id="option_{{$attributeName}}_{{$option}}"
+                                    class="{{if eq (index $.mapmap $attributeName) $option}}color-button-selected{{else}}color-button{{end}}"
+                                    onclick="updateSelection('{{$attributeName}}', {{$option}})"
+                                    style="background-color:'{{.}}';"></button>
+                                <div id="optionName_{{$attributeName}}_{{$option}}"
+                                    class="color-name {{if eq (index $.mapmap $attributeName) $option}}color-name-selected{{end}}">
+                                    {{.}}</div>
+                            </div>
+                            {{end}}
+                        </div>
+                        {{end}}
+
+                    </div>
+                    {{end}}
+                </div>
+                {{end}}
+                {{if ne .product.KeySpec.Key ""}}
+                <div class="keySpec">
+                    <h4>{{.product.KeySpec.Key}} :&nbsp;</h4>
+                    <p class="body-dark">{{.product.KeySpec.Value}}</p>
+                </div>
+                {{end}}
+                <div class="quantitySection" style="{{if .outOfStock}}display: none{{end}}">
+                    <h4>Qty &nbsp;</h4>
+                    {{template "quantity" dict "quantity" 1 "maxValInput" .variantToShow.Quantity}}
+                    {{if lt .variantToShow.Quantity  10}}
+                    <h6>Hurry! Only {{.variantToShow.Quantity}} left</h6>
+                    {{end}}
+                </div>
+                <div class="band"></div>
+                <div class="deliveryWrapper">
+                    {{if ne .seller.ID ""}}
+                    <div class="deliverAddress">
+                        <p class="">Check Delivery for</p>
+                        <div class="delivery-input">
+                            <input type="number" id="pincodeInput" class="pincodeInput" placeholder="Enter Pincode"
+                                oninput="pincodeCheck(event)" />
+                            <button class="check" id="pincodeCheck"
+                                onclick="deliveryCheck('{{.seller.PinCode}}')">Check</button>
+                        </div>
+                        <div class="deliveryInformation" id="deliveryInformation">
+                            <img class="deliveryIcon" src="/static/assets/freeShipping2.svg"></img>
+                            <div class="deliveryText" id="deliveryText">
+                                <p >Free Shipping on all orders</p>
+                                {{if ne .product.DeliveryTime.AverageDeliveryTime 0}}
+                                <div class="deliveryInfo">
+                                    <p id="deliveryTime">Delivery Time:{{minusInt .product.DeliveryTime.AverageDeliveryTime 1}} - {{addInt .product.DeliveryTime.AverageDeliveryTime 1}} days</p>
+                                    <p>Logistic Partner: ShipRocket</p>
+                                </div>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                <div class="band"></div>
+                <div class="descAndSpec">
+                    {{if and (eq .product.Description "") (eq (len .product.Specifications) 0)}}
+                    {{else}}
+                    <div class="descAndSpecTabs">
+                        {{if (len .product.Specifications)}}
+                        <div class="rowFlex justify-between align-start" style="padding: 15px 0;" onclick="openSpecificationsTab()" style="cursor:pointer">
+                            <button class="tab">Product Specifications</button>
+                            <img id="specification-image" class="open" src="/static/assets/chevron-down.svg"
+                                alt="open" />
+                        </div>
+                        <div class="specification" id="specification-text">
+                            <table class="spectable">
+                                {{range .product.Specifications}}
+                                <tr>
+                                    <td>{{.Key}}</td>
+                                    <td>{{.Value}}</td>
+                                </tr>
+                                {{end}}
+                            </table>
+                        </div>
+                        {{end}}
+                        {{if ne .product.Description ""}}
+                        <div class="rowFlex justify-between align-start mt-2" style="padding: 15px 0 0 0;
+                        border-top: 1px solid #e5e5ea;" onclick="openDescriptionsTab()" style="cursor:pointer">
+                            <button class="tab">Product Description</button>
+                            <img id="description-image" class="open" src="/static/assets/chevron-down.svg" alt="open" />
+                        </div>
+                        <div class="description" id="description-text">
+                            <div id="desc-images">
+                                
+                            </div>
+                            <br/>
+                            {{.product.Description }}
+                        </div>
+                        {{end}}
+                    </div>
+                    {{end}}
+                </div>
+                <div class="band"></div>
+                <!--  <div class="details">
+                        {{range .product.AllDetails}}
+                        <img src="{{.Image}}" />
+                        <h4>{{.Heading}}</h4>
+                        <p>{{.Text}}</p>
+                        {{end}}
+                    </div>
+                    -->
+
+                <div class="info-section">
+                    <div class="info-section-header" id="cancellation-header" onclick="openCancellationTab()">
+                        <h2>Cancellation Policy</h2>
+                        <img id="cancellation-image" src="/static/assets/chevron-down.svg" alt="open" />
+                    </div>
+                    <div class="info-section-body" id="cancellation-body">
+                        Once the payment for your order is complete, the order cannot be cancelled.
+                    </div>
+                </div>
+
+                <div class="info-section" style="border-top: 1px solid #e5e5ea">
+                    <div class="info-section-header" id="refund-header" onclick="openRefundTab()" >
+                        <h2>Refund Policy</h2>
+                        <img id="refund-image" src="/static/assets/chevron-down.svg" alt="open" />
+                    </div>
+                    <div class="info-section-body" id="refund-body">
+                        In case of any delivery related disputes or if the product delivered to you is damaged, please
+                        reach out to us via customer support within 7 days for a resolution.
+                    </div>
+                </div>
+                {{if ne .seller.ID ""}}
+                <div class="info-section" style="border-top: 1px solid #e5e5ea">
+                    <div class="info-section-header" id="more-info-header" onclick="openInfoTab()" >
+                        <h2>More Information</h2>
+                        <img id="more-info-image" src="/static/assets/chevron-down.svg" alt="open" />
+                    </div>
+                    <div class="info-section-body" id="more-info-body">
+                        <span><b>Product Code</b>: {{.product.ID}}</span>
+                        <h4>Manufacturer/Packer Details</h4>
+                            <p>{{.seller.Name}}
+                            </p>
+                            <p>{{.seller.HouseArea}},{{.seller.StreetName}},{{.seller.City}},{{.seller.State}}-{{.seller.PinCode}}
+                            </p>
+                            <h4>Country of Origin</h4>
+                                <p>India</p>
+                                <h4>Incase of any issue contact</h4>
+                                    <p>+919910606373</p>
+                                    <p>support@roovo.in</p>
+                    </div>
+                </div>
+                {{end}}
+                <div class="band"></div>
+
+                <div class="review-section-container">
+
+                    {{if and (ne .product.RatingCount 0 ) (gt .product.AverageRating 2.5)}}
+                    <div class="reviewSection" id="reviewSection">
+                        <h2>Ratings and Reviews</h2>
+                        {{template "productRating" .}}
+                    </div>
+
+                    {{end}}
+                    {{if .canAddReview}}
+                    <div class="add-your-review">
+                        <a class="add-review" href="/review/{{.product.ID}}">
+                            + Add your review
+                        </a>
+                    </div>
+                    {{end}}
+
+                </div>
+
+                <div>
+                {{if and (ne (len .reviews) 0) (gt .product.AverageRating 2.5)}}
+                    <h3>Customer Reviews</h3>
+                    {{range $review := .reviews}}
+                    <div class="review-item">
+                        <div class="star-rating" {{if gt $review.Rating 3.0}} style="background-color:#2CA02A;" {{else
+                            if lt $review.Rating 3.0}} style="background-color:#E12A2A;"
+                            {{else}}style="background-color:#E88C37;" {{end}}>
+                            <div>{{$review.Rating}}</div>
+                            <img src="/static/assets/whiteStar.svg" />
+                        </div>
+                        <div class="review-info">
+                            <p>{{$review.Review}}</p>
+                            <h2>{{$review.ReviewerName}} <span>|</span> {{$review.ReviewDate}}</h2>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                {{end}}
+
+                {{if ne (len .recentlyViewedProducts) 0}}
+                <div id="recently-viewed">
+                    <div class="similarHeader">Shop Recently Viewed</div>
+                    <div class="recently-viewed-products-list" id="recently-viewed-products-list">
+                    
+                    </div>
+                </div>
+                {{end}}
+
+                {{if ne (len .brandProducts) 0}}
+                <div id="brand-products">
+                    <div class="similarHeader">More from {{$.product.Brand.Name}}</div>
+                    <div style="display:flex;gap:10px;">
+                        <div class="recently-viewed-products-list" id="brand-products-list">
+                            
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+
+                <div id="similarProducts">
+                    {{if eq (len .similarProducts) 0}}{{else}}
+                    <div class="similarHeader">Similar Products </div>
+                    <div id="similarProductList">
+                    </div>
+                    {{end}}
+                </div>
+                <div class="loader" id="loader" style="display: none">
+                    <div class="spinner">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="buyButtonWrapper footer">
+            <!-- <div class="hurry">
+                <p class="roovo-red2-color">🔥Hurry! Over {{ randomInt }} people viewing</p>
+            </div> -->
+            <div class="bottomCTA">
+                <a href="/" id="home-footer" class="bottom-nav"><button> <img src=" /static/assets/images/home.svg">
+                        <p>Home</p>
+                    </button></a>
+                <a onclick="closeFullScreenImagesSlider()" class="hidden-fullscreen bottom-nav"
+                    id="back-footer"><button> <img src="/static/assets/arrow-back.svg">
+                        <p>Back</p>
+                    </button></a>
+                <!-- <a onclick="sendTracking('add to wishlist');addToWishlist('{{.product.ID}}')" id="wishlist"
+                    class="{{if .wishlisted}}hide{{end}}"><button>
+                        <img src=" /static/assets/images/heart.svg">
+                        <p>Wishlist</p>
+                    </button></a>
+                <a onclick="RemoveFromWishlist('{{.product.ID}}')" id="undo-wishlist"
+                    class="{{if not .wishlisted}}hide{{end}}"><button> <img
+                            src=" /static/assets/images/heart-filled.svg">
+                        <p>Wishlisted</p>
+                    </button></a>
+                <a style="margin-right: 10px;" href="/chat/product-support?variant_id={{.variantToShow.ID}}">
+                    <button id="chat-redirect"> <img src="/static/assets/chat-small.svg">
+                        <p>Chat</p>
+                    </button></a> -->
+
+                <button style="{{if (ne true .outOfStock)}}display: none{{end}}"
+                    class="buyButton roovo-outline-new {{if .notify}}disabledNotify{{end}}" id="notifyButton"
+                    onclick="toggleNotify('{{.product.ID}}')">
+                    <div class="buyNowTextContainer" id="notifyInner">
+                        Notify Me
+                    </div>
+                </button>
+                <button class="whatsappBuyButton" style="{{if .disableWhatsappButton}}display: none{{end}}"
+                    onclick="orderOnWhatsapp('{{.product.Name}}','{{.product.Brand.Name}}','{{.product.ID}}')"><span>Buy
+                        On</span><span style="display:flex;align-items: center;">Whatsapp<img
+                            src="/static/assets/whatsappBuyIcon.svg"
+                            style="margin-left:0.5em;width:17px;height:17px;" /></span></button>
+
+                {{if .hasActiveDeal}}
+                <form action="/cart/create/{{.variantToShow.ID}}" method="post" class="dealBuy"
+                    style="{{if .outOfStock}}display: none{{end}}">
+                    <button type="submit" class="buyButton dealButtonSecondary"
+                        onclick='sendTracking("Buy Now clicked")'>
+                        {{if .isDiscounted}}
+                        <div class="priceToShow" id="priceToShow">₹{{.variantToShow.Price.SellingPrice}}</div>
+                        {{else}}
+                        <div class="priceToShow" id="priceToShow">₹{{.variantToShow.Price.MRP}}</div>
+                        {{end}}
+                        <div class="buyNowTextContainer" onclick='sendTracking("Buy Now clicked")'>
+                            Buy Now
+                        </div>
+                    </button>
+                </form>
+                <form action="/cart/create/{{.variantToShow.ID}}?deal={{.deal.ID}}" method="post" class="dealBuy"
+                    style="{{if .outOfStock}}display: none{{end}}">
+                    <button type="submit" class="buyButton dealButton" onclick='sendTracking("Team Buy clicked")'>
+                        <div class="priceToShow" id="priceToShow">₹{{.deal.AdminPrice}}</div>
+                        <div class="buyNowTextContainer">
+                            Group Buy
+                        </div>
+                    </button>
+                </form>
+                {{else}}
+                <div class="buyButtonsContainer" style="{{if .outOfStock}}display: none{{end}}" id="buyButton">
+                    <button type="submit" class="buyButton" onclick='createCart()'>
+                        <div class="buyNowTextContainer">
+                            Buy Now
+                        </div>
+                        {{if .isDiscounted}}
+                        <div class="priceToShow" id="priceToShow">₹<span id="buy-now-amount">{{.variantToShow.Price.SellingPrice}}</span></div>
+                        {{else}}
+                        <div class="priceToShow" id="priceToShow">₹<span id="buy-now-amount">{{.variantToShow.Price.MRP}}</span></div>
+                        {{end}}
+                    </button>
+                </div>
+                {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{template "outer-section"}}
+    {{template "share" .}}
+</body>
+{{template "image-injection" .}}
+<script>
+
+        // const hms =  document.getElementsByClassName("hms")
+       
+        // var timerDeal = setInterval(function () { 
+        //     console.log("time")
+        //     if(hour==0 && min ==0 && sec==0){
+        //         clearInterval(timerDeal)
+        //         return
+        //     }
+        //     hms[0].innerText = hour.toString().padStart(2, '0')
+        //     hms[1].innerText = min.toString().padStart(2, '0')
+        //     hms[2].innerText = sec.toString().padStart(2, '0')
+        //     if (sec != 0){
+        //        sec--
+        //     }else{
+        //         sec = 59
+        //        if(min != 0){
+        //            min--
+        //        }else{
+        //             min=59
+        //             hour--
+        //        }
+        //     }
+        // }, 1000)
+        
+</script>
+<script>
+    //  function showFullLoader(){
+    //     document.getElementById('full-loader').classList.remove("loader-hide")
+    // }
+    // function hideFullLoader(){
+    //     document.getElementById('full-loader').classList.add("loader-hide")
+    // }
+</script>
+<script>
+    async function createCart() {
+        sendTracking("Buy Now clicked", {"productID": "{{.product.ID}}"});
+        const quantity = parseInt(document.getElementsByClassName("counter")[0].innerHTML)
+        fetch(" /cart/create/" + currentVariant.id, {
+            method: "POST", body: JSON.stringify({ quantity }), withCredentials: true
+        }).then(async (response) => {
+            console.log(response.url)
+                window.location.assign(response.url)
+        }).catch(error => {
+            console.error("error occurred:", error)
+        })
+    }
+
+    const title =  document.getElementsByClassName("title")[0] 
+    const expandTitleButton = document.getElementById("down-button")
+
+    function hideOverflowingTitle(){
+        console.log(title.clientHeight)
+        if(title.clientHeight<=38){
+            expandTitleButton.style.display = "none"
+        } else {
+            title.classList.add("hidden-title")
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        hideOverflowingTitle()
+    });
+
+    function expandTitle(){
+        if(title.classList.contains("hidden-title")){
+            title.classList.remove("hidden-title")
+            expandTitleButton.classList.add("rotate")
+        } else {
+            title.classList.add("hidden-title")
+            expandTitleButton.classList.remove("rotate")
+        }
+    }
+</script>
+<script>
+    const cost = {{.variantToShow.Price.SellingPrice}}
+
+    function changeBuyNowAmount(e) {
+        const counter = e.target.parentElement.getElementsByClassName("counter")[0]
+        const quantity = parseInt(counter.innerHTML)
+
+        const buyNowText = document.getElementById("buy-now-amount")
+        buyNowText.innerHTML = cost*quantity
+
+    }
+
+    document.querySelector(".add").addEventListener("click", changeBuyNowAmount)
+    document.querySelector(".subtract").addEventListener("click", changeBuyNowAmount)
+</script>
+<script>
+    async function toggleNotify(productID) {
+        fetch("/notify/toggle", {
+            method: "POST", body: JSON.stringify({ productID }), withCredentials: true
+        }).then(async (response) => {
+            if (response.status == 401) {
+                window.location.assign("/auth/sign-in-up?notify=" + productID + "&next=/product/" + productID)
+            } else if (response.status == 200) {
+                const resp = await response.json()
+                const notifyButton = document.getElementById("notifyButton")
+                const notifyInner = document.getElementById("notifyInner")
+                console.log(resp, notifyButton)
+                if (resp.notify) {
+                    notifyInner.innerText = "Notify Me ✓";
+                    notifyButton.classList.add("disabledNotify")
+                } else {
+                    notifyButton.classList.remove("disabledNotify");
+                    notifyInner.innerText = "Notify Me";
+                }
+
+            }
+        }).catch(error => {
+            console.error("error occurred:", error)
+
+        })
+    }
+</script>
+<script async defer>
+    var currentPage = 1;
+    var pagination;
+    var categoryID = "";
+    var locked = false;
+    var productID = "";
+
+
+    function initPagination(product, category, paginater) {
+        console.log('paginater:', product, category, paginater)
+        productID = product
+        categoryID = category
+        pagination = paginater
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("loaded");
+        document.getElementById('loader').style.display = 'none';
+        initPagination('{{.product.ID }}', '{{.product.Category }}', {{.similarPaginater }})
+                })
+
+    function makeProductCards(products) {
+        console.log("these are paginated products:", products);
+        var elems = []
+        products.forEach(item => {
+            var elem = document.createElement('a')
+            elem.className = 'productUrl'
+            elem.href = '/product/' + item.id
+            var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `<div class="product">
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>
+                    </div>`
+            elems.push(elem);
+        })
+        document.getElementById('similarProductList').append(...elems)
+    }
+
+    const similar = document.getElementById("similarProducts")
+
+    var couponSeen = {{.couponExpired}}
+   
+    
+    document.getElementById('scrollableBody').addEventListener('scroll', async (event) => {
+        scrollableBody = document.getElementById('scrollableBody');
+        const rect = similar.getBoundingClientRect();
+        const scrollDist = scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight
+        scrollCheck = (scrollDist < 100)
+        if (rect.top <= scrollableBody.clientHeight && !couponSeen){
+            showCoupon()
+        }
+        if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+            return;
+        }
+        if (currentPage < pagination['total_pages']) {
+            locked = true;
+            document.getElementById('loader').style.display = 'flex';
+            // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+            await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}&productID=${productID}&categoryID=${categoryID}`)
+                .then(async response => {
+                    data = await response.json();
+                    console.log("this is response:", data);
+                    document.getElementById('loader').style.display = 'none';
+                    makeProductCards(data["products"]);
+                    currentPage = currentPage + 1;
+                    locked = false;
+                }).catch(err => {
+                    document.getElementById('loader').style.display = 'none';
+                    locked = false;
+                })
+        }
+    })
+
+</script>
+
+<script async defer>
+    var currBrandPage = 1;
+    var brandPagination;
+    var brandID = "";
+    var productID = "";
+    var brandLocked = false;
+
+    function initBrandPagination(product, brand, paginater) {
+        console.log('paginater:', product, brand, paginater)
+        productID = product
+        brandID = brand
+        brandPagination = paginater
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("loaded");
+        initBrandPagination('{{.product.ID }}', '{{.product.BrandID }}', {{.brandPaginater }})
+                })
+
+    function makeBrandProductCards(products) {
+        console.log("these are paginated products:", products);
+        var elems = []
+        products.forEach(item => {
+            var parentElem=document.createElement('div')
+            parentElem.className='product-horizontal'
+            var elem = document.createElement('a')
+            elem.href = '/product/' + item.id
+            var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>`
+            parentElem.replaceChildren(...[elem]);
+            elems.push(parentElem);
+        })
+        document.getElementById('brand-products-list').append(...elems)
+    }
+
+    document.getElementById("brand-products-list").addEventListener('scroll', async (event) => {
+        var parent=document.getElementById("brand-products-list")
+        const scrollDist = parent.scrollWidth - parent.scrollLeft-parent.clientWidth
+        console.log("scrollDist:",scrollDist)
+        scrollCheck = (scrollDist < 50)
+        if (brandPagination == undefined || !brandPagination.hasOwnProperty('total_pages') || brandLocked || !scrollCheck) {
+            return;
+        }
+        if (currBrandPage < brandPagination['total_pages']) {
+            brandLocked = true;
+            await fetch(`/product/get-page?limit=${brandPagination.limit}&page=${currBrandPage + 1}&productID=${productID}&brandID=${brandID}`)
+                .then(async response => {
+                    data = await response.json();
+                    console.log("this is response:", data);
+                    makeBrandProductCards(data["products"]);
+                    currBrandPage = currBrandPage + 1;
+                    brandLocked = false;
+                }).catch(err => {
+                    brandLocked = false;
+                })
+        }
+    })
+
+</script>
+
+<script async defer>
+    var currentSelection = [];
+    var variantMap = {};
+    var mapmap = {};
+    var attributeNameArr = [];
+    var attributes = [];
+    var currentVariant = {};
+
+
+    function pincodeCheck(event) {
+        if (event.target.value.length > 6) {
+            document.getElementById('pincodeInput').value = event.target.value.substring(0, 6);
+            event.preventDefault();
+            return;
+        }
+        if (event.target.value.length < 6) {
+            document.getElementById('pincodeCheck').style.backgroundColor = "#e5e5e5"
+            document.getElementById('pincodeCheck').style.color = "#ababab"
+        } else {
+            document.getElementById('pincodeCheck').style.backgroundColor = "#282828"
+            document.getElementById('pincodeCheck').style.color = "white"
+        }
+    }
+
+    async function deliveryCheck(sellerPincode) {
+        deliverPincode = document.getElementById('pincodeInput').value;
+        const info = document.getElementsByClassName("deliveryInfo")[0]
+        if (deliverPincode.length < 6) {
+            info.style.display = "none"
+            return;
+        }
+        console.log("This is currentVariant:", currentVariant)
+        let weight = currentVariant.weight;
+        if (weight == undefined) {
+            weight = "0.3";
+        }
+        await fetch(`/get-estimated-delivery-time?pickupPincode=${sellerPincode}&deliveryPincode=${deliverPincode}&weight=${currentVariant.weight}`).then(async response => {
+            data = await response.json();
+            console.log("This is response:", data);
+            if (data.hasOwnProperty('delivery-time') || data['delivery-time'] !== undefined) {
+                info.style.display = "block"
+                document.getElementById("deliveryTime").innerHTML = "Delivery: " + data["delivery-time"] 
+            } else {
+                info.style.display = "none"
+            }
+        }).catch(error => {
+            console.log(error)
+            info.style.display = "none"
+        });
+    }
+
+    async function orderOnWhatsapp(productName, productBrandName, productID) {
+        sendTracking('Order On Whatsapp', {'productID': '{{.product.ID}}'});
+        fetch('/order-whatsapp?productID=' + productID);
+        let tempText = "Hey! I would like to order " + productName + " from " + productBrandName + ".\nhttps://roovo.in/product/" + productID;
+          
+        let referralCode = {{.referredByUserCode}}
+        if (referralCode && referralCode.length >0) {
+            tempText +=  "?code=" + referralCode
+         //   tempText +=  " \nReferral Code:" + referralCode
+        }
+        
+        text = encodeURIComponent(tempText)
+        console.log(text);
+        window.open("https://wa.me/+919910606373?text=" + text, "_blank");
+        // hideFullLoader()
+    }
+
+    function redirectToWhatsapp(productName, productBrandName, productID) {
+        fetch('/inquiry-whatsapp?productID=' + productID);
+        tempText = "Hey! I am interested in " + productName + " from " + productBrandName + ". Can you help me out with some questions?\nhttps://roovo.in/product/" + productID;
+        text = encodeURIComponent(tempText)
+        window.location.assign("https://wa.me/+919910606373?text=" + text);
+    }
+
+    function scrollToReview() {
+        document.getElementById("reviewSection").scrollIntoView({ behavior: "smooth" })
+    }
+
+    function updateValues() {
+        currentVariant = variantMap[currentSelection.join("-")]
+        updatePage(currentVariant);
+    }
+
+    function remakeSelection() {
+        attributes.forEach((item, index) => {
+            item.options.forEach((option, idx) => {
+                if (!item.visType) {
+                    if (option == currentSelection[index]) {
+                        document.getElementById(`option_${item.name}_${option}`).classList.remove("roovo-unselected-button")
+                        document.getElementById(`option_${item.name}_${option}`).classList.add("roovo-button")
+                    } else {
+                        document.getElementById(`option_${item.name}_${option}`).classList.add("roovo-unselected-button")
+                        document.getElementById(`option_${item.name}_${option}`).classList.remove("roovo-button")
+                    }
+                } else {
+                    if (option == currentSelection[index]) {
+                        document.getElementById(`option_${item.name}_${option}`).classList.add("color-button-selected")
+                        document.getElementById(`option_${item.name}_${option}`).classList.remove("color-button")
+                        document.getElementById(`optionName_${item.name}_${option}`).classList.add("color-name-selected")
+                    } else {
+                        document.getElementById(`option_${item.name}_${option}`).classList.remove("color-button-selected")
+                        document.getElementById(`option_${item.name}_${option}`).classList.add("color-button")
+                        document.getElementById(`optionName_${item.name}_${option}`).classList.remove("color-name-selected")
+                    }
+                }
+            })
+        })
+    }
+
+    function updateSelection(attributeName, option) {
+        var temp=currentSelection[attributeNameArr.indexOf(attributeName)]
+        currentSelection[attributeNameArr.indexOf(attributeName)] = option;
+        console.log("attributes:",attributes[attributeNameArr.indexOf(attributeName)].options)
+        var checkOptions=attributes[attributeNameArr.indexOf(attributeName)].options
+        attributes.map((attribute,index)=>{
+            if(attribute.name==attributeName){
+                return;
+            }
+            attribute.options.map((checkOption,idx)=>{
+                var stringified=JSON.stringify(currentSelection);
+                var tempCheck=JSON.parse(stringified);
+                tempCheck[attributeNameArr.indexOf(attribute.name)]=checkOption;
+                if(!variantMap.hasOwnProperty(tempCheck.join("-"))){
+                    document.getElementById(`option_${attribute.name}_${checkOption}`).classList.add("disabled-option")
+                    document.getElementById(`option_${attribute.name}_${checkOption}`).onclick=function(){}
+                    if(attribute.visType==1){
+                        document.getElementById(`optionName_${attribute.name}_${checkOption}`).classList.add("disabled-option")
+                    }
+                }else{
+                    document.getElementById(`option_${attribute.name}_${checkOption}`).classList.remove("disabled-option")
+                    document.getElementById(`option_${attribute.name}_${checkOption}`).onclick=function(){updateSelection(attribute.name,checkOption)}
+                    if(attribute.visType==1){
+                        document.getElementById(`optionName_${attribute.name}_${checkOption}`).classList.remove("disabled-option")
+                    }
+                }
+            })
+        })
+        updateValues();
+    }
+
+    function init(map, variantToShow, varMap, attrNameArr, attributeList) {
+        var temp = []
+        mapmap = map
+        currentVariant = variantToShow
+        variantMap = varMap
+        attributeNameArr = attrNameArr
+        attributes = attributeList
+        console.log("This is attrnamearr:", attrNameArr, Array.isArray(attrNameArr))
+        if (!Array.isArray(attrNameArr) || attrNameArr.length == 0) {
+            return;
+        }
+        attrNameArr.forEach((item) => {
+            temp.push(mapmap[item])
+        })
+        currentSelection = temp
+        if(variantToShow.attributes==null){
+            updateValues()
+        }else{
+            var attrArr=Object.keys(variantToShow.attributes)
+            updateSelection(attrArr[0],variantToShow.attributes[attrArr[0]])
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        init({{.mapmap }}, {{.variantToShow }}, {{.variantMap }}, {{.attributeNameArr }}, {{.product.Attributes }})
+                });
+
+    async function redirectToChat(id) {
+        response = await fetch("/chat/create-or-get?type=variant&id=" + id)
+        data = await response.json()
+        console.log("This is response:", data)
+        window.location.assign(`/chat/${data["channelID"]}`)
+        return;
+    }
+
+    const bigImage = document.getElementById("big-image")
+    function openFullScreenImageSlider(imageToOpen, idx) {
+        const smallImageTile = document.getElementById("small-image-" + imageToOpen)
+        document.getElementById("back-footer").classList.remove("hidden-fullscreen")
+        document.getElementsByClassName("fullscreen-slider")[0].classList.remove("hidden-fullscreen")
+        setFullImage(imageToOpen, idx)
+        document.getElementById("scrollableBody").classList.add("hidden-fullscreen")
+        document.getElementById("home-footer").classList.add("hidden-fullscreen")
+        const tileslider = document.getElementById("small-image-slider")
+        tileslider.scroll({ left: parseInt(idx) * 75, behavior: "smooth" })
+    }
+
+    function closeFullScreenImagesSlider() {
+        document.getElementById("back-footer").classList.add("hidden-fullscreen")
+        document.getElementsByClassName("fullscreen-slider")[0].classList.add("hidden-fullscreen")
+        document.getElementById("scrollableBody").classList.remove("hidden-fullscreen")
+        document.getElementById("home-footer").classList.remove("hidden-fullscreen")
+    }
+
+    function setFullImage(imageToOpen, idx) {
+        idx = parseInt(idx)
+        const width = parseInt(bigImage.offsetWidth)
+        // const visibileImages = document.getElementsByClassName("block")
+        // if(visibileImages.length >0) visibileImages[0].classList.remove("block")
+        // document.getElementById("big-image-"+idx).classList.add("block")
+        bigImage.scroll({ left: width * idx, behavior: "smooth" })
+        const activeImg = document.getElementsByClassName("active-full-image")[0]
+        if (activeImg) activeImg.classList.remove("active-full-image")
+        const smallImageTile = document.getElementById("small-image-" + idx)
+        smallImageTile.classList.add("active-full-image")
+        idx = (idx + 1).toString()
+        document.getElementById("fullscreen-image-number").innerText = idx + "/" + '{{len .product.Images}}'
+    }
+
+</script>
+<script async defer>
+    const width = parseInt(bigImage.offsetWidth)
+    bigImage.addEventListener('touchstart', handleTouchStart, false);
+    bigImage.addEventListener('touchmove', handleTouchMove, false);
+    var xDown = null;
+
+    const images = {{.product.Media}}
+    const maxIdx = images.length - 1
+    const minIdx = 0
+    const tileslider = document.getElementById("small-image-slider")
+
+    function getCurrentImageData() {
+        const currentIdx = parseInt(document.getElementById("fullscreen-image-number").innerText) - 1
+        return currentIdx
+    }
+
+    function getTouches(evt) {
+        return evt.touches
+    }
+    function handleTouchStart(evt) {
+        if(evt.touches.length>1){
+            xDown=null;
+        }
+        const firstTouch = getTouches(evt)[0];
+        xDown = firstTouch.clientX;
+    };
+
+    function handleTouchMove(evt) {
+        if (!xDown) {
+            return;
+        }
+
+        var xUp = evt.touches[0].clientX;
+        var xDiff = xDown - xUp;
+
+        var idx = getCurrentImageData()
+
+        if (xDiff > 10) {
+            if (idx == maxIdx) idx = -1
+            tileslider.scroll({ left: (idx + 1) * 75, behaviour: "smooth" })
+            bigImage.scroll({ left: (idx + 1) * width, behavior: "smooth" })
+            setFullImage(images[idx + 1], (idx + 1).toString())
+        } else if(xDiff<-10) {
+            if (idx == minIdx) idx = maxIdx + 1
+            tileslider.scroll({ left: (idx - 1) * 75, behaviour: "smooth" })
+            bigImage.scroll({ left: (idx - 1) * width, behavior: "smooth" })
+            setFullImage(images[idx - 1], (idx - 1).toString())
+        }
+
+        /* reset values */
+        xDown = null;
+    };
+
+</script>
+
+<!-- <script src="/static/js/swipe.js"></script> -->
+<script src="/static/js/pinch.js"></script>
+
+<script async defer>
+    function description() {
+        document.getElementsByClassName("activeTab")[0].classList.remove('activeTab');
+        document.getElementsByClassName("activeTabText")[0].classList.remove('activeTabText');
+        document.getElementsByClassName("description")[0].classList.add('activeTab');
+        document.getElementsByClassName("tab")[0].classList.add('activeTabText');
+    }
+    function specification() {
+        document.getElementsByClassName("activeTab")[0].classList.remove('activeTab');
+        document.getElementsByClassName("activeTabText")[0].classList.remove('activeTabText');
+        document.getElementsByClassName("specification")[0].classList.add('activeTab');
+        document.getElementsByClassName("tab")[1].classList.add('activeTabText');
+    }
+
+    function openSharePopUp(){
+        document.getElementById("share-modal").setAttribute("style","display:flex");
+    }
+
+    function copyToClipboard() {
+        var textToCopy = window.location.href
+        console.log(navigator.permissions)
+        // navigator && navigator.hasOwnProperty('permissions') && navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
+        //     if (result.state === "granted" || result.state === "prompt") {
+        //         // Copy the text inside the text field
+        //         navigator.clipboard.writeText(textToCopy).then(() => {
+        //             // Alert the copied text
+        //             alert("Copied the link to the Product");
+        //         }, () => {
+        //             // Alert the copied text
+        //             alert("Could not copy link");
+        //         });
+        //     }
+        // });
+     
+                navigator?.clipboard?.writeText(textToCopy).then(() => {
+                    // Alert the copied text
+                    alert("Copied the link to the Product");
+                }, () => {
+                    // Alert the copied text
+                    alert("Could not copy link");
+                });
+    }
+
+    async function addToWishlist(productID) {
+        fetch("/wishlist/add", {
+            method: "POST", body: JSON.stringify({ productID }), withCredentials: true
+        }).then((response) => {
+            if (response.status == 401) {
+                window.location.assign("/auth/sign-in-up?wishlist=" + productID + "&next=/product/" + productID + "&back=/product/" + productID)
+            } else if (response.status == 200) {
+                document.getElementById("wishlist").classList.add("hide")
+                document.getElementById("undo-wishlist").classList.remove("hide")
+                console.log("added to wishlist")
+            }
+        }).catch(error => {
+            console.error("error occurred:", error)
+
+        })
+    }
+
+    function RemoveFromWishlist(productID) {
+        fetch("/wishlist/remove", {
+            method: "POST", body: JSON.stringify({ productID }), withCredentials: true
+        }).then((response) => {
+            if (response.status == 200) {
+                document.getElementById("undo-wishlist").classList.add("hide")
+                document.getElementById("wishlist").classList.remove("hide")
+                console.log("removed from wishlist")
+            }
+        }).catch(error => {
+            console.error("error occurred:", error)
+
+        })
+    }
+
+    function openSpecificationsTab() {
+        sendTracking("Specifications Clicked")
+        const imageElement = document.getElementById("specification-image")
+        const textElement = document.getElementById("specification-text")
+        if (imageElement.classList.contains("open")) {
+            imageElement.classList.remove("open")
+            textElement.setAttribute("style", "display:none")
+        } else {
+            imageElement.classList.add("open")
+            textElement.setAttribute("style", "display:block")
+        }
+    }
+
+    function openCancellationTab() {
+        sendTracking("Cancellation Clicked")
+        const imageElement = document.getElementById("cancellation-image")
+        const textElement = document.getElementById("cancellation-body")
+        if (imageElement.classList.contains("open")) {
+            imageElement.classList.remove("open")
+            textElement.setAttribute("style", "display:none")
+        } else {
+            imageElement.classList.add("open")
+            textElement.setAttribute("style", "display:block")
+        }
+    }
+
+    function remakeSlider(currVariant){
+        var sliderElem=document.getElementById('slider');
+        var bigSlider=document.getElementById('big-image');
+        var smallSlider=document.getElementById('small-image-slider');
+        var descImages=document.getElementById("desc-images");
+
+        var tempMainSlider=[];
+        var tempBigSlider=[];
+        var tempSmallSlider=[];
+        var tempDescImages=[];
+
+        currVariant.media.map((item,index)=>{
+            var elem=document.createElement("div")
+            elem.className="slider-item";
+            elem.onclick=function(){
+                openFullScreenImageSlider(item,index)
+            }
+            if (item.type == "Image"){
+                elem.innerHTML=`<img src="https:\/\/roovo.in/cdn-cgi/image/width=500,format=auto/https:\/\/storage.googleapis.com/roovo-images/rawImages/`+item.id+`" alt="" class="img-fluid">`
+            } else {
+                elem.innerHTML=`<img src="https:\/\/roovo.in/cdn-cgi/image/width=500,format=auto/https:\/\/storage.googleapis.com/roovo-images/rawImages/`+item.thumbnailID+`" alt="" class="img-fluid">
+                <img src='/static/assets/images/play.svg' class="play-button"/>`
+            }
+            
+            tempMainSlider.push(elem)
+
+            var bigElem=document.createElement("div")
+            bigElem.className="img";
+            bigElem.id="big-image-"+index;
+            if (item.type == "Image"){
+                bigElem.innerHTML=`<img src="https:\/\/roovo.in/cdn-cgi/image/width=500,format=auto/https:\/\/storage.googleapis.com/roovo-images/rawImages/`+item.id+`"></img>`
+            } else {
+                bigElem.innerHTML=`<video src="https:\/\/storage.googleapis.com/roovo-images/rawImages/${item.id}" controls loop />`
+            }
+            tempBigSlider.push(bigElem)
+
+            var smallElem=document.createElement("div")
+            smallElem.className="small-image"
+            smallElem.id="small-image-"+index
+            smallElem.onclick=function(){
+                setFullImage(item,index);
+            }
+            var tempSmallElem=document.createElement("img")
+            if (item.type == "Image"){
+                tempSmallElem.src="https:\/\/roovo.in/cdn-cgi/image/width=500,format=auto/https:\/\/storage.googleapis.com/roovo-images/rawImages/"+item.id
+            } else {
+                tempSmallElem.src="https:\/\/roovo.in/cdn-cgi/image/width=500,format=auto/https:\/\/storage.googleapis.com/roovo-images/rawImages/"+item.thumbnailID
+            }
+            
+            smallElem.replaceChildren(...[tempSmallElem])
+            tempSmallSlider.push(smallElem)
+
+            var tempDescElem
+            if (item.type == "Image"){
+                tempDescElem = document.createElement("img")
+                tempDescElem.src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/' + item.id
+            } else {
+                tempDescElem = document.createElement("div")
+                    const inner = `<img src='https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/${item.thumbnailID}' style="width: 100%" />
+                       <img src='/static/assets/images/play.svg' class="play-button"/>`
+                       tempDescElem.innerHTML = inner
+            }
+            tempDescElem.onclick=function(){
+                    openFullScreenImageSlider(item,index)
+                }
+                tempDescElem.className="desc-img"
+            tempDescImages.push(tempDescElem);
+        })
+
+        sliderElem.replaceChildren(...tempMainSlider);
+        bigSlider.replaceChildren(...tempBigSlider);
+        smallSlider.replaceChildren(...tempSmallSlider);
+        descImages.replaceChildren(...tempDescImages);
+    }
+
+    function updatePage(currVariant) {
+        console.log("this is currVariant:", currVariant);
+        document.getElementById("buyButton").action = "/cart/create/" + currVariant.id
+        document.getElementById("priceToShow").innerHTML = "₹" + Math.round(currVariant.price.sellingPrice);
+        
+        if (currVariant.price.sellingPrice < currVariant.price.mrp) {
+            document.getElementById("priceCover").innerHTML = '<div class="containerOfPrice"><div class="PriceInnerContainer"><h3>-' + Math.round(currVariant.price.discountPercentage) + '%</h3><h2>₹' + Math.round(currVariant.price.sellingPrice) + '</h2><p class="incusiveOfAllTaxes"><del>₹' + Math.round(currVariant.price.mrp) + '</del></p></div></div>'
+        } else {
+            document.getElementById("priceCover").innerHTML = '<div><h2>₹' + currVariant.price.mrp + '</h2></div>'
+        }
+        // document.getElementById("chat-redirect").onclick = function () {
+        //     redirectToChat(currVariant.id)
+        // }
+        const dealBuy = document.getElementsByClassName("dealBuy")
+        if (currVariant.quantity == 0) {
+            document.getElementsByClassName("whatsappBuyButton")[0].style.display = "none"
+            document.getElementsByClassName("buyButtonsContainer")[0].style.display = "none"
+            if (dealBuy[0]) {
+                dealBuy[0].style.display = "none"
+                dealBuy[1].style.display = "none"
+            }
+            document.getElementsByClassName("out-of-stock")[0].style.display = "block"
+            document.getElementById("notifyButton").style.display = "flex"
+        } else {
+            document.getElementsByClassName("out-of-stock")[0].style.display = "none"
+            document.getElementById("notifyButton").style.display = "none"
+            document.getElementsByClassName("whatsappBuyButton")[0].style.display = "flex"
+            if (dealBuy[0]) {
+                dealBuy[0].style.display = "block"
+                dealBuy[1].style.display = "block"
+            }
+            document.getElementsByClassName("buyButtonsContainer")[0].style.display = "block"
+        }
+        remakeSelection(currVariant);
+        remakeSlider(currVariant);
+    }
+
+   
+
+    function openRefundTab() {
+        sendTracking("Refund Clicked")
+        const imageElement = document.getElementById("refund-image")
+        const textElement = document.getElementById("refund-body")
+        if (imageElement.classList.contains("open")) {
+            imageElement.classList.remove("open")
+            textElement.setAttribute("style", "display:none")
+        } else {
+            imageElement.classList.add("open")
+            textElement.setAttribute("style", "display:block")
+        }
+    }
+
+    function openInfoTab() {
+        sendTracking("More Information Clicked")
+        const imageElement = document.getElementById("more-info-image")
+        const textElement = document.getElementById("more-info-body")
+        if (imageElement.classList.contains("open")) {
+            imageElement.classList.remove("open")
+            textElement.setAttribute("style", "display:none")
+        } else {
+            imageElement.classList.add("open")
+            textElement.setAttribute("style", "display:block")
+        }
+    }
+
+    function openDescriptionsTab() {
+        sendTracking("Description Clicked")
+        const imageElement = document.getElementById("description-image")
+        const textElement = document.getElementById("description-text")
+        if (imageElement.classList.contains("open")) {
+            imageElement.classList.remove("open")
+            textElement.setAttribute("style", "display:none")
+        } else {
+            imageElement.classList.add("open")
+            textElement.setAttribute("style", "display:block")
+        }
+    }
+    const coupon = document.getElementById("coupon-overlay")
+    function hideCouponPopup(){
+        coupon.classList.add("hidden")
+    }
+
+    function showCoupon(){
+        if (couponSeen){
+            return
+        }
+        coupon.classList.remove("hidden")
+        clearTimeout(couponTimeout)
+        couponSeen = true
+    }
+
+    
+    const couponTimeout = window.setTimeout(function(){
+        showCoupon()
+    }, 10000)
+
+</script>
+
+<script src="/static/js/time-left.js" async defer></script>
+<script async defer>
+    {{ if .hasActiveDeal}}
+    function dealExpiry() {
+        const dealElement = document.getElementById("dealExpiry")
+        const endsAt = '{{ $.deal.EndsAt }}'
+        const newValue = TimeLeft(endsAt)
+        dealElement.innerHTML = newValue
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to DOMContent Loaded
+        setInterval(dealExpiry, 1000);
+    });
+    {{ end }}
+</script>
+<script async defer>
+    function back() {
+        window.location.href = "/"
+    }
+</script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    dataLayer.push({"productID":"{{.product.ID}}"});
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}

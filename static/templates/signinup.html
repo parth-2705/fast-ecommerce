@@ -1,0 +1,459 @@
+{{define "sign-in-up"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <style>
+        .pointer {
+            cursor: pointer
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            height: calc(100% - 100px);
+        }
+
+        .page-heading {
+            font-weight: 800;
+            font-size: 20px;
+            line-height: 30px;
+            color: #282828;
+        }
+
+        .page-sub-heading {
+            font-weight: 800;
+            font-size: 14px;
+            line-height: 16px;
+            color: rgba(40, 40, 40, 1);
+
+        }
+
+        .under-input {
+            padding-top: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+        .under-input-left {
+            color: rgba(120, 129, 136, 1);
+        }
+
+        .under-input-right {
+            color: rgba(237, 47, 81, 1);
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .light-green-bg {
+            background: #F1FAF0;
+        }
+
+        .dark-green-text {
+            color: #282828;
+        }
+
+        .light-grey-bg {
+            background: #FAFAFA;
+        }
+
+        .light-grey-text {
+            color: #788188;
+        }
+
+        .amigo-red-button {
+            background: #201254;
+            color: #fff;
+            border: 1px solid #201254;
+        }
+
+        .amigo-red-text {
+            color: #201254;
+        }
+
+        .text-smaller {
+            font-size: 0.9rem;
+        }
+
+        .quantity .col {
+            padding: 0 5px;
+        }
+
+        .spacer {
+            height: 8px;
+            background: #E9E9E9;
+            margin-top: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .content-margin {
+            margin-top: 0.1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        u.dotted {
+            border-bottom: 1px dotted #000;
+            text-decoration: none;
+        }
+
+        u.green-dotted {
+            border-bottom: 1px dotted #28a745;
+            text-decoration: none;
+        }
+
+        strong.small {
+            font-weight: bolder;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        #mobile-form input,
+        #otp {
+            height: 50px;
+            color: #788188;
+        }
+
+        #mobile-form .input-group,
+        #otp {
+            border: 1px solid #f8e7eb;
+            border-radius: 0.25rem;
+        }
+
+        #mobile-form .input-group-text {
+            background: white;
+            color: #788188;
+            border-right: 1px solid #f8e7eb;
+            font-size: 13px;
+        }
+
+        #otp-col {
+            display: none;
+        }
+
+        #phone-change-row {
+            display: none;
+        }
+
+        #resend-row {
+            display: none;
+        }
+
+        #page-break {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(120, 129, 136, 1) !important;
+        }
+    </style>
+    <title>Rovoo Login/Sign up</title>
+    <script async defer src="/static/js/back.js"></script>
+</head>
+
+<body class="d-flex flex-column">
+    
+    <div id="body">
+        <main role="main" class="scrollable flex-shrink-0">
+            <div class="container">
+                <div class="row py-4 px-2">
+                    <div class="col">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2">
+                                <a onclick="back()" class="text-dark">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_39_1914)">
+                                            <path d="M20.25 12H3.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10.5 5.25L3.75 12L10.5 18.75" stroke="#282828" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_39_1914">
+                                                <rect width="24" height="24" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-4 px-2" id="login_header" class="remove_on_load">
+                    <div class="col">
+                        <h4 class="page-heading">Login/Sign up to continue</h4>
+                    </div>
+                </div>
+
+                <div class="row px-2" id="login" class="remove_on_load">
+                    <div class="col-12">
+                        <small class="page-sub-heading">Enter Mobile Number</small>
+                        <!-- mobile number composite input fields with the country code as well -->
+                        <div class="mt-1" id="mobile-form">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">+91</span>
+                                </div>
+                                <input type="number" class="form-control" id="mobile" placeholder="Mobile Number"
+                                    maxlength="10" aria-label="Mobile Number" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row px-2 under-input" id="phone-change-row">
+                    <div class="col-7 under-input-left">
+                        <p>Incorrect Number?</p>
+                    </div>
+                    <div class="col-5 text-right">
+                        <div class="pointer under-input-right" id="change">
+                            <p>Change Number</p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr id="page-break">
+
+                <!-- verify otp here -->
+                <div class="row px-2 mt-4" id="otp-col">
+                    <div class="col-12">
+                        <small class="page-sub-heading">Enter OTP</small>
+                        <!-- enter otp here -->
+                        <div class="mt-1">
+                            <input type="number" maxength="10" minlength="10" class="form-control" id="otp"
+                                placeholder="OTP" aria-label="OTP" aria-describedby="basic-addon1">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row px-2 under-input" id="resend-row">
+                    <div class="col-7 under-input-left">
+                        <p>Didn't receive OTP?</p>
+                    </div>
+                    <div class="col-5 text-right">
+                        <div class="under-input-right pointer" id="resend">
+                            <p>Resend OTP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row px-2 mt-2" id="conditions" style="margin-left:1.25rem; display: none;">
+                    <!-- two checkboxes, one for terms and conditions and the other for whatsapp communication, both will be checked -->
+                    <div class="form-check" style="padding-left: 0;">
+                        <input class="form-check-input" type="checkbox" value="" id="whatsapp-check" checked>
+                        <label class="form-check-label small" for="whatsapp-check">
+                            I agree to receive updates via WhatsApp about new products, special offers, and the status of my
+                            orders.
+                        </label>
+                    </div>
+                    <div class="form-check mt-3" style="padding-left: 0;">
+                        <input class="form-check-input" type="checkbox" value="" id="tnc-check" checked>
+                        <label class="form-check-label small" for="tnc-check">
+                            I agree to the <a class="underline" href="/terms-and-conditions"
+                                style="text-decoration: underline !important">Terms and
+                                Conditions</a> & <a class="underline" href="/privacy-policy"
+                                style="text-decoration: underline !important">Privacy Policy</a>.
+                        </label>
+                    </div>
+
+                    <div class="mt-2" style="display: none; margin-left: -1.25rem;" id="tnc-error">
+                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.8 12.2557L9.33437 2.76379C9.19779 2.53124 9.00281 2.33843 8.76875 2.20445C8.53469 2.07048 8.26969 2 8 2C7.73031 2 7.4653 2.07048 7.23124 2.20445C6.99719 2.33843 6.8022 2.53124 6.66562 2.76379L1.2 12.2557C1.06858 12.4806 0.999329 12.7364 0.999329 12.9969C0.999329 13.2574 1.06858 13.5132 1.2 13.7382C1.33483 13.9721 1.52948 14.166 1.76397 14.2999C1.99847 14.4338 2.26436 14.5028 2.53437 14.5H13.4656C13.7354 14.5026 14.0011 14.4334 14.2353 14.2996C14.4696 14.1657 14.664 13.9719 14.7987 13.7382C14.9304 13.5134 14.9998 13.2576 15 12.9971C15.0003 12.7366 14.9312 12.4807 14.8 12.2557ZM13.9331 13.2375C13.8855 13.3188 13.8171 13.386 13.7349 13.4321C13.6528 13.4782 13.5598 13.5017 13.4656 13.5H2.53437C2.44017 13.5017 2.34723 13.4782 2.26508 13.4321C2.18293 13.386 2.11452 13.3188 2.06687 13.2375C2.02371 13.1645 2.00095 13.0812 2.00095 12.9963C2.00095 12.9114 2.02371 12.8281 2.06687 12.755L7.5325 3.26317C7.58111 3.18227 7.64983 3.11534 7.73197 3.06887C7.81411 3.0224 7.90688 2.99797 8.00125 2.99797C8.09562 2.99797 8.18839 3.0224 8.27053 3.06887C8.35267 3.11534 8.42139 3.18227 8.47 3.26317L13.9356 12.755C13.9784 12.8283 14.0007 12.9118 14.0003 12.9966C13.9999 13.0815 13.9767 13.1647 13.9331 13.2375ZM7.5 9.50004V7.00004C7.5 6.86743 7.55268 6.74026 7.64645 6.64649C7.74021 6.55272 7.86739 6.50004 8 6.50004C8.13261 6.50004 8.25978 6.55272 8.35355 6.64649C8.44732 6.74026 8.5 6.86743 8.5 7.00004V9.50004C8.5 9.63265 8.44732 9.75983 8.35355 9.85359C8.25978 9.94736 8.13261 10 8 10C7.86739 10 7.74021 9.94736 7.64645 9.85359C7.55268 9.75983 7.5 9.63265 7.5 9.50004ZM8.75 11.75C8.75 11.8984 8.70601 12.0434 8.6236 12.1667C8.54119 12.2901 8.42406 12.3862 8.28701 12.443C8.14997 12.4997 7.99917 12.5146 7.85368 12.4856C7.7082 12.4567 7.57456 12.3853 7.46967 12.2804C7.36478 12.1755 7.29335 12.0418 7.26441 11.8964C7.23547 11.7509 7.25032 11.6001 7.30709 11.463C7.36385 11.326 7.45998 11.2088 7.58332 11.1264C7.70666 11.044 7.85166 11 8 11C8.19891 11 8.38968 11.0791 8.53033 11.2197C8.67098 11.3604 8.75 11.5511 8.75 11.75Z"
+                                fill="#FF0000" />
+                        </svg>
+                        <span class="text-danger small">Please agree to the Roovo’s Terms & Conditions to continue </span>
+                    </div>
+                </div>
+
+                <div class="row py-3 px-2" id="loader" style="display: none;">
+                    <div class="col-12 text-center my-auto">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer mt-auto py-1 bg-light">
+            <div class="container">
+                <div class="place-order py-2 px-3">
+                    <button type="button" id="send-otp" class="btn btn-primary roovo-button btn-lg btn-block"><small>Send
+                            OTP</small></button>
+                    <button type="button" onclick="next({{ .next}})" id="verify-otp"
+                        class="btn btn-primary roovo-button btn-lg btn-block" style="display: none;"><small>Verify
+                            OTP</small></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+    // if clicked on #change, reload the page 
+    document.querySelector("#change").addEventListener("click", function () {
+        location.reload();
+    });
+    // on clicking #send-otp, send get fetch request to /auth/otp with mobile number as query param
+    // on success, alert the user that OTP has been sent to their mobile number
+    // on failure, alert the user that there was an error sending the OTP
+    document.querySelector("#send-otp").addEventListener("click", function () {
+        const mobile = document.querySelector("#mobile").value;
+        if (mobile.length != 10) {
+            alert("Please enter a valid mobile number");
+            return;
+        }
+        // disable the mobile input fields
+        document.getElementById("mobile").disabled = true;
+
+        document.querySelector("#loader").style.display = "block";
+        document.querySelector("#send-otp").style.display = "none";
+        let mobileEncoded = `+91${mobile}`
+        // url encode the mobile number
+        mobileEncoded = encodeURIComponent(mobileEncoded);
+        fetch(`/auth/otp?mobile=${mobileEncoded}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(data => {
+                console.log(data);
+                if (data.status == 200) {
+                    document.querySelector("#page-break").style.display = "block";
+                    document.querySelector("#verify-otp").style.display = "block";
+                    document.querySelector("#otp-col").style.display = "block";
+                    document.querySelector("#loader").style.display = "none";
+                    document.querySelector("#phone-change-row").style.display = "flex";
+                    document.querySelector("#resend-row").style.display = "flex";
+
+                    // get data from the response
+                    data.json()
+                        .then(data => {
+                            console.log(data);
+                            // if the user is a new user, show the terms and conditions checkbox
+                            if (!data["exists"]) {
+                                document.querySelector("#conditions").style.display = "block";
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+
+                }
+                else {
+                    alert("There was an error sending the OTP");
+                    // refresh the page
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                document.querySelector("#mobile").disabled = false;
+
+                document.querySelector("#login").style.display = "block";
+                document.querySelector("#loader").style.display = "none";
+            })
+    })
+
+    // on clicking #verify-otp, send post fetch request to /auth/otp with mobile number and otp as query params
+    // on success, redirect to /home
+    // on failure, alert the user that there was an error verifying the OTP
+    function next(nextParam) {
+        if (document.querySelector("#tnc-check").checked == false) {
+            document.querySelector("#tnc-check").focus();
+            document.querySelector("#tnc-error").style.display = "block";
+            return;
+        }
+        const mobile = document.querySelector("#mobile").value;
+        const otp = document.querySelector("#otp").value;
+        if (mobile.length != 10) {
+            alert("Please enter a valid mobile number");
+            return;
+        }
+        if (otp.length != 6) {
+            alert("Please enter a valid OTP");
+            return;
+        }
+        document.querySelector("#loader").style.display = "block";
+        document.querySelector("#verify-otp").style.display = "none";
+        // get query params from url
+        fetch(`/auth/otp`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                mobile: `+91${mobile}`,
+                otp: otp,
+                whatsapp: document.querySelector("#whatsapp-check").checked,
+            })
+        }).then(response => response.json())
+            .then(data => {
+                console.log("data", data)
+                if (data.valid) {
+                    window.location.href = nextParam ? nextParam : "/categories";
+                } else {
+                    // handle error case
+                    alert("Invalid OTP");
+                    document.querySelector("#loader").style.display = "none";
+                    document.querySelector("#verify-otp").style.display = "block";
+
+                }
+            }).catch(err => {
+                console.log(err);
+                window.location.href = "/auth/sign-out";
+            })
+
+    }
+
+
+    // Pressing enter on Mobile Number field will click send OTP button
+    var mobileNumberInput = document.getElementById("mobile");
+    mobileNumberInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("send-otp").click();
+        }
+    });
+
+    // Pressing enter on OTP field will click verify OTP button
+    var otpInput = document.getElementById("otp");
+    otpInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("verify-otp").click();
+        }
+    });
+</script>
+
+</html>
+
+
+{{end}}

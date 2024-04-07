@@ -1,0 +1,67 @@
+{{define "categoriesPage"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/categories2.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/homeFooter.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            {{template "websiteHeader" dict "rightButtons" true}}
+        </div>
+
+        <div class="scrollableBody">
+            <div>
+                {{range .categories}}
+                <div class="category">
+                    <h4>{{.Name}}</h4>
+                    <div class="categoryList">
+                        {{range $child:= .ChildrenCategories}}
+                        {{if ne .Image ""}}
+                        <a href="/categories/{{.ID}}" class="categoryItem">
+                            <div class="image">
+                                <img src='{{getImageURL 300 .Image}}'
+                                    class="image" />
+                            </div>
+                            <h3>{{.Name}}</h3>
+                        </a>
+                        {{end}}
+                        {{end}}
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+        <div class=" footer">
+            <a class="footerButton" id="home" href="/" onclick='sendTracking("Home CTA")'>
+                <img src=" /static/assets/images/home.svg">
+                <p>Home</p>
+            </a>
+            <a class="footerButton" id="categories" href="">
+                <img src="/static/assets/images/categories-filled.svg">
+                <p class="activeFooter">Categories</p>
+            </a>
+            <!-- <a class="footerButton" id="chat" href="/chat" onclick="sendTracking('chat CTA clicked')">
+                <img src="/static/assets/chat-icon.svg">
+                <p>Chat</p>
+            </a> -->
+            <a class="footerButton" id="profile" href="/profile" onclick="sendTracking('Profile cta clicked')">
+                <img src="/static/assets/images/profile.svg">
+                <p>Profile</p>
+            </a>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+
+</html>
+{{end}}

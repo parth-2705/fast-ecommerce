@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/animate.css">
+    <title>Order Successfully Placed! </title>
+    <style>
+        .order-details > span {
+            margin-right: 0.7rem;
+            font-size: 1.1rem;
+        }
+        .product-name {
+            line-height: 1.2;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="body">
+        {{ template "viewPort" . }}
+        <div class="light-red-background h-100">
+            <div class="container">
+                <div class="row bg-white" style="padding: 3rem 0;">
+                    <div class="col-12 text-center">
+                        <div class="status-image pulsate-bck">
+                            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M36 72.4542C16.1183 72.4542 0 56.3359 0 36.4542C0 16.5725 16.1183 0.454224 36 0.454224C55.8817 0.454224 72 16.5725 72 36.4542C72 56.3359 55.8817 72.4542 36 72.4542Z" fill="#FA6450"/>
+                                <path d="M5.53846 36.4542C5.53846 17.5044 20.1822 1.98561 38.7692 0.570531C37.8479 0.496843 36.9242 0.458046 36 0.454224C16.1183 0.454224 0 16.5725 0 36.4542C0 56.3359 16.1183 72.4542 36 72.4542C36.9332 72.4542 37.854 72.4072 38.7692 72.3379C20.1822 70.9228 5.53846 55.4041 5.53846 36.4542Z" fill="#DC4632"/>
+                                <path d="M36.0004 44.7619C34.5315 44.7619 33.1228 44.1784 32.0841 43.1397C31.0454 42.1011 30.4619 40.6923 30.4619 39.2234V17.0696C30.4619 15.6007 31.0454 14.192 32.0841 13.1533C33.1228 12.1146 34.5315 11.5311 36.0004 11.5311C37.4693 11.5311 38.878 12.1146 39.9167 13.1533C40.9553 14.192 41.5388 15.6007 41.5388 17.0696V39.2234C41.5388 40.6923 40.9553 42.1011 39.9167 43.1397C38.878 44.1784 37.4693 44.7619 36.0004 44.7619ZM36.0004 61.3773C34.5315 61.3773 33.1228 60.7938 32.0841 59.7551C31.0454 58.7164 30.4619 57.3077 30.4619 55.8388C30.4619 54.3699 31.0454 52.9612 32.0841 51.9225C33.1228 50.8839 34.5315 50.3004 36.0004 50.3004C37.4693 50.3004 38.878 50.8839 39.9167 51.9225C40.9553 52.9612 41.5388 54.3699 41.5388 55.8388C41.5388 57.3077 40.9553 58.7164 39.9167 59.7551C38.878 60.7938 37.4693 61.3773 36.0004 61.3773Z" fill="#F0F0F0"/>
+                            </svg>
+                        </div>
+                        <div class="status-title my-3">
+                            <h3>Payment <br> pending</h3>
+                        </div>
+                        <div class="status-text roovo-dark-color">
+                            We apologize for any inconvenience caused and ask for your patience while we investigate the issue. We will send you an update as soon as your payment has been processed successfully.
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Create a stick footer here with a Place Order button -->
+            <footer class="footer mt-auto py-1">
+                <!-- <div class="container"> -->
+                <div class="place-order pt-2 px-3">
+                    <button type="button" id="save-address" class="btn btn-primary roovo-red-button btn-lg btn-block" onclick="window.location.href='/contact-us'">
+                        <small>Contact Us &nbsp; 
+                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 11L6 6L0.999998 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </small>
+                    </button>  
+                </div>
+
+                <!-- </div> -->
+            </footer>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+</html>

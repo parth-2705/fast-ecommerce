@@ -1,0 +1,74 @@
+{{define "coupon"}}
+<html>
+
+<head>
+    {{template "title"}}
+    <link rel="stylesheet" href="/static/styles/coupon.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/loader.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{if and .homePage (eq (getEnvVariable "ENVIRONMENT") "prod")}}
+    <meta name="facebook-domain-verification" content="3otcss70m5oxov7hotk7bqmsdjap3v" />
+    {{end}}
+
+</head>
+
+<body>
+    <div id="body">
+        
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Coupons For You"}}
+        </div>
+        <div class="scrollableBody" id="scrollableBody">
+            <div class="padded bg-white">
+                <h3>Enter Coupon Code</h3>
+                <div class="faux-input">
+                    <input type="text" id="couponCode" name="couponCode">
+                    <button class="roovo-red-color" onclick="applyCoupon(event, '{{.productID}}')">Apply</button>
+                </div>
+                <p id="reason" class="roovo-red-color"></p>
+            </div>
+            <div class="coupons">
+                <div class="no-coupons">
+                    <img src="/static/assets/images/no-coupons.svg">
+                    <br><br>
+                    <p>No other coupons available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script async defer>
+    async function applyCoupon(event, productID) {
+        event.preventDefault()
+        const couponCode = document.getElementById("couponCode").value
+        const formProps = { couponCode }
+        console.log(formProps)
+        await fetch("/order/coupon/check", { method: "POST", body: JSON.stringify(formProps) }).then(function (response) {
+            // When the page is loaded convert it to text
+            return response.json()
+        }).then(function (resp) {
+            console.log(resp)
+            if(resp.applicability){
+                    window.location.assign("/cart/summary")
+            }else{
+                 document.getElementById("reason").innerText = resp.reason
+            }
+        })
+    }
+
+    const CouponCodeInput = document.getElementById("couponCode")
+
+    CouponCodeInput.addEventListener("keydown", function(e) {
+        if (e.code == "Enter") {
+            applyCoupon(e, '{{.productID}}')
+        }
+    })
+
+</script>
+
+</html>
+{{end}}

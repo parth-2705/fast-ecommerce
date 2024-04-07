@@ -1,0 +1,125 @@
+{{define "deal-team"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/dealTeam.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="header">
+            <img src="/static/assets/arrow-back.svg" alt="back" onclick="back()" style="cursor: pointer;" />
+            <h1>Infinity Warriors</h1>
+        </div>
+        <div class="scrollableBody" style="background-color: #E9E9E9;">
+            <section class="summary-section">
+                <div class="team-name-text">Infinity Warriors</div>
+                <div class="rowFlex team-nudge-text">
+                    <div>
+                        <span>Slot left</span>
+                        <span class="roovo-color">1</span>
+                    </div>
+                    <div>
+                        <span>Ends in</span>
+                        <span id="dealExpiry" class="roovo-color">{{timeLeft .deal.EndsAt}}</span>
+                    </div>
+                </div>
+            </section>
+            <section class="summary-section">
+                <div class="product-description-heading">Product Description</div>
+                <section class="section-boundary">
+                    <div class="rowFlex section-content">
+                        <img src='{{getImageURL 500 .product.Thumbnail}}'
+                            class="product-image">
+                        <div>
+                            <div class="group-deal-text">
+                                GROUP DEAL
+                            </div>
+                            <h2 class="product-name-text">{{.product.Brand.Name}}</h2>
+                            <p class="product-description-text">{{.product.Name}}</p>
+                            {{template "variantSummary" dict "product" .product "variant" .variant}}
+                            <div class="rowFlex" style="margin: 0.25em 0;">
+                                <h3 class="product-deal-price">₹ {{.deal.MemberPrice}}</h3>
+                                <del class="product-mrp-price">₹ {{.variant.Price.MRP}}</del>
+                                <div class="product-deal-off">{{ calculateDiscount .deal.MemberPrice .variant.Price.MRP
+                                    | int}}% OFF</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-bottom-banner">
+                        🔥 In demand! <span class="roovo-color" style="font-weight:600;">Over 69 people have visited
+                            this page.</span>
+                    </div>
+                </section>
+                <section class="section-boundary">
+                    <div class="section-content">
+                        <div class="team-section-heading">Infinity Warriors</div>
+                        <div class="rowFlex justify-between team-section-nudge pv-05">
+                            <span class="rowFlex" style="gap:0.25em">
+                                <span>⌛ Ends in</span>
+                                <span id="dealExpiryAgain" class="roovo-color">{{timeLeft .deal.EndsAt}}</span>
+                            </span>
+                            <span class="rowFlex" style="gap:0.25em">
+                                <!-- <img src="/static/icons/icon-team.svg" alt="group" /> -->
+                                <span class="rowFlex" style="gap:0.25em">
+                                    <span class="roovo-color">👥 1</span>
+                                    <span>slot left</span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="rowFlex justify-between align-start pt-1">
+                            <div class="rowFlex">
+                                <img src="/static/icons/icon-avatar.svg" alt="profile-icon">
+                                <div>
+                                    <div class="team-admin-name-text">
+                                        Abhishek Singh
+                                    </div>
+                                    <div class="team-admin-label-text">Admin</div>
+                                </div>
+                            </div>
+                            <!-- <div class="rowFlex" style="gap:0.25em;">
+                            <span class="group-details-text">Group Details</span>
+                            <img src="/static/assets/chevron-down.svg" alt="more" />
+                        </div> -->
+                        </div>
+                    </div>
+                </section>
+                <section></section>
+                <form method="POST" action="/order/summary/{{.variant.ID}}?deal={{.deal.ID}}">
+                    <input type="hidden" name="method" id="method" value="COD" checked>
+                    <button type="submit" class="roovo-button-new sticky-bottom-full"
+                        style="padding: 0.75em;font-size: 16px;">
+                        Join & Pay ₹{{.deal.MemberPrice}}
+                    </button>
+                </form>
+            </section>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+<script src="/static/js/back.js"></script>
+<script src="/static/js/time-left.js"></script>
+<script>
+    function dealExpiry() {
+        const deal1 = document.getElementById("dealExpiry")
+        const deal2 = document.getElementById("dealExpiryAgain")
+        const endsAt = {{ $.deal.EndsAt }}
+    const newValue = TimeLeft(endsAt)
+    deal1.innerHTML = newValue
+    deal2.innerHTML = newValue
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to DOMContent Loaded
+        setInterval(dealExpiry, 1000);
+    });
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}

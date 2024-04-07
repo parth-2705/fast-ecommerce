@@ -1,0 +1,43 @@
+{{define "tracking"}}
+<!-- Google Tag Manager (noscript) -->
+{{if eq (getEnvVariable "ENVIRONMENT") "prod"}}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWCGP9Q" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<script async defer>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MWCGP9Q');</script>
+<script async defer type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+        t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "g2u0cv9gun");
+</script>
+<script src="https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js"
+    integrity="sha384-+WswOKwnNyC+4lLRe7E8bNO/tukhjzv4d3gfVjLXtzleULq77vTiHDCOvCQOTECm"
+    crossorigin="anonymous"></script>
+<script async defer>
+    Sentry.init({
+        dsn: "https://093377d4769041cfb92c12e9e8c33096@sentry.tryamigo.com/16",
+        integrations: [new Sentry.BrowserTracing()],
+        tracesSampleRate: 1.0,
+    });
+</script>
+{{end}}
+<script async defer>
+    async function sendTracking(eventName, eventProps = {}) {
+        console.log(eventName, eventProps)
+        await fetch("/track-event?eventName=" + eventName, { method: "POST", body: JSON.stringify(eventProps) }).then(function (response) {
+            return response.json()
+        }).then(function (resp) {
+            console.log(resp)
+        })
+    }
+</script>
+{{end}}

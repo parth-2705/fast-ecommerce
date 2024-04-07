@@ -1,0 +1,97 @@
+{{define "teamPage"}}
+<html>
+
+<head>
+    <title>Roovo | Team</title>
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/teamPage.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+    
+    <div class="container">
+        <div class="container-content">
+            <div class="team-header rowFlex justify-between align-start">
+                <div class="rowFlex align-start">
+                    <img src="/static/assets/arrow-back.svg" class="back-arrow" alt="back" onclick="back()" />
+                    <div>
+                        <div class="teamName">
+                            {{.team.Name}}
+                        </div>
+                        <div class="rowFlex timeRemaining">
+                            <span class="hightlight highlight-key">
+                                <strong>Time remaining : </strong>
+                            </span>
+                            <span class="hightlight highlight-value" id="dealExpiry">{{timeLeft $.deal.EndsAt}}</span>
+                        </div>
+                        {{if gt (minus .team.Capacity .team.Strength) 0}}
+                        <div class="rowFlex timeRemaining">
+                            <span class="hightlight highlight-key">
+                                <strong>Members needed:</strong>
+                            </span>
+                            <span class="hightlight highlight-value">{{minus .team.Capacity .team.Strength}}</span>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                <div class="rowFlex align-start">
+                    {{if eq .isUserAMember false}}
+                    <button class="roovo-button roovo-button-new">Join Team</button>
+                    {{else}}
+                    <button class="roovo-button roovo-button-new" style="cursor: default;">Joined</button>
+                    {{end}}
+                    <img src="/static/assets/shareIcon.svg" alt="share" style="cursor:pointer" />
+                </div>
+            </div>
+            <div class="rowFlex justify-between align-start teamPageItemContainer">
+                {{range $member := .teamMembers}}
+                {{if .IsAdmin}}
+                {{template "teamPageItem" .}}
+                {{end}}
+                {{end}}
+                <div class="createdAt">Created {{timeLeftInHours .deal.StartsAt}}</div>
+            </div>
+            <div class="rowFlex justify-between align-start teamPageItemContainer">
+                <h3 class="teamMemberHeading">Team Members</h3>
+                <h3 class="createdAt">{{.team.Strength}} Member</h3>
+            </div>
+            <div class="columnFlex">
+                {{range $member := .teamMembers}}
+                {{if eq .IsAdmin false}}
+                {{template "teamPageItem" .}}
+                {{end}}
+                {{end}}
+            </div>
+            {{if gt (len .teamMembers) 1}}
+            <div class="rowFlex showMore">
+                <span>Show more</span>
+                <span><img src="/static/assets/chevron-down.svg" alt="show more" /></span>
+            </div>
+            {{end}}
+        </div>
+    </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+<script src="/static/js/back.js"></script>
+<script src="/static/js/time-left.js"></script>
+<script>
+    function dealExpiry() {
+        const deal = document.getElementById("dealExpiry")
+        const endsAt = {{.deal.EndsAt}}
+        const newValue = TimeLeft(endsAt)
+        deal.innerHTML = newValue
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to DOMContent Loaded
+            setInterval(dealExpiry, 1000);
+    });
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}

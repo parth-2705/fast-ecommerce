@@ -1,0 +1,336 @@
+{{define "orderSpecific"}}
+<html>
+
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" href="/static/styles/product.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/order.css" />
+    <link rel="stylesheet" href="/static/styles/loader.css" />
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+        {{ template "viewPort"}}
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Order"}}
+        </div>
+        <div  id="scrollableBody" class="scrollableBody">
+            <div class="content-item" style="padding:0;margin:20px;">
+                <div class="order-product">
+                    <div class="order-product-grid">
+                        <img class="thumbnail" src='{{getImageURL 380 .order.Variant.Thumbnail}}' />
+                        <div class="order-product-description" style="width:75%">
+                            <h3>{{.brand.Name}}</h3>
+                            <p style="white-space:normal">{{.order.Product.Name}}</p>
+                            <div class="attribute">
+                                {{template "variantSummary" dict "product" .order.Product "variant" .order.Variant}}
+                                <span class="attributeName">Qty: </span><span class="attributeValue">{{(index .order.Cart.Items 0).Quantity}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-actions" style="padding:0px 5px;">
+                        {{if .cancellable}}
+                        <button class="cancel-button" onclick="cancelOrder('{{.order.ID}}')">Cancel order</button>{{end}}
+                        <button class="track-button"
+                            onclick="trackItemModalOpen()">Track</button>
+                    </div>
+                </div>
+                {{if eq .order.FulfillmentStatus "Cancelled"}}
+                    <div class="info-card" style="background-color:#E5E5E5; ;color:#83808B;">Cancelled</div>
+                {{else}}
+                    {{if eq .tracking.CurrentStatus "DELIVERED"}}
+                        <div class="info-card" style="background-color:#198989; ;color:#fff;"><img src="/static/icons/whiteTick.svg" style="width:16px"/> Delivered on {{.latestTimestamp}}</div>
+                    {{else}}
+                        {{if eq .estimatedTime ""}}
+                            <div class="info-card" style="background-color:#F8E9EC; ;color:#ED2F51;"><img src="/static/assets/deliveryRed.svg" style="width:20px;"/> Order Placed</div>
+                        {{else}}
+                            <div class="info-card" style="background-color:#F8E9EC; ;color:#ED2F51;"><img src="/static/assets/deliveryRed.svg" style="width:20px;"/> Arriving by {{.estimatedTime}}</div>
+                        {{end}}
+                    {{end}}
+                {{end}}
+            </div>
+
+            <div class="content-item">
+                <div class="similarHeader">
+                    Address
+                </div>
+                <div class="content-main" style="margin:0.25em 0">{{.order.Address.Name}}</div>
+                <div class="content-main" style="margin:0.25em 0">{{.order.Address.Phone}}</div>
+                <div class="content-extra" style="color: #83808B;font-weight: 500;">{{.order.Address.HouseArea}},{{.order.Address.City}},{{.order.Address.State}}-{{.order.Address.PinCode}}</div>
+            </div>
+            
+            <div class="content-item">
+                <div class="similarHeader">
+                    Payment Method
+                </div>
+                <div class="content-main" style="color: #83808B;font-weight: 500;">{{.order.Payment.Method}}</div>
+            </div>
+
+            <div class="content-item">
+                <div class="similarHeader">
+                    Price Details
+                </div>
+                <div style="display:flex;justify-content: space-between;width:100%;">
+                    <div class="content-main">Total Amount</div>
+                    <div class="content-main">₹ {{.order.OrderAmount.TotalAmount}}</div>
+                </div>
+                <div style="display:flex;justify-content: space-between;width:100%;">
+                    <div class="content-main" style="color: #83808B;font-weight: 500;">You saved <span style="color:#3AA32F;font-weight:700;">₹{{add .order.Cart.CartAmount.ProductPrice.Discount .order.Cart.CartAmount.Coupon.DiscountAmount}}</span> on this order</div>
+                    <button class="content-main" onclick="breakupModalOpen()" style="color: #ED2F51;font-weight: 700;">View Breakup</button>
+                </div>
+                <div class="delivery-chip">
+                    FREE DELIVERY
+                </div>
+            </div>
+
+            {{if ne .shipment.AWB ""}}
+            <div class="content-item">
+                <a href="https://api-admin.roovo.in/invoice?awb={{.shipment.AWB}}"><button class="content-cta">Download Invoice</button></a>
+            </div>
+            {{end}}
+            {{if ne (len .recentlyViewedProducts) 0}}
+                <div id="recently-viewed" style="background-color:white;padding:20px 20px;margin:1em 0;">
+                    <div class="similarHeader">Shop Recently Viewed</div>
+                    <div class="recently-viewed-products-list">
+                        {{range .recentlyViewedProducts}}
+                        <div class="product-horizontal">
+                            <a href="/product/{{.ID}}">
+                                <img src='{{getImageURL 500 .Thumbnail}}' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>{{.Brand.Name}}</span></h4>
+                                    <h4> {{.Name}}</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            <h3>-{{.Price.DiscountPercentage | int}}%</h3>
+                                            <h2>₹{{.Price.SellingPrice}}</h2>
+                                        </div>
+                                        <h4><del>₹{{.Price.MRP}}</del></h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                {{end}}
+                {{if ne (len .similarProducts) 0}}
+                <div id="similarProducts" style="background-color:white;padding:20px 20px;margin:1em 0;">
+                    
+                    <div class="similarHeader">Similar Products </div>
+                    <div id="similarProductList">
+                        {{range $idx,$a := .similarProducts}}
+                        <a class="productUrl" href="/product/{{$a.ID}}">
+                            <div class="product">
+                                <img src='{{getImageURL 500 $a.Thumbnail}}' loading="lazy"></img>
+                                <div class="productDetails">
+                                    <h4><span>{{$a.Brand.Name}}</span></h4>
+                                    <h4> {{$a.Name}}</h4>
+                                    <div class="priceContainer">
+                                        <div>
+                                            {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                            <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                        </div>
+                                        {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {{end}}
+                    </div>
+                </div>
+                {{end}}
+                <div class="loader" id="loader">
+                    <div class="spinner">
+                    </div>
+                </div>
+            </div>
+            <section id="track-item-modal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h3>Track Item</h3>
+                            {{if ne .shipment.AWB ""}}
+                            <h4>Tracking Number: <span id="tracking-number">{{.shipment.AWB}}</span></h4>{{end}}
+                        </div>
+                        <div onclick='trackItemModalClose()'>
+                            <img src="/static/icons/cross.svg" style="cursor: pointer;">
+                        </div>
+                    </div>
+                <div class="modal-body">
+                    <div class="wrapper">
+                        <ul class="StepProgress" id="StepProgress">
+                            {{range $item:=.finalTrackingData}}
+                                {{if $item.Completed}}
+                                <li class="StepProgress-item is-done">
+                                    <span class="major-point reached">{{$item.Status}}</span>
+                                    {{if ne $item.Date ""}}<span class="subtext" style="margin-left:5px;">at {{$item.Date}}</span>{{end}}
+                                    {{if ne $item.Activity ""}}<br /><span class="subtext">{{replaceAll $item.Activity "_" " "}}</span>{{end}}
+                                </li>
+                                {{else}}
+                                    <li class="StepProgress-item not-done"><span class="major-point reached">{{$item.Status}}</span></li>
+                                {{end}}
+                            {{end}}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="breakup-modal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h3>Price Details</h3>
+                        </div>
+                        <div onclick='breakupModalClose()'>
+                            <img src="/static/icons/cross.svg" style="cursor: pointer;">
+                        </div>
+                    </div>
+                <div class="modal-body" style="padding:10px 0px 35px;">
+                   <div class="modal-point">
+                        <span>Total MRP</span>
+                        <span>₹{{.order.Cart.CartAmount.ProductPrice.MRP}}</span>
+                   </div>
+                   <div class="modal-point">
+                        <span>Discount on MRP</span>
+                        <span style="color:#3AA32F;">- ₹{{.order.Cart.CartAmount.ProductPrice.Discount}}</span>
+                    </div>
+                    <div class="modal-point">
+                        <span>Coupon Discount</span>
+                        <span style="color:#3AA32F;">- ₹{{.order.Cart.CartAmount.Coupon.DiscountAmount}}</span>
+                    </div>
+                    <div class="modal-point">
+                        <span>Delivery Charges</span>
+                        <span><del style="color:#83808B;margin-right:0.25em;">₹50</del><span style="color:#ED2F51;">FREE</span></span>
+                    </div>
+                    <div class="modal-point" style="font-weight:700;">
+                        <span>Total Amount</span>
+                        <span>₹{{.order.OrderAmount.TotalAmount}}</span>
+                    </div>
+                    <div class="modal-footer-saved">
+                        <img src="/static/icons/confetti-new.svg"/>
+                        You saved <span style="color:#3AA32F;font-weight:700;">₹{{add .order.Cart.CartAmount.ProductPrice.Discount .order.Cart.CartAmount.Coupon.DiscountAmount}}</span> on this order
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    {{template "outer-section" .}}
+    </body>
+    <script async defer>
+    
+    function cancelOrder(orderID) {
+        window.location.assign("/order/cancel/" + orderID)
+    }
+
+    function trackItemModalOpen() {
+        const trackItemModal = document.getElementById("track-item-modal")
+        trackItemModal.style.display = 'block';
+    }
+
+    function trackItemModalClose() {
+        const trackItemModal = document.getElementById("track-item-modal")
+        trackItemModal.style.display = 'none';
+    }
+
+    function breakupModalOpen() {
+        const breakupModal = document.getElementById("breakup-modal")
+        breakupModal.style.display = 'block';
+    }
+
+    function breakupModalClose() {
+        const breakupModal = document.getElementById("breakup-modal")
+        breakupModal.style.display = 'none';
+    }
+    
+    var currentPage = 1;
+    var pagination;
+    var categoryID = "";
+    var locked = false;
+    var productID = "";
+
+
+    function initPagination(product, category, paginater) {
+        console.log('paginater:', product, category, paginater)
+        productID = product
+        categoryID = category
+        pagination = paginater
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("loaded");
+        document.getElementById('loader').style.display = 'none';
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const tracking = urlParams.get('trackingOpen')
+        if (tracking == "true"){
+            trackItemModalOpen()
+        }
+        initPagination('{{.order.Product.ID }}', '{{.order.Product.Category }}', {{.similarPaginater }})
+        })
+
+    function makeProductCards(products) {
+        console.log("these are paginated products:", products);
+        var elems = []
+        products.forEach(item => {
+            var elem = document.createElement('a')
+            elem.className = 'productUrl'
+            elem.href = '/product/' + item.id
+            var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `<div class="product">
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>
+                    </div>`
+            elems.push(elem);
+        })
+        document.getElementById('similarProductList').append(...elems)
+    }
+
+    document.getElementById('scrollableBody').addEventListener('scroll', async (event) => {
+        scrollableBody = document.getElementById('scrollableBody');
+        scrollCheck = (scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight < 100)
+        // console.log(scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight)
+        if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+            return;
+        }
+        if (currentPage < pagination['total_pages']) {
+            locked = true;
+            document.getElementById('loader').style.display = 'flex';
+            // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+            await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}&productID=${productID}&categoryID=${categoryID}`)
+                .then(async response => {
+                    data = await response.json();
+                    console.log("this is response:", data);
+                    document.getElementById('loader').style.display = 'none';
+                    makeProductCards(data["products"]);
+                    currentPage = currentPage + 1;
+                    locked = false;
+                }).catch(err => {
+                    document.getElementById('loader').style.display = 'none';
+                    locked = false;
+                })
+        }
+    })
+    </script>
+{{template "tracking"}}
+
+    </html>
+{{end}}

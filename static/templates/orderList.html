@@ -1,0 +1,241 @@
+{{define "ordersList"}}
+<html>
+
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/order.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+        {{ template "viewPort"}}
+        <div class="header">
+            {{template "websiteHeaderWBack" dict "head" "Orders"}}
+        </div>
+        <div id="scrollableBody" class="scrollableBody">
+            {{range .orders}}
+            <div class="order-card">
+                {{if eq .FulfillmentStatus "Unfulfilled"}}
+                <div class="order-status">
+                    <img class="order-status-icon" src="/static/assets/orderConfirmedIcon.svg" />
+                    <div>
+                        <h3 class="confirmed">{{if eq .Tracking.CurrentStatus
+                            ""}}CONFIRMED{{else}}{{.Tracking.CurrentStatus}}{{end}}</h3>
+
+                        <!-- Estimated Delivery Date -->
+                        <!-- <p>Arriving by Fri, March 3rd</p> -->
+                    </div>
+                </div>
+                
+                <div href="/order/{{.ID}}" class="order-product" style="cursor:pointer" onclick="window.location.assign('/order/{{.ID}}')">
+                    <div class="order-product-grid">
+                        <img class="thumbnail" src='{{getImageURL 380 .Variant.Thumbnail}}' />
+                        <div class="order-product-description">
+                            <h3>{{.Brand.Name}}</h3>
+                            <p>{{.Product.Name}}</p>
+                            <div class="attribute">
+                                {{template "variantSummary" dict "product" .Product "variant" .Variant}}
+                                <span class="attributeName">Qty: </span><span class="attributeValue">{{(index .Cart.Items 0).Quantity}}</span>
+                            </div>
+                        </div>
+                        <img
+                                src="/static/assets/rightArrowGey.svg" />
+                    </div>
+                </div>
+            
+
+                <!-- Order Actions. Cancel Order and Track Order for a confirmed Order -->
+
+                <div class="order-actions">
+                    <button class="track-button"
+                        onclick="trackItemModalOpen('{{.ID}}', '{{formatTimestamp .CreatedAt}}')">Track</button>
+                </div>
+                {{end}}
+
+                {{if eq .FulfillmentStatus "Cancelled"}}
+                <div class="order-status">
+                    <img class="order-status-icon" src="/static/assets/cancelledIcon.svg" />
+                    <div>
+                        <h3 class="canceled">Cancelled</h3>
+
+                        <!-- Estimated Delivery Date -->
+                        <!-- <p>Arriving by Fri, March 3rd</p> -->
+                    </div>
+                </div>
+                <div class="order-product">
+                    <div class="order-product-grid">
+                        <img class="thumbnail" src='{{getImageURL 380 .Variant.Thumbnail}}' />
+                        <div class="order-product-description">
+                            <h3>{{.Brand.Name}}</h3>
+                            <p>{{.Product.Name}}</p>
+                            <div class="attribute">
+                                {{template "variantSummary" dict "product" .Product "variant" .Variant}}
+                                <span class="attributeName">Qty: </span><span class="attributeValue">{{(index .Cart.Items 0).Quantity}}</span>
+                            </div>
+                        </div>
+                        <a href="/product/{{.Product.ID}}" class="order-product-right"><img
+                                src="/static/assets/rightArrowGey.svg" /></a>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+            {{end}}
+
+        </div>
+
+        <section id="track-item-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h3>Track Item</h3>
+                        <h4 id="tracking-number">Tracking Number: </h4>
+                    </div>
+                    <div onclick='trackItemModalClose()'>
+                        <img src="/static/icons/cross.svg" style="cursor: pointer;">
+                    </div>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="wrapper">
+                        <ul class="StepProgress" id="StepProgress">
+                            <!-- <li class="StepProgress-item not-done"><span class="major-point unreached">Arriving
+                                    &nbsp</span></li>
+                            <li class="StepProgress-item not-done"> <span class="major-point unreached">Shipped &nbsp</span>
+                            </li>
+                            <li class="StepProgress-item is-done"> <span class="major-point reached">Order Placed
+                                    &nbsp</span>
+                                <span class="subtext" id="order-placed-date"></span>
+                            </li> -->
+                        </ul>
+                    </div>
+
+                    <!-- Static Tracking Page -->
+                    <!-- <div class="wrapper">
+                        <ul class="StepProgress">
+                            <li class="StepProgress-item not-done"><span class="major-point unreached">Arriving
+                                    &nbsp</span><span class="subtext">tomorrow</span></li>
+                            <li class="StepProgress-item is-done"> <span class="major-point reached">Shipped &nbsp</span>
+                                <span class="subtext">on Thu, 20 Mar</span>
+                            </li>
+                            <li class="StepProgress-item is-done-minor"> <span class="minor-point">11:00 AM &nbsp</span>
+                                <span class="subtext">Item shipped from delivery centre</span>
+                            </li>
+                            <li class="StepProgress-item date-change">
+                                <span>Wednesday, 1 Mar</span>
+                            </li>
+                            <li class="StepProgress-item is-done-minor"> <span class="minor-point">12:30 PM &nbsp</span>
+                                <span class="subtext">Item packed in Dispatch warehouse</span>
+                            </li>
+                            <li class="StepProgress-item is-done"> <span class="major-point reached">Order Placed
+                                    &nbsp</span>
+                                <span class="subtext">on Monday, 18 Mar</span>
+                            </li>
+                        </ul>
+                    </div> -->
+
+
+                    <!-- <div class="tracking-point">
+                        <div class="image-container">
+                            <img src="/static/assets/greyTick.svg">
+                        </div>
+                        <div class="major-point unreached">Arriving &nbsp</div>
+                        <div class="subtext">tomorrow</div>
+                    </div>
+                    <div class="tracking-point">
+                        <div class="image-container">
+                            <img src="/static/assets/RedTick.svg">
+                        </div>
+                        <div class="major-point reached">Shipped &nbsp</div>
+                        <div class="subtext">on Thu, 20 Mar</div>
+                    </div>
+                    <div class="tracking-point">
+                        <div class="image-container">
+                            <img src="/static/assets/redDot.svg">
+                        </div>
+                        <div class="minor-point">11:00 AM &nbsp</div>
+                        <div class="subtext">Item shipped from delivery centre</div>
+                    </div>
+                    <div class="tracking-point">
+                        <div class="image-container">
+                            <img src="/static/assets/redDot.svg">
+                        </div>
+                        <div class="minor-point">12:30 PM &nbsp</div>
+                        <div class="subtext">Item packed in Dispatch warehouse</div>
+                    </div>
+                    <div class="tracking-point">
+                        <div class="image-container">
+                            <img src="/static/assets/RedTick.svg">
+                        </div>
+                        <div class="major-point reached">Order Placed &nbsp</div>
+                        <div class="subtext">on Monday, 18 Mar</div>
+                    </div> -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+    function cancelOrder(orderID) {
+        window.location.assign("/order/cancel/" + orderID)
+    }
+    async function trackItemModalOpen(trackingID, createdAt) {
+        await fetch(`/order/track?orderID=${trackingID}`)
+            .then(async response => {
+                if (response.status >= 400) {
+                    throw "Abort"
+                }
+                var trackData = await response.json();
+                console.log("testing:", trackData);
+                if(trackData["trackingID"]!==""){
+                    document.getElementById('tracking-number').style.display="flex";
+                    document.getElementById("tracking-number").innerHTML = `Tracking Number: ${trackData["trackingID"]}`
+                }else{
+                    document.getElementById('tracking-number').style.display="none";
+                }
+                // document.getElementById("order-placed-date").innerHTML = `on ${createdAt}`
+                const trackItemModal = document.getElementById("track-item-modal")
+                trackItemModal.style.display = 'block';
+                fillTrackingModal(trackData.data);
+            }).catch(err => {
+                alert("Unable to get tracking data for order");
+                return;
+            })
+    }
+
+    function fillTrackingModal(trackData) {
+        console.log("filling tracking modal");
+        var tempinner = '';
+        for (var i = 0; i < trackData.length; i++) {
+            if (trackData[i]["completed"]) {
+                tempinner = tempinner + '<li class="StepProgress-item is-done"><span class="major-point reached">' + trackData[i]["status"] + '</span>'
+                if (trackData[i]["date"]) {
+                    tempinner = tempinner + '<span class="subtext" style="margin-left:5px;">at ' + trackData[i]["date"] + '</span>';
+                }
+                if (trackData[i]["activity"]) {
+                    tempinner = tempinner + '<br /><span class="subtext">' + trackData[i]["activity"].replaceAll('_', ' ') + '</span>'
+                }
+                tempinner = tempinner + '</li>';
+            } else {
+                tempinner = tempinner + '<li class="StepProgress-item not-done"><span class="major-point reached">' + trackData[i]["status"] + '</span></li>'
+            }
+        }
+        document.getElementById('StepProgress').innerHTML = tempinner;
+    }
+
+    function trackItemModalClose() {
+        const trackItemModal = document.getElementById("track-item-modal")
+        trackItemModal.style.display = 'none';
+    }
+</script>
+
+{{template "tracking"}}
+
+</html>
+{{end}}

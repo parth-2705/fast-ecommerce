@@ -1,0 +1,297 @@
+{{define "listingsPage"}}
+<html>
+
+<head>
+    {{template "title"}}
+    <link rel="stylesheet" href="/static/styles/listings.css" />
+    <!-- <link rel="stylesheet" href="/static/styles/product.css" /> -->
+    <link rel="stylesheet" href="/static/styles/card.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/loader.css" />
+    <link rel="stylesheet" href="/static/styles/filters.css" />
+    <link rel="stylesheet" href="/static/styles/color.css?randomizer={{randomizer}}" />
+    <link rel="stylesheet" href="/static/styles/homeFooter.css" />
+    <link rel="stylesheet" href="/static/styles/categories2.css?randomizer={{randomizer}}" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{if and .homePage (eq (getEnvVariable "ENVIRONMENT") "prod")}}
+    <meta name="facebook-domain-verification" content="3otcss70m5oxov7hotk7bqmsdjap3v" />
+    <meta name="google-site-verification" content="0dkf_7STQyGg0rTIAGryVqstYIMNGnWTlfruoFwOuPQ" />
+    {{end}}
+    <style>
+        #body{
+            height: unset;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column; 
+        }
+        @media only screen and (max-width:2140px){
+            #body{
+                position: relative;
+                height: calc(100vh - 91px);
+                top:unset;
+                bottom:unset;
+                left:unset;
+                right:unset;
+            }
+        }
+        @media only screen and (max-width: 1024px) {
+            #body {
+                height: 100vh;
+                margin: 0 auto;
+                border-radius: 0px;
+            }
+        }
+        @media only screen and (max-width: 420px) {
+            #body {
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+
+        {{template "filterPage" dict "filters" .filters "filtersMap" .filtersMap "appliedFilters" .appliedFilters}}
+        <div class="header">
+            {{if .homePage}}
+            {{template "websiteHeader" dict "rightButtons" true "trackingMap" .trackingMap}}
+            {{else}}
+            {{template "websiteHeaderWBack" dict "head" .category.Name "rightButtons" true}}
+            {{end}}
+        </div>
+        <div class="scrollableBody" id="scrollableBody">
+            {{if .homePage}}
+            <div class="homeHero">
+                <div class="cards">
+                    <div class="card">
+                        <img src="/static/assets/easyReturn.svg"></img>
+                        <p>Easy returns</p>
+                    </div>
+                    <div class="card">
+                        <img src="/static/assets/freeShipping.svg"></img>
+                        <p>Free shipping</p>
+                    </div>
+                    <div class="card">
+                        <img src="/static/assets/COD.svg"></img>
+                        <p>COD available</p>
+                    </div>
+                </div>
+                <!-- <img class="banner"></img> -->
+            </div>
+            <div class="topOffers">
+                <p>Best Deals</p>
+            </div>
+            {{else}}
+            <div class="topButtons">
+                <button id="categoryButton" onclick="categoryDropdown(event)">{{.category.Name}}</button>
+                <button id="filterButton" onclick="showFilter(event)">Filters</button>
+                <div class="categoryOptions">
+                    {{range .categories}}
+                    {{if eq .ID $.category.ID}}
+                    <a href="/categories/{{.ID}}" class="active" style="color: #282828!important;">{{.Name}}</a>
+                    {{else}}
+                    <a href="/categories/{{.ID}}" style="color: #83808B !important;">{{.Name}}</a>
+                    {{end}}
+                    {{end}}
+                </div>
+            </div>
+            {{if ne (len .category.ChildrenCategories) 0}}
+            <div class="categoryList" style="margin-bottom:1em;flex-wrap:nowrap;overflow:scroll;width:100%;">
+                {{range $child:= .category.ChildrenCategories}}
+                {{if ne .Image ""}}
+                <a href="/categories/{{.ID}}" class="categoryItem">
+                    <div class="image">
+                        <img src='{{getImageURL 500 .Image}}'
+                            class="image" />
+                    </div>
+                    <h3>{{.Name}}</h3>
+                </a>
+                {{end}}
+                {{end}}
+            </div>
+            {{end}}
+            {{end}}
+
+            <div class="products" id="productList">
+                {{range $i, $a := .products}}
+                <a class="productUrl" href="/product/{{$a.ID}}">
+                    <div class="product">
+                        <img {{if gt $i 3}}loading="lazy" {{end}}
+                            src='{{getImageURL 500 $a.Thumbnail}}'></img>
+                        <div class="productDetails">
+                            <h4><span>{{$a.Brand.Name}}</span></h4>
+                            <h4> {{$a.Name}}</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                    <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                </div>
+                                {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                {{end}}
+            </div>
+            <div class="loader" id="loader">
+                <div class="spinner">
+                </div>
+            </div>
+        </div>
+        {{if .homePage}}
+        <div class="footer">
+            {{if .homePage}}
+            <a class="footerButton" id="home">
+                <img src="/static/assets/images/home-filled.svg">
+                <p class="activeFooter">Home</p>
+            </a>
+            <a class="footerButton" id="categories" href="/categories">
+                <img src="/static/assets/images/categories.svg">
+                <p>Categories</p>
+            </a>
+            {{else}}
+            <a class="footerButton" id="home" href="/" onclick="sendTracking('Home CTA')">
+                <img src=" /static/assets/images/home.svg">
+                <p>Home</p>
+            </a>
+            <a class="footerButton" id="categories">
+                <img src="/static/assets/images/categories-filled.svg">
+                <p class="activeFooter">Categories</p>
+            </a>
+            {{end}}
+            <!-- <a class="footerButton" id="chat" href="/chat" onclick="sendTracking('chat CTA clicked')">
+                <img src="/static/assets/chat-icon.svg">
+                <p>Chat</p>
+            </a> -->
+            <a class="footerButton" id="profile" href="/profile" onclick="sendTracking('Profile cta clicked')">
+                <img src="/static/assets/images/profile.svg">
+                <p>Profile</p>
+            </a>
+        </div>
+        {{end}}
+    </div>
+    {{template "outer-section"}}
+</body>
+<script async defer>
+    var currentPage = 1;
+    var pagination;
+    var categoryID = "";
+    var filter = "";
+    var locked = false;
+
+    function categoryDropdown(event) {
+        event.stopPropagation();
+        const open = document.getElementsByClassName("open")[0]
+        const categoryOptions = document.getElementsByClassName("categoryOptions")[0]
+        open ? categoryOptions.classList.remove("open") : categoryOptions.classList.add("open")
+    }
+    document.addEventListener("click", () => {
+        const open = document.getElementsByClassName("open")[0]
+        const categoryOptions = document.getElementsByClassName("categoryOptions")[0]
+        if (open) {
+            categoryOptions.classList.remove("open")
+        }
+    })
+
+    function initPagination(homePage, paginater) {
+        console.log('paginater:', homePage, paginater)
+        if (!homePage) {
+            const params = new URLSearchParams(window.location.search)
+            categoryID = '{{ $.category.ID }}'
+            for (const param of params) {
+                if (param[0] == "filter") {
+                    filter = param[1]
+                }
+            }
+        }
+        pagination = paginater
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("loaded");
+        document.getElementById('loader').style.display = 'none';
+        initPagination({{.homePage }}, {{.paginater }})
+        })
+
+    function makeProductCards(products) {
+        console.log("these are paginated products:", products);
+        var elems = []
+        products.forEach(item => {
+            var elem = document.createElement('a')
+            elem.className = 'productUrl'
+            elem.href = '/product/' + item.id
+            var tempStrDiscount=""
+            var tempStrMRP=""
+            if(item.price.mrp!=item.price.sellingPrice){
+                tempStrDiscount=`<h3>-${Math.round(item.price.discountPercentage)}%</h3>`
+                tempStrMRP=`<h4><del>₹ ${Math.round(item.price.mrp)}</del></h4>`
+            }
+            elem.innerHTML = `<div class="product">
+                        <img src="https://roovo.in/cdn-cgi/image/width=500,format=auto/https://storage.googleapis.com/roovo-images/rawImages/`+ item.thumbnail + `"></img>
+                        <div class="productDetails">
+                            <h4><span>`+ item.brand.name + `</span></h4>
+                            <h4>`+ item.name + `</h4>
+                            <div class="priceContainer">
+                                <div>
+                                    `+ tempStrDiscount + `
+                                    <h2>₹ `+  Math.round(item.price.sellingPrice) + `</h2>
+                                </div>
+                                `+ tempStrMRP + `
+                            </div>
+                        </div>
+                    </div>`
+            elems.push(elem);
+        })
+        document.getElementById('productList').append(...elems)
+    }
+    function showFilter(event) {
+        document.getElementById("filterPage").classList.remove("hidden-filter")
+    }
+
+    document.getElementById('scrollableBody').addEventListener('scroll', async (event) => {
+        scrollableBody = document.getElementById('scrollableBody');
+        scrollCheck = (scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight < 100)
+        console.log(scrollableBody.scrollHeight - scrollableBody.scrollTop - scrollableBody.clientHeight)
+        if (pagination == undefined || !pagination.hasOwnProperty('total_pages') || locked || !scrollCheck) {
+            return;
+        }
+        if (currentPage < pagination['total_pages']) {
+            locked = true;
+            document.getElementById('loader').style.display = 'flex';
+            // document.getElementById('loader').scrollIntoView({ behavior: "instant", block: "end" });
+            await fetch(`/product/get-page?limit=${pagination.limit}&page=${currentPage + 1}&categoryID=${categoryID}&filter=${filter}`)
+                .then(async response => {
+                    data = await response.json();
+                    console.log("this is response:", data);
+                    document.getElementById('loader').style.display = 'none';
+                    makeProductCards(data["products"]);
+                    currentPage = currentPage + 1;
+                    locked = false;
+                }).catch(err => {
+                    document.getElementById('loader').style.display = 'none';
+                    locked = false;
+                })
+        }
+    })
+
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}

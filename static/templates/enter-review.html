@@ -1,0 +1,72 @@
+{{define "enter-review"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/rating.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/review.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+
+        <div class="left-alligned-header header">
+            <a href="/product/{{.product.ID}}"><img src="/static/assets/arrow-back.svg" /></a>
+            <h3>Feedback and Review</h3>
+        </div>
+        <div class="scrollableBody">
+            <form onsubmit="makeReview(event,'{{.product.ID}}')" class="form-parent">
+                <div class="product-info">
+                    <div class="product-thumbnail">
+                        <img
+                            src='{{getImageURL 500 .product.Thumbnail}}' />
+                    </div>
+                    <div class="product-text">
+                        <h2>{{.product.Brand.Name}}</h2>
+                        <p>{{.product.Name}}</p>
+                    </div>
+                </div>
+                <section class="input-section">
+                    <label for="reviewerName">Enter your name</label>
+                    <input type="text" id="reviewerName" for="reviewerName" name="reviewerName"
+                        placeholder="Enter your name" value="{{.order.Address.Name}}" required />
+                </section>
+                <section class="input-section">
+                    <label for="reviewerName">Rate this product</label>
+                    {{template "rating" .}}
+                </section>
+                <section class="input-section">
+                    <!-- <label for="reviewerName">Review Title</label>
+                <input type="text" id="title" for="title" name="title" placeholder="Enter the title for your review"
+                    required /> -->
+                    <label for="reviewerName">Write your review</label>
+                    <textarea type="text" id="review" for="review" name="review" placeholder="Start writing here..."
+                        required></textarea>
+                    <p>By submitting the review you give us your consent to publish your personal information in
+                        accordance with <a href="/terms-and-conditions" style="color: #ed2f51!important;">Terms &
+                            conditions</a> & <a href="/privacy-policy" style="color: #ed2f51!important;">Privacy
+                            Policy</a>.</p>
+                </section>
+                <div class="submitButton">
+                    <button type="submit">Submit your review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{template "outer-section"}}
+    <script>
+        async function makeReview(event, productID) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const formProps = Object.fromEntries(formData);
+            formProps["rating"] = Number(formProps['rating'])
+            console.log(formProps)
+            await fetch("/review?productID=" + productID, { method: "POST", body: JSON.stringify(formProps) }).then(() => {
+                window.location.assign('/product/' + productID);
+                return;
+            })
+        }
+    </script>
+    {{end}}

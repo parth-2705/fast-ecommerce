@@ -1,0 +1,7 @@
+{{define "productRating"}}
+<div class='averageRatings {{if .small}}no-margin small-averageRatings{{end}}'>
+    {{template "StarRating" dict "productRatingVisualisation" .productRatingVisualisation "small" .small}}&nbsp; 
+    {{if ne .small true}}<p>{{ round .product.AverageRating 2 }}/5&nbsp;</p>{{end}}
+    <p class="body-dark">(<span  style="{{if .small}}text-decoration: underline !important{{end}}">{{.product.RatingCount}}</span>)</p>
+</div>
+{{end}}

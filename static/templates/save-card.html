@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="body">
+        <!-- simple bootsfram that will take the user's card details: number and expiry and nick name of card -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- this will not be the stripe form but our form using bootstrap -->
+                    <form action="" method="post" id="payment-form">
+                        <div class="form-row">
+                            <input type="text" name="nickname" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="Nickname">
+                            <input type="text" name="card_number" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="Card Number">
+                            <!-- month and year are separate fields -->
+                            <div id="card-expiry" class="form-row">
+                                <input type="text" name="card_expiry_month" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="MM">
+                                <input type="text" name="card_expiry_year" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="YY">
+                            </div>  
+                            <input type="text" name="card_nickname" class="form-control" placeholder="Enter Nickname">
+                        </div>
+                        <button>Submit Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+</html>

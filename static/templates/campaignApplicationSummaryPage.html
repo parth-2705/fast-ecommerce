@@ -1,0 +1,271 @@
+{{define "campaignApplicationSummaryPage"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/orderSummary.css" />
+        <link rel="stylesheet" href="/static/styles/card.css" />
+        <link rel="stylesheet" href="/static/styles/global.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/apply/{{.campaign.ID}}/2">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+                <div>Application</div>
+            </div>
+            <div>
+                <img src="/static/assets/images/campaign-application-3.svg" style="width: 100%;" />
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                    <div class="campaignContent bandBottom">
+                        <div class="rowFlex justify-between sectionHeading">
+                            <div>Address</div>
+                            <div onclick="openModal();" style="color:#ED2F51;cursor:pointer;" id="open-modal">Change</div>
+                        </div>
+                        <div>
+                            <div class="addressName" id="address-name">{{.address.Name}}</div>
+                            <div class="addressText" id="address-details">{{.address.HouseArea}},{{.address.City}},{{.address.State}},{{.address.PinCode}}<br>
+                                Mobile number: {{.Phone}}</div>
+                        </div>
+
+                    </div>
+                    <div class="campaignContent">
+                        <div class="sectionHeading mt-1">
+                            Selected Products
+                        </div>
+                        <div class="products mt-05" id="productList">
+                            {{range $i, $a := .campaign.ProductArray}}
+                                {{if eq $a.ID $.selectedProduct}}
+                                    <div class="productUrl full-width">
+                                        <div class="rowFlex full-width">
+                                            <img {{if gt $i 3}}loading="lazy" {{end}} style="width: 96px;" src='{{getImageURL 500 $a.Thumbnail}}'/>
+                                            <div class="productDetails full-width">
+                                                <h4 class="full-width"><span>{{$a.Brand.Name}}</span></h4>
+                                                <h4 class="full-width"> {{$a.Name}}</h4>
+                                                <div class="priceContainer full-width">
+                                                    <div style="margin:1em 0 0.5em; align-items:center; position:relative;">
+                                                        {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                                        <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                                    </div>
+                                                    {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{end}}
+                            {{end}}
+                        </div>
+                    </div>
+            </div>
+            <!-- <div class="noAccountConnectedPopUpContainer" id="noAccountPopUp">
+                <div class="noAccountPopUp">
+                    Please select a product to continue
+                </div>
+            </div> -->
+            <div class="footer campaignFooterContainer">
+                <div onclick="addressChoosen(event)" style="cursor: pointer;">
+                    <div class="campaignFooterCTA">
+                        Continue
+                    </div>
+                </div>
+            </div>
+
+            <section class="modal" id="modal">
+                <div class="modal-content">
+                    <div class="rowFlex justify-between pb-1 modal-header">
+                        <div>Change delivery address</div>
+                        <img src="/static/icons/cross.svg" alt="cross" style="cursor:pointer;" onclick="closeModal();"
+                            id="close-modal" />
+                    </div>
+                    <section class="scrollable-addresses">
+                    
+                        {{range $idx, $addressOption := .addressOptions}}
+                        {{if eq $.address.ID $addressOption.ID}}
+                        <button onclick="addressChange({{.}})" class="addressess" style="width:100%;">
+                            <div class="address-section selected">
+                                <div class="rowFlex justify-between">
+                                    <div class="price-details-text-14 address-name">{{.Name}}</div>
+                                    <img src="/static/assets/editPencil.svg" alt="edit" style="cursor:pointer;"
+                                        onclick="editAddress(event,{{$addressOption.ID}},{{$.campaign.ID}})" />
+                                </div>
+                                <div class="product-description-text address-details">{{.HouseArea}},
+                                    {{.City}}, {{.State}}, {{.PinCode}}<br>
+                                    Mobile number: {{.Phone}}</div>
+                            </div>
+                        </button>
+                        {{end}}
+                        {{end}}
+                        {{range $idx, $addressOption := .addressOptions}}
+                        {{if ne $.address.ID $addressOption.ID}}
+                        <button onclick="addressChange({{.}})" class="addressess" style="width:100%;">
+                            <div class="address-section">
+                                <div class="rowFlex justify-between">
+                                    <div class="price-details-text-14 address-name">{{.Name}}</div>
+                                    <img src="/static/assets/editPencil.svg" alt="edit" style="cursor:pointer;"
+                                        onclick="editAddress(event,{{$addressOption.ID}},{{$.variant.ID}})" />
+                                </div>
+                                <div class="product-description-text address-details">{{.HouseArea}},
+                                    {{.City}}, {{.State}}, {{.PinCode}}<br>
+                                    Mobile number: {{.Phone}}</div>
+                            </div>
+                        </button>
+                        {{end}}
+                        {{end}}
+                    </section>
+                    <button class="modal-button">
+                        <div onclick="addNewAddresss(event,{{$.campaign.ID}})">
+                            Add New Address
+                        </div>
+                    </button>
+                </div>
+            </section>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    <script>
+        var addressID = {{.address.ID}}
+        var campaignID = {{.campaign.ID}}
+        var influencerID = {{.influencer.ID}}
+
+        function addressChange(address) {
+            console.log("address: ",address)
+            document.getElementById("address-name").innerText = address.name;
+            let addressString = address.houseArea + " " + address.city + " " + address.state + " " + address.pincode + "<br>Mobile number :" + address.phone;
+            if (document.getElementById("address-details") !== null) {
+                document.getElementById("address-details").innerHTML = addressString
+            }
+            addressID = address.id
+            document.getElementById("modal").classList.remove("active")
+        }
+
+        function addNewAddresss(event, campaignID) {
+            let path = `/addresses/new?redirect=influencer/campaign/apply/${campaignID}/3`
+            window.location.assign(path)
+            return
+        }
+    
+        function editAddress(event, addressID, campaignID) {
+            event.stopPropagation();
+            window.location.assign(`/addresses/edit/${addressID}?redirect=influencer/campaign/apply/${campaignID}/3`)
+            return;
+        }
+    
+        function openModal() {
+            document.getElementById("modal").classList.add("active")
+            let addresses = document.getElementsByClassName("address-section")
+            if (addresses.length > 0) {
+                for (let i = 0; i < addresses.length; i++) {
+                    addresses[i].addEventListener("click", () => {
+                        for (let j = 0; j < addresses.length; j++) {
+                            addresses[j].classList.remove("selected")
+                        }
+                        addresses[i].classList.add("selected")
+                    })
+    
+                }
+            }
+        }
+    
+        function closeModal() {
+            document.getElementById("modal").classList.remove("active")
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const addressHover = document.getElementsByClassName("addressess")
+            if (addressHover.length > 0) {
+                for (let i = 0; i < addressHover.length; i++) {
+                    addressHover[i].addEventListener("mouseover", () => {
+                        addressHover[i].setAttribute("style", "border:1px solid #fbd5dc")
+                    })
+                    addressHover[i].addEventListener("mouseout", () => {
+                        addressHover[i].setAttribute("style", "border:1px solid #F2F2FD")
+                    })
+                }
+            }
+        });    
+
+        async function addressChoosen(){
+            let data = { addressID,campaignID,influencerID }
+            fetch(`/influencer/campaign/apply/${campaignID}/3`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasOwnProperty("error")) {
+                        alert(data.error);
+                        return
+                    }
+                    window.location.assign(`/influencer/campaign/apply/${campaignID}/4`)
+                    return
+                }).catch(error => {
+                    alert("Invalid request"+error);
+                    return
+                });
+        }
+
+    </script>
+</html>
+{{end}}

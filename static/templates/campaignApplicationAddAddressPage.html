@@ -1,0 +1,308 @@
+{{define "campaignApplicationAddAddressPage"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/card.css" />
+        <link rel="stylesheet" href="/static/styles/global.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/apply/{{.campaign.ID}}/2">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+                <div>Application</div>
+            </div>
+            <div>
+                <img src="/static/assets/images/campaign-application-3.svg" style="width: 100%;" />
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                    <form class="campaignContent bandBottom" id="details-form" onsubmit="event.preventDefault()">
+                        <!-- name input -->
+                        <div class="sectionHeading">
+                            <p>Name</p>
+                            <input type="text" name="name" id="name" class="roovo-input-full roovo-input" value="{{.influencer.Name}}" >
+                        </div>
+                        
+                        <!-- phone input -->
+                        <input type="hidden" name="phone" id="phone" value="{{substring .influencer.Phone 3 11}}"class="roovo-input-full roovo-input" onkeypress="mobileValidation(event)">
+                        
+                        <!-- pincode input -->
+                        <div class="sectionHeading">
+                            <p>Pin Code</p>
+                            <input type="tel" onkeypress="pincodeValidation(event)" name="pincode" id="pincode"
+                            class="roovo-input-full roovo-input" value="{{.address.PinCode}}">
+                        </div>
+
+                        <!-- House No, Building, Street, Area input -->
+                        <div class="sectionHeading">
+                            <p>House No, Building, Street, Area</p>
+                            <input type="text" name="houseArea" id="houseArea" class="roovo-input-full roovo-input" value="{{.address.HouseArea}}">
+                        </div>
+
+                        <div class="rowFlex">
+                            <div class="sectionHeading roovo-half-input">
+                                <p>City / District</p>
+                                <input type="text" name="city" id="city" class="roovo-input-full" value="{{.address.City}}">
+                            </div>
+                            <div class="sectionHeading roovo-half-input">
+                                <p>State</p>
+                                <select name="state" id="state" class="roovo-input-full">
+                                    {{range $state := .states}}
+                                    <option value="{{$state}}" {{if eq $.address.State $state}} selected {{end}}>
+                                        {{$state}}
+                                    </option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="campaignContent">
+                        <div class="sectionHeading mt-1">
+                            Selected Products
+                        </div>
+                        <div class="products mt-05" id="productList">
+                            {{range $i, $a := .campaign.ProductArray}}
+                                {{if eq $a.ID $.selectedProduct}}
+                                    <div class="productUrl full-width">
+                                <div class="rowFlex full-width">
+                                    <img {{if gt $i 3}}loading="lazy" {{end}} style="width: 96px;" src='{{getImageURL 500 $a.Thumbnail}}'/>
+                                    <div class="productDetails full-width">
+                                        <h4 class="full-width"><span>{{$a.Brand.Name}}</span></h4>
+                                        <h4 class="full-width"> {{$a.Name}}</h4>
+                                        <div class="priceContainer full-width">
+                                            <div style="margin:1em 0 0.5em; align-items:center; position:relative;">
+                                                {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h3>-{{$a.Price.DiscountPercentage | int}}%</h3>{{end}}
+                                                <h2>₹{{$a.Price.SellingPrice | int}}</h2>
+                                                    </div>
+                                                    {{if ne $a.Price.MRP $a.Price.SellingPrice}}<h4><del>₹{{$a.Price.MRP | int}}</del></h4>{{end}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{end}}
+                            {{end}}
+                        </div>
+                    </div>
+            </div>
+            <div class="noAccountConnectedPopUpContainer" id="noAccountPopUp">
+                <div class="noAccountPopUp" id="errorMsg">
+                    Please select a product to continue
+                </div>
+            </div>
+            <div class="footer campaignFooterContainer">
+                <div onclick="submitAddress(event)" style="cursor: pointer;">
+                    <button type="submit" class="campaignFooterCTA">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+    <script>
+
+        function showError(message){
+            const popup = document.getElementById("noAccountPopUp")
+            const errorMsg = document.getElementById("errorMsg")
+
+            if(message && message.length>0){
+                errorMsg.innerText = message
+            }
+
+            // Show the popup
+            popup.style.display = "block";
+            
+            // Set a timeout to hide the popup after 2 seconds
+            setTimeout(function() {
+                popup.classList.add("fade-out");
+                
+                // Remove the popup from the DOM after fade out
+                setTimeout(function() {
+                popup.style.display = "none";
+                popup.classList.remove("fade-out");
+                }, 1000); // Wait for fade out transition to complete (1s)
+            }, 2000); // Wait for 2 seconds
+        }
+
+        async function validatePincode(pincode) {
+            if (pincode.length === 6 && !isNaN(pincode)) {
+                    // make a request to the api
+                    let resp=await fetch(`/address/pincodes/${pincode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.hasOwnProperty("error")) {
+                                return false
+                            }
+                            return true
+                        }).catch(error => {
+                            return false
+                        });
+                        return resp;
+                }else{
+                    return false
+                }
+        }
+
+        async function submitAddress(event){
+            const detailsForm = document.querySelector("#details-form");
+            // get the data from the forms
+            const detailsFormData = new FormData(detailsForm);
+
+            // const addressFormData = new FormData(addressForm);
+            // create an object to store the data
+
+            const data = {};
+
+            // loop through the contact details form data and add it to the data object
+            for (const [key, value] of detailsFormData.entries()) {
+                data[key] = value;
+            }
+
+            if(!data.pincode || data["pincode"].length<6){
+                showError("Please enter a valid pincode");
+                return;
+            }
+
+            if(!data.houseArea || data["houseArea"].length<5){
+                showError("Please enter a valid house area");
+                return;
+            }
+
+            if(!data.name){
+                showError("Please enter a valid name");
+                return;
+            }
+
+            var resp= await validatePincode(data.pincode)
+            console.log("resp",resp)
+
+            if (resp) {
+                // make a post request to /address 
+                data.phone = "+91" + data.phone;
+           
+                data["isDefault"] = true
+
+                fetch(`/addresses`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(async (data) => {
+                        console.log("data",data)
+                        window.location.assign("/influencer/campaign/apply/{{.campaign.ID}}/4")
+                        return
+                    })
+                    .catch (err=> {
+                        console.error("couldn't add the address ", err)
+                    });
+            }else{
+                showError("Please enter a valid pincode");
+                return;
+            }
+    
+            return
+        }
+
+    function selectElement(id, valueToSelect) {
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
+    
+    // write your code here
+    // wait for the page to load
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to pincode that listens for change, keyup, paste and input
+        document.querySelector("#pincode").addEventListener("keyup", () => {
+            // get the pincode
+            const pincode = document.querySelector("#pincode").value;
+            // check if length is 6 and only numbers
+            if (pincode.length === 6 && !isNaN(pincode)) {
+                // make a request to the api
+                fetch(`/address/pincodes/${pincode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.hasOwnProperty("error")) {
+                            showError("Invalid Pincode");
+                            return
+                        }
+                        // check if the data is valid
+                        const city = data.city;
+                        const state = data.state;
+                        // set the city and state
+                        document.querySelector("#city").value = city;
+                        // select the state option with the value
+                        selectElement('state', state)
+                    }).catch(error => {
+                        showError("Invalid Pincode "+error);
+                    });
+            }
+        });
+    });
+
+
+    </script>
+</html>
+{{end}}

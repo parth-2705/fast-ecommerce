@@ -1,0 +1,126 @@
+{{define "filterPage"}}
+<div class="filterPage hidden-filter" id="filterPage">
+    <div class="header">
+        {{template "websiteHeaderWBack" dict "head" "Filters"}}
+    </div>
+    <div class="filter-body">
+        <div class="filter-sidebar">
+            {{range .filters }}
+            <p class="filter-sidebar-tile" id="filter-{{.}}" onclick="renderOptions('{{.}}')">{{.}}</p>
+            {{end}}
+            <p class="filter-sidebar-tile" id="filter-Price" onclick="renderOptions('Price')">Price</p>
+            <p class="filter-sidebar-tile" id="filter-Rating" onclick="renderOptions('Rating')">Rating</p>
+        </div>
+        <div class="filter-list">
+            {{range $key, $value := .filtersMap}}
+            <div class="filter-list-for-category padded" id="options-{{$key}}">
+                {{range $value}}
+                <input class="filter-options" type="checkbox" id="{{$key}}/\{{.Value}}" value="{{$key}}/\{{.Value}}" name="{{$key}}/\{{.Value}}">
+                <label for="{{$key}}/\{{.Value}}">{{.Label}}</label><br>
+                {{end}}
+            </div>
+            {{end}}
+            <div class="filter-list-for-category padded" id="options-Price">
+                <input class="filter-options" type="checkbox" id="Price/\1000" value="Price/\1000" name="Price/\1000">
+                <label for="Price/\1000"> ₹ 0-1000</label><br>
+                <input class="filter-options" type="checkbox" id="Price/\5000" value="Price/\5000" name="Price/\5000">
+                <label for="Price/\5000"> ₹ 1000-5000</label><br>
+                <input class="filter-options" type="checkbox" id="Price/\10000" value="Price/\10000" name="Price/\10000">
+                <label for="Price/\10000"> ₹ 5000-10000</label><br>
+                <input class="filter-options" type="checkbox" id="Price/\10000above" value="Price/\10000above" name="Price/\10000above">
+                <label for="Price/\10000above"> ₹ 10000 +</label><br>
+            </div>
+            <div class="filter-list-for-category padded" id="options-Rating">
+                <input class="filter-options" type="checkbox" id="Rating/\0" value="Rating/\0" name="Rating/\0">
+                <label for="Rating/\0"> 0-1 stars</label><br>
+                <input class="filter-options" type="checkbox" id="Rating/\1" value="Rating/\1" name="Rating/\1">
+                <label for="Rating/\1"> 1-2 stars</label><br>
+                <input class="filter-options" type="checkbox" id="Rating/\2" value="Rating/\2" name="Rating/\2">
+                <label for="Rating/\2"> 2-3 stars</label><br>
+                <input class="filter-options" type="checkbox" id="Rating/\3" value="Rating/\3" name="Rating/\3">
+                <label for="Rating/\3"> 3-4 stars</label><br>
+                <input class="filter-options" type="checkbox" id="Rating/\4" value="Rating/\4" name="Rating/\4">
+                <label for="Rating/\4"> 4-5 stars</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="footer footer-filter">
+        <button class="filterCTA roovo-outline-new" onclick="hideFilters()">Cancel</button>
+        <button class="filterCTA roovo-button-new" onclick="applyFilters()">Apply</button>
+    </div>
+</div>
+<script>
+    var filtersMap
+    var activeCategory
+    var appliedFilters = {{.appliedFilters}} 
+    console.log(appliedFilters)
+    const filterParamArr = []
+    const allCheckBoxes = document.getElementsByClassName("filter-options")
+    document.addEventListener("DOMContentLoaded", function () {
+        filtersMap = {{.filtersMap }}
+        const firstFilter = document.getElementsByClassName("filter-sidebar-tile")[0]
+    firstFilter.classList.add("active-category")
+    activeCategory = firstFilter.innerText 
+    const firstOptions = document.getElementById("options-"+activeCategory)
+    firstOptions.classList.add("visible-options")
+    preFillFilters()
+    })
+
+    function renderOptions(category) {
+        if (category == activeCategory) return
+        activeCategory = category
+        document.getElementsByClassName("active-category")[0].classList.remove("active-category")
+        document.getElementsByClassName("visible-options")[0].classList.remove("visible-options")
+        document.getElementById("filter-" + category).classList.add("active-category")
+        document.getElementById("options-" + category).classList.add("visible-options")
+    }
+
+    function hideFilters(){
+        document.getElementById("filterPage").classList.add("hidden-filter")
+        
+        for(i=0; i<allCheckBoxes.length; i++){
+            allCheckBoxes[i].checked = false
+        }
+        preFillFilters()
+    }
+
+    function applyFilters(){
+        document.getElementById("filterPage").classList.add("hidden-filter")
+        applyFiltersHelper()
+        queryParamPush()
+    }
+
+    function queryParamPush(){
+        for (const [key, value] of Object.entries(appliedFilters)) {
+            if(value){
+                filterParamArr.push(key)
+            }
+        }
+        const url = new URL(window.location.href)
+        url.searchParams.set("filter", filterParamArr)
+        if(filterParamArr.length==0){
+            url.searchParams.delete("filter")
+        }
+        window.location.assign(url.href)
+    }
+
+    function preFillFilters(){
+        for (const [key, value] of Object.entries(appliedFilters)) {
+            if(value){
+                document.getElementById(key).checked = true
+            }
+        }
+    }
+    
+    function applyFiltersHelper(){
+            for(i=0; i<allCheckBoxes.length; i++){
+            if(allCheckBoxes[i].checked == true){
+                appliedFilters[allCheckBoxes[i].id]=true
+            } else{
+                appliedFilters[allCheckBoxes[i].id]=false
+            }
+        }
+    }
+
+</script>
+{{end}}

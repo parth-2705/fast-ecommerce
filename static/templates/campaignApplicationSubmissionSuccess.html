@@ -1,0 +1,102 @@
+{{define "campaignApplicationSubmissionSuccess"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/influencer.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/campaign.css?randomizer={{.randomizer}}" />
+        <link rel="stylesheet" href="/static/styles/outer-section.css">
+        <link rel="stylesheet" href="/static/styles/global.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover,user-scalable=0">
+        <style>
+            #body{
+                border-radius: 8px;
+                font-family: 'Manrope';
+                max-width: 420px !important;  
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: stretch;
+                overflow: hidden;
+                margin: 0 auto;
+                margin-top: 10px;
+                background: white;
+                height: unset;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column; 
+            }
+            @media only screen and (max-width:2140px){
+                #body{
+                    height: calc(100vh - 91px);
+                    position: relative;
+                    top:unset;
+                    bottom:unset;
+                    left:unset;
+                    right:unset;
+                }
+            }
+            @media only screen and (max-width: 1024px) {
+                #body {
+                    height: 100vh;
+                    margin: 0 auto;
+                    border-radius: 0px;
+                }
+            }
+            @media only screen and (max-width: 420px) {
+                #body {
+                    height: unset;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="body">
+            <div class="internalHeader">
+                <a href="/influencer/campaign/{{.campaignID}}">
+                    <img src="/static/assets/arrow-back.svg" style="width: 24px; height: 24px; cursor:pointer;">
+                </a>
+            </div>
+            <div class="scrollableBody" id="scrollableBody">
+                <div class="centerFlex" style="padding: 0 2em;">
+                    <img src="/static/assets/images/approved.svg" class="mt-2 mb-1" />
+                    <p class="campaingApprovedText">Application Successful!</p>
+                    <p class="addressText" style="text-align: center;">
+                        Your order has been placed and the product(s) will be delivered to you within 5-7 days.
+                    </p>
+                </div>
+                <div class="centerFlex nextStepsContainer">
+                    <p class="campaingApprovedText pv-1" style="font-weight: 700;">What happens next?</p>
+                    <div class="rowFlex align-start">
+                        <img src="/static/assets/red-tick.svg" />
+                        <div class="columnFlex" style="gap: 0.25em;">
+                            <p class="nextStepsHeading">Campaign Completion</p>
+                            <p class="nextStepsText">Once all the steps are successfully complete, the campaign will be over and your product purchase amount will be refunded back to you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer campaignFooterContainer">
+                <a href="/influencer/campaigns/my" style="cursor: pointer;">
+                    <div class="campaignFooterCTA">
+                        Go to Applied Campaigns
+                    </div>
+                </a>
+            </div>
+        </div>
+        {{template "outer-section"}}
+    </body>
+</html>
+{{end}}

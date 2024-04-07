@@ -1,0 +1,219 @@
+{{define "referral-page"}}
+<html>
+
+<head>
+    <title>Roovo | Referral</title>
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <link rel="stylesheet" href="/static/styles/referral.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async defer src="/static/js/back.js"></script>
+
+</head>
+
+<body>
+    <div id="body">
+        <header class="referral-header-container">
+            <img src="/static/assets/back-arrow-white.svg" onclick="event.stopPropagation();back()">
+            <div class="referral-header">
+                <div>REFERRAL PROGRAM</div>
+                <!-- <div class="referral-header-rules-text">Rules</div> -->
+            </div>
+        </header>
+        <div class="scrollableBody">
+            
+            <div class="body-avatar-container">
+                <div class="rowFlex justify-between body-avatar">
+                    <div class="rowFlex">
+                        <div class="avatar-circle">
+                            <img src="https://api.dicebear.com/6.x/adventurer/svg?seed={{.user.Phone}}" alt="avatar" style="width:64px;height:64px;" />
+                        </div>
+                        <div>{{.user.Phone}}</div>
+                    </div>
+                    <div>
+                        <div>Referrals</div>
+                        <div class="referral-count">{{.referredUsers}}</div>
+                    </div>
+                </div>
+                <div class="avatar-container">
+                    <div class="rowFlex justify-between">
+                        <div>
+                            <div class="earnings-text">Earnings</div>
+                            <div class="earnings-income">₹{{.wallet.Balance | int}}</div>
+                        </div>
+                        <!-- <div class="download-button-container">
+                            <button class="download-button">
+                                <img src="/static/assets/download-icon.svg" alt="icon" />
+                                <span>Withdraw to bank</span>
+                            </button>
+                            <div class="button-meta-text">Min. required to withdraw <span class="button-meta-text-highlight">₹1500</span></div>
+                        </div> -->
+                        <div>
+                            <div class="rowFlex">
+                                <img src="/static/assets/referral-pending.svg"/>
+                                <span class="pending-button-text">Pending</span>
+                            </div>
+                            <div class="pending-button-amount">₹0</div>
+                        </div>
+                    </div>
+                    <!-- <div class="rowFlex avator-action-button-container">
+                        <div>
+                            <div class="rowFlex">
+                                <img src="/static/assets/referral-pending.svg"/>
+                                <span class="pending-button-text">Pending</span>
+                            </div>
+                            <div class="pending-button-amount">₹0</div>
+                        </div>
+                        <div style="width: 1px;height:2em;background:#E3DFEF;"></div>
+                        <div>
+                            <div class="rowFlex">
+                                <img src="/static/assets/referral-download.svg"/>
+                                <span class="pending-button-text">Withdrawn</span>
+                            </div>
+                            <div class="pending-button-amount">₹0</div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="referral-division"></div>
+            <div class="referral-heading-container">
+                <div class="referral-heading-text">Refer and Earn!</div>
+                <div class="referral-heading-sub-text">Many of your friends might not be Roovo users.
+                    Invite them and start earning today!</div>
+            </div>
+            <div class="referral-body-container">
+                <div class="referral-body-sub-container">
+                    <img src="/static/assets/referral-invite.svg"/>
+                    <div class="referral-body-sub-text">
+                        <div>1. </div>
+                        <div>Invite friends to log onto Roovo.in via your link</div>
+                    </div>
+                </div>
+
+                <!-- <div class="referral-body-sub-container" style="margin-bottom:1em;">
+                    <img src="/static/assets/referral-mobile.svg"/>
+                    <div>
+                        <div class="referral-body-sub-text">
+                            <div>2. </div>
+                            <div>Friends log in and place orders with the following benefits to them</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text">30% OFF</span> on the first 3 orders</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text">10% OFF</span> on future orders</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight align-center">
+                            <img src="/static/assets/referral-truck.svg">
+                            <div class="referral-normal-text">Shipping benefits & Easy returns</div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="referral-body-sub-container">
+                    <img src="/static/assets/referral-moneybag.svg"/>
+                    <div>
+                        <div class="referral-body-sub-text">
+                            <div>2. </div>
+                            <div>You get the following benefits when they log in and place order</div>
+                        </div>
+                        <div class="referral-body-sub-text sub-text-highlight-2 align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text-2">5%</span> commission on friends’ order value</div>
+                        </div>
+                        <!-- <div class="referral-body-sub-text sub-text-highlight-2 align-center">
+                            <img src="/static/assets/referral-coupon-icon.svg">
+                            <div class="referral-normal-text"><span class="referral-highlight-text-2">₹10</span> for every friend that logs in</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="referral-footer">
+           <button class="referral-outline-btn" id="copy-link" onclick="copyReferralLink(event)">
+               <img src="/static/assets/icon-copy.svg" />
+                <span>Copy Referral Link</span>
+           </button>
+           <button class="referral-link-copied" id="link-copied" style="display: none;">
+            <img src="/static/assets/referral-link-copied.svg" />
+             <span>Link Copied</span>
+        </button>
+        <a href="whatsapp://send?text=https://roovo.in/refer/{{.profile.ReferralCode}}" data-action="share/whatsapp/share" >
+           <button class="whatsapp-btn">
+               <img src="/static/assets/whatsapp-icon.svg"/>
+                <span>Refer Now</span>
+           </button>
+        </a>
+        </div>
+    </div>
+    {{template "outer-section"}}
+</body>
+{{template "tracking"}}
+<script>
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+      
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+      
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+
+          if(successful){
+            document.getElementById("link-copied").setAttribute("style","display:flex");
+            document.getElementById("copy-link").setAttribute("style","display:none");
+
+            setTimeout(
+                function() {
+                    document.getElementById("copy-link").setAttribute("style","display:flex");
+                    document.getElementById("link-copied").setAttribute("style","display:none");
+            }, 1000);
+          }
+
+          console.log('Fallback: Copying text command was ' + msg);
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+        }
+      
+        document.body.removeChild(textArea);
+      }
+
+      function copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+          fallbackCopyTextToClipboard(text);
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+            document.getElementById("link-copied").setAttribute("style","display:flex");
+            document.getElementById("copy-link").setAttribute("style","display:none");
+
+            setTimeout(
+                function() {
+                    document.getElementById("copy-link").setAttribute("style","display:flex");
+                    document.getElementById("link-copied").setAttribute("style","display:none");
+            }, 1000);
+
+          console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      }
+
+    
+      function copyReferralLink(event) {
+        event.stopPropagation();
+        copyTextToClipboard("https://roovo.in/refer/{{.profile.ReferralCode}}")
+    }
+</script>
+</html>
+{{end}}

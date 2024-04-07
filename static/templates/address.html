@@ -1,0 +1,364 @@
+{{define "address"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- load bootstrap styles optimally -->
+    <title>Roovo - Add Address</title>
+    <link rel="stylesheet" href="/static/styles/color.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <script async defer src="/static/js/back.js"></script>
+
+    <!-- in styles set the viewport to be only of mobile size, no desktop site supported -->
+    <style>
+        @font-face {
+            font-family: 'Manrope';
+            src: url('/static/fonts/Manrope-VariableFont_wght.ttf');
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif !important;
+        }
+
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        .light-green-bg {
+            background: #F1FAF0;
+        }
+
+        .dark-green-text {
+            color: #282828;
+        }
+
+        .light-grey-bg {
+            background: #FAFAFA;
+        }
+
+        .amigo-red-button {
+            background: #201254;
+            color: #fff;
+            border: 1px solid #201254;
+        }
+
+        .amigo-red-text {
+            color: #201254;
+        }
+
+        .text-smaller {
+            font-size: 0.9rem;
+        }
+
+        .quantity .col {
+            padding: 0 5px;
+        }
+
+        .spacer {
+            height: 8px;
+            background: #E9E9E9;
+            margin-top: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .content-margin {
+            margin-top: 0.1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        u.dotted {
+            border-bottom: 1px dotted #000;
+            text-decoration: none;
+        }
+
+        u.green-dotted {
+            border-bottom: 1px dotted #28a745;
+            text-decoration: none;
+        }
+
+        strong.small {
+            font-weight: bolder;
+        }
+
+        .header {
+            justify-content: flex-start !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+    
+    <div class="py-2 header">
+        {{template "websiteHeaderWBack" dict "head" "Add New Address"}}
+    </div>
+    <div class="scrollableBody padded-side">
+        <div class=" border-top py-2">
+            <div class="col-12">
+                <div>
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="36" height="36" rx="18" fill="#F2F2FD" />
+                        <g clip-path="url(#clip0_333_856)">
+                            <path
+                                d="M14.6719 17.7C15.4436 19.2938 16.7324 20.5792 18.3281 21.3469C18.4458 21.4026 18.576 21.4268 18.7059 21.4169C18.8358 21.407 18.9608 21.3635 19.0687 21.2907L21.4125 19.725C21.516 19.6548 21.6357 19.612 21.7603 19.6005C21.8849 19.589 22.0104 19.6093 22.125 19.6594L26.5125 21.5438C26.6625 21.6062 26.7877 21.7162 26.869 21.8568C26.9504 21.9974 26.9832 22.1608 26.9625 22.3219C26.8234 23.4073 26.2937 24.4048 25.4723 25.1278C24.6509 25.8508 23.5943 26.2498 22.5 26.25C19.1185 26.25 15.8755 24.9067 13.4844 22.5156C11.0933 20.1246 9.75 16.8815 9.75 13.5C9.75025 12.4058 10.1492 11.3491 10.8722 10.5277C11.5952 9.70637 12.5927 9.17659 13.6781 9.03753C13.8392 9.01684 14.0027 9.04967 14.1433 9.13099C14.2839 9.2123 14.3938 9.33758 14.4562 9.48753L16.3406 13.8844C16.3896 13.9972 16.4101 14.1204 16.4003 14.243C16.3905 14.3656 16.3507 14.4839 16.2844 14.5875L14.7187 16.9688C14.649 17.0765 14.6081 17.2003 14.5999 17.3283C14.5917 17.4563 14.6165 17.5843 14.6719 17.7Z"
+                                fill="#F2F2FD" stroke="#6669F8" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_333_856">
+                                <rect width="24" height="24" fill="white" transform="translate(6 6)" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+
+                    &nbsp;
+                    <strong class="small">Contact details</strong>
+                </div>
+            </div>
+        </div>
+        <form id="contact-details-form">
+            <div class="form-row">
+                <div class="col-12">
+                    <!-- name input -->
+                    <label for="name" class="small mb-0">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" value="{{.username}}">
+                </div>
+                <div class="col-12 mt-2">
+                    <!-- phone input -->
+                    <label for="phone" class="small mb-0">Mobile Number</label>
+                    <input type="text" name="phone" id="phone" value="{{.user_phone}}" class="form-control">
+                </div>
+            </div>
+        </form>
+
+        <div class="row spacer"></div>
+
+        <div class="row py-2">
+            <div class="col-12">
+                <div>
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="36" height="36" rx="18" fill="#F2F2FD" />
+                        <g clip-path="url(#clip0_333_861)">
+                            <path
+                                d="M18 18.75C19.6569 18.75 21 17.4069 21 15.75C21 14.0931 19.6569 12.75 18 12.75C16.3431 12.75 15 14.0931 15 15.75C15 17.4069 16.3431 18.75 18 18.75Z"
+                                stroke="#6669F8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M25.5 15.75C25.5 22.5 18 27.75 18 27.75C18 27.75 10.5 22.5 10.5 15.75C10.5 13.7609 11.2902 11.8532 12.6967 10.4467C14.1032 9.04018 16.0109 8.25 18 8.25C19.9891 8.25 21.8968 9.04018 23.3033 10.4467C24.7098 11.8532 25.5 13.7609 25.5 15.75Z"
+                                stroke="#6669F8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_333_861">
+                                <rect width="24" height="24" fill="white" transform="translate(6 6)" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+
+                    &nbsp;
+                    <strong class="small">Address</strong>
+                </div>
+            </div>
+        </div>
+
+        <form id="address-form">
+            <div class="form-row">
+                <div class="col-12">
+                    <!-- pincode input -->
+                    <label for="pincode" class="small mb-0">Pin Code</label>
+                    <input type="number" name="pincode" id="pincode" class="form-control">
+                </div>
+                <div class="col-12 mt-2">
+                    <!-- House number input -->
+                    <label for="houseArea" class="small mb-0">House No, Building, Street, Area</label>
+                    <input type="text" name="houseArea" id="houseArea" class="form-control">
+                </div>
+                <div class="col-12 mt-2">
+                    <!-- Street name input -->
+                    <label for="streetName" class="small mb-0">Locality / Town</label>
+                    <input type="text" name="streetName" id="streetName" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <!-- City input -->
+                    <label for="city" class="small mb-0">City / District</label>
+                    <input type="text" name="city" id="city" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <!-- State input -->
+                    <label for="state" class="small mb-0">State</label>
+                    <!-- state is a dropdown -->
+                    <select name="state" id="state" class="form-control">
+                        <!-- default option -->
+                        <option value="" selected disabled>Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    <!-- Create a stick footer here with a Place Order button -->
+    <footer class="footer mt-auto py-1 bg-light">
+        <!-- <div class="container"> -->
+        <div class="place-order py-3 px-3">
+            <button type="button" id="save-address" class="btn btn-primary roovo-button btn-lg btn-block"><small>Add
+                    Address</small></button>
+        </div>
+        <!-- </div> -->
+    </footer>
+    </div>
+    {{template "outer-section"}}
+</body>
+<!-- write a script that loads after the page loads -->
+{{template "tracking"}}
+<script>
+    function selectElement(id, valueToSelect) {
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
+
+    function validateIndianMobileNumber(mobileNumber) {
+        // Remove any non-digit characters from the phone number
+        mobileNumber = mobileNumber.replace(/\D/g, '');
+
+        // If the phone number starts with "91", remove the first two digits
+        if (mobileNumber.startsWith('91')) {
+            mobileNumber = mobileNumber.slice(2);
+        }
+        const regex = /^[6-9]\d{9}$/;
+        // return only boolean value
+        return regex.test(mobileNumber);
+    }
+
+    function validatePincode(pincode) {
+        const regex = /^\d{6}$/;
+        // return only boolean value
+        return regex.test(pincode);
+    }
+
+    // function that gets the last url segment
+    function getLastUrlSegment() {
+        // get the url
+        const url = window.location.href;
+        // split the url by /
+        const urlSegments = url.split("/");
+        // return the last segment
+        return urlSegments[urlSegments.length - 1];
+    }
+
+    // write your code here
+    // wait for the page to load
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to pincode that listens for change, keyup, paste and input
+        document.querySelector("#pincode").addEventListener("keyup", () => {
+            // get the pincode
+            const pincode = document.querySelector("#pincode").value;
+            // check if length is 6 and only numbers
+            if (pincode.length === 6 && !isNaN(pincode)) {
+                // make a request to the api
+                fetch(`/address/pincodes/${pincode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // check if the data is valid
+                        const city = data.city;
+                        const state = data.state;
+                        // set the city and state
+                        document.querySelector("#city").value = city;
+                        // select the state option with the value
+                        selectElement('state', state)
+                    }).catch(error => {
+                        alert("Invalid Pincode");
+                    });
+            }
+        });
+    });
+
+    // on clicking the #save-address button make a post request to /address
+    // before sending the request validate and get data from the forms: contact-details-form and address-form
+    // if the data is valid send the data to the server
+    // if the data is invalid show an alert
+    document.querySelector("#save-address").addEventListener("click", () => {
+        sendTracking("Address Added")
+        // get the data from the forms
+        const contactDetailsForm = document.querySelector("#contact-details-form");
+        const addressForm = document.querySelector("#address-form");
+        // get the data from the forms
+        const contactDetailsFormData = new FormData(contactDetailsForm);
+        const addressFormData = new FormData(addressForm);
+        // create an object to store the data
+        const data = {};
+        // loop through the contact details form data and add it to the data object
+        for (const [key, value] of contactDetailsFormData.entries()) {
+            data[key] = value;
+        }
+        // loop through the address form data and add it to the data object
+        for (const [key, value] of addressFormData.entries()) {
+            data[key] = value;
+        }
+        // check if the data is valid
+        if (data.name && validateIndianMobileNumber(data.phone) && validatePincode(data.pincode) && data["houseArea"] && data["streetName"] && data.city && data.state) {
+            
+            // check if deal id exists
+            const url = new URL(window.location.href);
+            
+            let apiURL = `/address/${getLastUrlSegment()}`;
+
+            // make a post request to /address
+            fetch(apiURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(data => {
+                    // response is a redirect 302 object, redirect to the url
+                    window.location.href = data.url;
+                });
+        } else {
+            alert("Please fill all the fields");
+        }
+    });
+
+</script>
+
+</html>
+
+{{end}}

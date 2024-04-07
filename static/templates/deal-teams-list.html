@@ -1,0 +1,104 @@
+{{define "deal-teams-list"}}
+<html>
+
+<head>
+    <title>Roovo</title>
+    <link rel="stylesheet" href="/static/styles/color.css" />
+    <link rel="stylesheet" href="/static/styles/dealTeamsList.css" />
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+        
+        <div class="rowFlex justify-between dealHeader">
+            <img src="/static/assets/arrow-back.svg" class="back-arrow" alt="back" onclick="back()" />
+            <div class="rowFlex">
+                <!-- <img src="/static/icons/search.svg" class="back-arrow icons-spacing" alt="search"/> -->
+                <a href="/wishlist">
+                    <img src="/static/assets/Icon-wishlist.svg" class="back-arrow icons-spacing" alt="wishlist" />
+                </a>
+            </div>
+        </div>
+        <div class="scrollableBody">
+            {{range .teams}}
+            <a class="team-card" href="/team/{{.ID}}">
+                <div class="team-left-card">
+                    <h3 class="team-name">{{.Name}}</h3>
+                    {{if gt (minus .Capacity .Strength) 0}}
+                    <p class="capacity">{{minus .Capacity .Strength}} people needed</p>
+                    {{else}}
+                    <p class="capacity">Deal Availed</p>
+                    {{end}}
+                    <div class="PFPs">
+                        <img src="https://ca.slack-edge.com/T033C5Q7JCQ-U043VRCJZ43-eab450ec0327-72">
+                        <img src="https://ca.slack-edge.com/T033C5Q7JCQ-U043VRCJZ43-eab450ec0327-72">
+                        <img src="https://ca.slack-edge.com/T033C5Q7JCQ-U043VRCJZ43-eab450ec0327-72">
+                        {{if gt (minus .Strength 3) 0}}
+                        <span>+ {{minus .Strength 3}} more</span>
+                        {{end}}
+                    </div>
+                </div>
+                <div class="team-right-card">
+                    {{if gt (minus .Capacity .Strength) 0}}
+                    <button class="roovo-button-new">Join Team</button>
+                    <p class="time-left">
+                        <span class="roovo-color" id="dealExpiry">
+                            {{timeLeft $.metadata.EndsAt}}
+                        </span>
+                        left
+                    </p>
+                    {{end}}
+                    <div class="rowFlex more-details">
+                        <span class="singleLine">More Details</span>
+                        <img src="/static/assets/arrow-back-amigo-red.svg" class="back-arrow"
+                            style="transform: rotateY(180deg);width:14px;height:14px;" alt="more" />
+                    </div>
+                </div>
+            </a>
+            {{end}}
+
+            {{if gt (len .teams) 0}}
+            <a href="/deal/{{.metadata.ID}}" class="team-buy-cta-container">
+                <button class="buyButton dealButton" onclick='sendTracking("Team Buy CTA clicked")'>
+                    <img src="/static/icons/team-buy.svg" class=" cta-icon" />
+                    <div class="buyNowTextContainer cta-icon">
+                        Team Buy
+                    </div>
+                    <div class="priceToShow cta-icon" id="priceToShow">₹{{.metadata.AdminPrice}}</div>
+                </button>
+            </a>
+            {{end}}
+
+            {{if eq (len .teams) 0}}
+            <form class="container" action="/deal" method="post">
+                <label class="create-your-team">Enter Your Team Name</label>
+                <input id="id" name="id" style="display: none;" value="{{.metadata.ID}}" />
+                <input id="name" name="name" class="team-name-input" />
+                <button class="buyButton" type="submit">Create Your Team</button>
+            </form>
+            {{end}}
+            </button>
+        </div>
+        {{template "outer-section"}}
+</body>
+<script src="/static/js/back.js"></script>
+<script src="/static/js/time-left.js"></script>
+<script>
+    function dealExpiry() {
+        const deal = document.getElementById("dealExpiry")
+        const endsAt = '{{ $.metadata.EndsAt }}'
+    const newValue = TimeLeft(endsAt)
+    deal.innerHTML = newValue
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // add event listener to DOMContent Loaded
+        setInterval(dealExpiry, 1000);
+    });
+</script>
+{{template "tracking"}}
+
+</html>
+{{end}}
